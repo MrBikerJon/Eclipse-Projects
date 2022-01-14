@@ -10,18 +10,20 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-//
-//
-//
-///
+
 
 
 public class Challenge {
 	
 	public static void main (String[] args) throws Exception {
-		System.out.println(rev(1054));
+		System.out.println(maxTotal(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 100}));
 	}
 
+	
+	public static int timeToFinish(String full, String part) {
+		return (full.replaceAll("\\s+", "").length() - part.replaceAll("\\s+, "").length()) / 2;
+	}
+	
 	//reverse an int and return as a string
 	public static String rev(int n) {
 		StringBuilder s = new StringBuilder(Integer.toString(Math.abs(n)));
@@ -31,6 +33,15 @@ public class Challenge {
 		//return new StringBuilder(Math.abs(n) + "").reverse().toString();
 		
 	}
+	
+	//split a string (" "), perform math on two values and compare values in the resulting array
+	  public static boolean magic(String str) {
+			String[] dateValues = str.split(" ");
+			int magicNumber = Integer.parseInt(dateValues[0]) * Integer.parseInt(dateValues[1]);
+			return (magicNumber == Integer.parseInt(dateValues[2].substring(3)) || 
+					magicNumber == Integer.parseInt(dateValues[2].substring(2)) || 
+					magicNumber == Integer.parseInt(dateValues[2].substring(1)));
+	  }
 	
 	
 	  public static int highestDigit(int n) {
