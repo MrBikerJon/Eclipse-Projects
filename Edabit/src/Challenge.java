@@ -16,7 +16,24 @@ import java.util.stream.Stream;
 public class Challenge {
 	
 	public static void main (String[] args) throws Exception {
-		System.out.println(factorChain(new int[] {1, 2, 4, 8, 16, 32}));
+		System.out.println(isPrime(2));
+	}
+	
+	//check if a number is prime
+	  public static boolean isPrime(int num) {
+		  if(num == 1) return false;
+		  boolean isPrime = true;
+			for (int i = 2; i < num-1; i++) {
+				if(num%i == 0) isPrime = false;
+			}
+			return isPrime;
+	  }
+	
+	// get max and min values from an array
+	public static boolean canNest(int[] arr1, int[] arr2) {
+		Arrays.sort(arr1);
+		Arrays.sort(arr2);
+		return(arr1[0] > arr2[0] && arr1[arr1.length-1] < arr2[arr2.length-1]);
 	}
 	
 	public static boolean factorChain(int[] arr) {
