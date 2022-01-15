@@ -1,14 +1,88 @@
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class StreamingExamples {
 
+	public static void main(String[] args) {
+		System.out.println(toHex("Hello World"));
+	}
 
 	/*
 	 * STREAMING
 	 */
+
+	//start with string, convert to hex & return as spaced out string
+	public static String toHex(String str) {
+		
+		return str.chars()
+				.mapToObj(Integer::toHexString)
+				.collect(Collectors.joining(" "));
+		
+//		String result = "";
+//		for(int i = 0; i < str.length(); i++) {
+//			result += String.format("%04x", (int) str.charAt(i)).substring(2) + " ";
+//		}
+//		return result.trim();
+	}
+	
+
+	//start with string, convert to hex & return as spaced out string
+	public static String toHexv2(String str) {
+		
+		return Arrays.stream(str.split(""))
+				.map(s->s.charAt(0))
+				.map(Integer::toHexString)
+				.collect(Collectors.joining(" "));
+	}
+	
+	  public static boolean canAlternate(String str) {
+		  
+		  long numberOf1s = str.chars().filter(ch -> ch == '1').count();
+		  long numberOf0s = str.chars().filter(ch -> ch == '0').count();
+		  if(numberOf1s == 0 || numberOf0s == 0) return false;
+		  return(Math.abs(numberOf1s - numberOf0s) <= 1);
+
+	  }
+	
+	// get an average of the digits in a number. e.g., 666, average is 6 (6+6+6 / 3)
+	//start with int, convert to string, stream as chars, convert to integer (deduct 48 from char value)
+	// sum, then divide by length of string to get an average
+	public static int mean(int a) {
+		return String.valueOf(a)
+				.chars()
+				.map(ch -> ch - 48) // unicode value of zero is 48
+				.sum() / Integer.toString(a).length();
+		
+//		return (int)String.valueOf(a).chars()
+//				.map(Character::getNumericValue)
+//				.average()
+//				.orElse(0);
+	}
+	
+	public static int howManyTimes(String msg) {
+		return msg.chars()
+				.map(ch -> ch - 96)
+				.sum();
+	  }
+	
+	//Given an array of 10 numbers, return the maximum possible total made by summing just 5 of the 10 numbers.
+	public static int maxTotal(int[] nums) {
+		
+	    Optional<Integer> stream  = Arrays.stream(nums).boxed().sorted(Collections.reverseOrder()).limit(5).reduce(Integer::sum);
+	    return stream.get();
+		
+		// int count = 0;
+		// Arrays.sort(nums);
+		// for(int i = nums.length-1; i > nums.length/2-1; i--) {
+		// 	count += nums[i];
+		// }
+		// return count;
+	}
+	
 	
 	//stream objects / getter
 //	public class Program {	

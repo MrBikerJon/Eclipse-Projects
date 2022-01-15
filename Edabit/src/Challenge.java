@@ -16,13 +16,30 @@ import java.util.stream.Stream;
 public class Challenge {
 	
 	public static void main (String[] args) throws Exception {
-		System.out.println(maxTotal(new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 100}));
+		System.out.println(factorChain(new int[] {1, 2, 4, 8, 16, 32}));
+	}
+	
+	public static boolean factorChain(int[] arr) {
+		boolean isFactorChain = true;
+		for(int i = 1; i < arr.length; i++) {
+			if(arr[i]%arr[i-1] != 0) isFactorChain = false;
+		}
+		return isFactorChain;
 	}
 
-	
-	public static int timeToFinish(String full, String part) {
-		return (full.replaceAll("\\s+", "").length() - part.replaceAll("\\s+, "").length()) / 2;
+	public static boolean isPrefix(String word, String prefix) {
+		return word.startsWith(prefix.replace("-", ""));
 	}
+
+	public static boolean isSuffix(String word, String suffix) {
+		return word.endsWith(suffix.replace("-", ""));
+	}
+	
+	  public static boolean greaterThanOne(String frac) {
+			String[] arr = frac.split("/");
+			return Double.parseDouble(arr[0]) / Double.parseDouble(arr[1]) > 1;
+	  }
+
 	
 	//reverse an int and return as a string
 	public static String rev(int n) {
@@ -176,12 +193,7 @@ public class Challenge {
 			}
 			return result;
 		}
-	
-	public static int howManyTimes(String msg) {
-		return msg.chars()
-				.map(ch -> ch - 96)
-				.sum();
-	  }
+
 	
 	  public static boolean matchLastItem(String[] t) {
 			String s = "";
@@ -235,15 +247,7 @@ public class Challenge {
 	public static String intOrString(Object var) {
 		if(var instanceof String) return "str"; return "int";
 	}
-	
-	  public static boolean canAlternate(String str) {
-		  
-		  long numberOf1s = str.chars().filter(ch -> ch == '1').count();
-		  long numberOf0s = str.chars().filter(ch -> ch == '0').count();
-		  if(numberOf1s == 0 || numberOf0s == 0) return false;
-		  return(Math.abs(numberOf1s - numberOf0s) <= 1);
 
-	  }
 	
 	
 	public static String add(String a, String b) {
@@ -356,6 +360,12 @@ public class Challenge {
 	public static String formatPhoneNumber(int [] nums) {
 		return Arrays.toString(nums).replaceAll("\\[|\\]|,|\\s", "")
 				.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+	}
+	
+	
+	//remove spaces from strings
+	public static int timeToFinish(String full, String part) {
+		return (full.replaceAll("\\s+", "").length() - part.replaceAll("\\s+", "").length()) / 2;
 	}
 			
 }
