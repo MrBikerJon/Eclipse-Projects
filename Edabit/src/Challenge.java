@@ -19,6 +19,11 @@ public class Challenge {
 		System.out.println(isPrime(2));
 	}
 	
+	// compare two strings alphabetically
+	  public static boolean isBetween(String first, String last, String word) {
+		return (first.compareTo(word) < 0 && word.compareTo(last) < 0);	
+	  }
+	
 	public static int[] concat(int[] arr1, int[] arr2) {
 		int[] newArr = new int[arr1.length + arr2.length];
 		for(int i = 0; i < arr1.length; i++) {
