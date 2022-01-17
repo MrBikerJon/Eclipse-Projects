@@ -19,6 +19,17 @@ public class Challenge {
 		System.out.println(isPrime(2));
 	}
 	
+	public static int[] concat(int[] arr1, int[] arr2) {
+		int[] newArr = new int[arr1.length + arr2.length];
+		for(int i = 0; i < arr1.length; i++) {
+			newArr[i] = arr1[i];
+		}
+		for(int j = 0; j < arr2.length; j++) {
+			newArr[arr1.length + j] = arr2[j];
+		}
+		return newArr;
+	}
+	
 	//check if a number is prime
 	  public static boolean isPrime(int num) {
 		  if(num == 1) return false;

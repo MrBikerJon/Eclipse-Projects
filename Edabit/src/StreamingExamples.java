@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 public class StreamingExamples {
 
 	public static void main(String[] args) {
-		System.out.println(toHex("Hello World"));
+		System.out.println(Arrays.toString(isFourLetters(new String[]{"Ryan", "Kieran", "Jason", "Matt"})));
 	}
 
 	/*
@@ -29,7 +29,19 @@ public class StreamingExamples {
 //		return result.trim();
 	}
 	
+	// stream string array, filter and return new string array
+	public static String[] isFourLetters(String[] s) {
+		return Arrays.stream(s)
+				.filter(str -> str.length() == 4)
+				.toArray(size -> new String[size]);
+	}
 
+	//concatenate two int arrays
+	public static int[] concat(int[] arr1, int[] arr2) {
+		return IntStream.concat(Arrays.stream(arr1), Arrays.stream(arr2))
+			.toArray();
+	}
+	
 	//start with string, convert to hex & return as spaced out string
 	public static String toHexv2(String str) {
 		
