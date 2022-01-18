@@ -3,6 +3,7 @@ package jonathan.furminger.mytimer;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -11,6 +12,8 @@ import jonathan.furminger.mycomponents.TitleLabel;
 public class MyTimer extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	private TimerPanel timerPanel = new TimerPanel();
 
 	public static void main(String[] args) {
 		try {
@@ -28,6 +31,7 @@ public class MyTimer extends JFrame {
 	
 	public MyTimer() {
 		initGUI();
+		
 		setTitle("My Timer");
 		setResizable(false);
 		pack();
@@ -39,6 +43,12 @@ public class MyTimer extends JFrame {
 	private void initGUI() {
 			TitleLabel titleLabel = new TitleLabel("My Timer");
 			add(titleLabel, BorderLayout.PAGE_START);
+			
+			JPanel centerPanel = new JPanel();
+			add(centerPanel, BorderLayout.CENTER);
+			
+			centerPanel.add(timerPanel);
+			
 	}
 	
 
