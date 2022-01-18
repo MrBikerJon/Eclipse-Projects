@@ -2,6 +2,8 @@ package jonathan.furminger.mytimer;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -13,6 +15,15 @@ public class TimerPanel extends JPanel {
 	private int height = 24;
 	private String timeString = "00:00:00";
 	private long time = 10;
+
+	
+	public TimerPanel(long time, Font font) {
+		setTime(time);
+		setFont(font);
+		height = font.getSize();
+		FontMetrics fm = getFontMetrics(font);
+		width = fm.stringWidth(timeString);
+		}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -27,7 +38,7 @@ public class TimerPanel extends JPanel {
 	
 	public void setTime(long time) {
 		this.time = time;
-		long h = time / 60 / 60;
+		long h = time / 3600;
 		long m = (time / 60) % 60;
 		long s = time % 60;
 		timeString = String.format("%02d:%02d:%02d", h, m, s);

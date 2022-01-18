@@ -1,6 +1,7 @@
 package jonathan.furminger.mytimer;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,7 +14,8 @@ public class MyTimer extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	private TimerPanel timerPanel = new TimerPanel();
+	private Font font = new Font(Font.DIALOG, Font.BOLD, 36);
+	private TimerPanel timerPanel = new TimerPanel(10L, font);
 
 	public static void main(String[] args) {
 		try {
