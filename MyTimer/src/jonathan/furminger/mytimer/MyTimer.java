@@ -2,7 +2,10 @@ package jonathan.furminger.mytimer;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -48,10 +51,21 @@ public class MyTimer extends JFrame {
 			
 			JPanel centerPanel = new JPanel();
 			add(centerPanel, BorderLayout.CENTER);
-			
 			centerPanel.add(timerPanel);
 			
+			JPanel buttonPanel = new JPanel();
+			add(buttonPanel, BorderLayout.PAGE_END);
+			JButton startButton = new JButton("Start");
+			startButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					start();
+				}
+			});
+			buttonPanel.add(startButton);
 	}
 	
+	private void start() {
+		timerPanel.start();
+	}
 
 }
