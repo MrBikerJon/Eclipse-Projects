@@ -52,11 +52,27 @@ public class LetterTile extends JPanel {
 		int letterX = x+((SIZE-letterWidth)/2);
 		int letterY = ((SIZE*3)/4)+y;
 		g.drawString(letter, letterX, letterY);
+		
+		g.setFont(SMALL_FONT);
+		String pointsString = "" + points;
+		int pointsWidth = smallFM.stringWidth(pointsString);
+		int pointsX = SIZE - pointsWidth - 2 + x;
+		int pointsY = ((SIZE * 34) / 40) + y;
+		g.drawString(pointsString, pointsX, pointsY);
+		
 	}
 	
 	public Dimension getPreferredSize() {
 		Dimension size = new Dimension(SIZE, SIZE);
 		return size;
+	}
+	
+	public String getLetter() {
+		return letter;
+	}
+	
+	public int getPoints() {
+		return points;
 	}
 
 }
