@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import jonathan.furminger.mycommonmethods.FileIO;
+
 public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -23,6 +25,8 @@ public class GamePanel extends JPanel {
 	
 	public GamePanel(SpeedWords speedWords) {
 		this.speedWords = speedWords;
+		sevenLetterWords = FileIO.readTextFile(this, FILE_NAME);
+		restart();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -31,14 +35,27 @@ public class GamePanel extends JPanel {
 		g.setColor(SpeedWords.TAN);
 		g.fillRect(0, 0, WIDTH,  HEIGHT);
 		
-		TileSet tileSet = new TileSet("HELLO", 100, 100);
-		tileSet.draw(g);
+		// draw all current tile sets
+		for(int i = 0; i < tileSets.size(); i++) {
+			TileSet tileSet = tileSets.get(i);
+			tileSet.draw(g);
+		}
 		
 	}
 	
 	public Dimension getPreferredSize() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
 		return size;
+	}
+	
+	public void restart() {
+		tileSets.clear();
+		int range = sevenLetterWords.size();
+		int choose = rand.nextInt(range);
+		String s = sevenLetterWords.get(choose);
+		TileSet tileSet = new TileSet(s, START_X, START_Y);
+		tileSets.add(tileSet);
+		repaint();
 	}
 	
 	
