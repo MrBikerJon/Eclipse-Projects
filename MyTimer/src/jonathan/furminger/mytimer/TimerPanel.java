@@ -28,6 +28,7 @@ public class TimerPanel extends JPanel implements Runnable {
 	}
 		
 	public void start() {
+		stop();
 		timerThread = new Thread(this);
 		timerThread.start();
 	}
@@ -61,7 +62,6 @@ public class TimerPanel extends JPanel implements Runnable {
 		while(time > 0) {
 			time-= 1;
 			setTime(time);
-			System.out.println(time);
 			try {
 				Thread.sleep(1000);
 			}
@@ -70,6 +70,17 @@ public class TimerPanel extends JPanel implements Runnable {
 			}
 		}
 		timesUp();
+	}
+	
+	public void stop() {
+		if(timerThread != null) {
+		timerThread.interrupt();
+		timerThread = null;
+		}
+	}
+	
+	public long getTime() {
+		return time;
 	}
 	
 }
