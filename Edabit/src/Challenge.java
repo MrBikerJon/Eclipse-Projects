@@ -16,7 +16,24 @@ import java.util.stream.Stream;
 public class Challenge {
 	
 	public static void main (String[] args) throws Exception {
-		System.out.println(isPrime(2));
+		System.out.println(halveCount(8845, 4));
+	}
+	
+	public static int halveCount(int a, int b) {
+		int count = 0;
+		float c = a;
+		while(c/2 > b) {
+			c /= 2;
+			count ++;
+			System.out.println(a);
+		}
+		return count;
+	  }
+	
+	public static String flipEndChars(String s) {
+		if(s.length() < 2) return "Incompatible.";
+		if(s.charAt(0) == s.charAt(s.length()-1)) return "Two's a Pair.";
+		return s.substring(s.length()-1) + s.substring(1, s.length()-1) + s.substring(0, 1);
 	}
 	
 	// compare two strings alphabetically
@@ -117,15 +134,7 @@ public class Challenge {
 		  return daysSupply < 15? "Your TP will only last " + daysSupply + " days, buy more!" :
 			  "Your TP will last " + daysSupply + " days, no need to panic!";
 	  }
-	
-	public static int halveCount(int a, int b) {
-		int count = 0;
-		while (a > b) {
-			a /= 2;
-			count++;
-		}
-		return count-1;
-	  }
+
 	
 	public static boolean validatePIN(String s) {
 		return s.matches("\\d{4}||\\d{6}");
