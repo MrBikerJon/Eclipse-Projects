@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class TimerPanel extends JPanel {
@@ -23,8 +24,23 @@ public class TimerPanel extends JPanel {
 		height = font.getSize();
 		FontMetrics fm = getFontMetrics(font);
 		width = fm.stringWidth(timeString);
+		start();
+	}
+		
+	public void start() {
+		while(time > 0) {
+			time-= 1;
+			setTime(time);
+			System.out.println(time);
 		}
-
+		timesUp();
+	}
+		
+	protected void timesUp() {
+		String message = "Time's up!";
+		JOptionPane.showMessageDialog(this,  message);
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
