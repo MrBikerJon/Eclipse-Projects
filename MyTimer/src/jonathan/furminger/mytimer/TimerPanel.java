@@ -5,13 +5,23 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.io.IOException;
+import java.net.URL;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import jonathan.furminger.mycommonmethods.FileIO;
 
 public class TimerPanel extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
+	private static final String ALARM_FILE = "/alarm.wav";
 	private int width = 150;
 	private int height = 24;
 	private String timeString = "00:00:00";
@@ -34,8 +44,10 @@ public class TimerPanel extends JPanel implements Runnable {
 	}
 		
 	protected void timesUp() {
+		Clip clip = FileIO.playClip(this, ALARM_FILE);	
 		String message = "Time's up!";
 		JOptionPane.showMessageDialog(this,  message);
+		clip.stop();
 	}
 	
 	public void paintComponent(Graphics g) {

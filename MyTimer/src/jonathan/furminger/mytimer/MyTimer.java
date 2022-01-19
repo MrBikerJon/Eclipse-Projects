@@ -1,6 +1,7 @@
 package jonathan.furminger.mytimer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,10 +51,13 @@ public class MyTimer extends JFrame {
 			add(titleLabel, BorderLayout.PAGE_START);
 			
 			JPanel centerPanel = new JPanel();
+			centerPanel.setBackground(Color.MAGENTA);
 			add(centerPanel, BorderLayout.CENTER);
+			timerPanel.setBackground(Color.MAGENTA);
 			centerPanel.add(timerPanel);
 			
 			JPanel buttonPanel = new JPanel();
+			buttonPanel.setBackground(Color.BLACK);
 			add(buttonPanel, BorderLayout.PAGE_END);
 			
 			JButton hoursButton = new JButton("Hour");
