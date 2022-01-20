@@ -2,6 +2,9 @@ package jonathan.furminger.speedwords;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,6 +33,27 @@ public class GamePanel extends JPanel {
 		this.speedWords = speedWords;
 		sevenLetterWords = FileIO.readTextFile(this, FILE_NAME);
 		restart();
+		
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				int x = e.getX();
+				int y = e.getY();
+				int mouseButton = e.getButton();
+				boolean leftClicked = (mouseButton == MouseEvent.BUTTON1);
+				clicked(x, y, leftClicked);
+			}
+			public void mouseReleased(MouseEvent e) {
+				released();
+			}
+			
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				int x = e.getX();
+				int y = e.getY();
+				dragged(x, y);
+			}
+		});
 	}
 
 	public void paintComponent(Graphics g) {
@@ -42,6 +66,12 @@ public class GamePanel extends JPanel {
 		for(int i = 0; i < tileSets.size(); i++) {
 			TileSet tileSet = tileSets.get(i);
 			tileSet.draw(g);
+			
+		// draw moving tiles
+		if(movingTiles != null) {
+			movingTiles.draw(g);
+		}
+			
 		}
 		
 	}
@@ -61,5 +91,52 @@ public class GamePanel extends JPanel {
 		repaint();
 	}
 	
+	private void clicked(int x, int y, boolean leftClicked) {
+		if (movingTiles == null) {
+			mouseX = x;
+			mouseY = y;
+			
+			for(int i = 0; i < tileSets.size() && movingTiles == null; i++) {
+				TileSet tileSet = tileSets.get(i);
+				if(tileSet.contains(x, y)) {
+					if(leftClicked == true) {
+						movingTiles = tileSet.removeAndReturn1TileAt(x, y);
+						if(tileSet.getNumberOfTiles() == 0) {
+							tileSets.remove(i);
+						}
+					}
+					else {
+						movingTiles = tileSet;
+						tileSets.remove(i);
+				}
+			}
+		}
+		repaint();
+		}
+	}
+	
+	private void released() {
+		//if tiles were dropped on other tiles, connect the dropped tiles to the tiles onto which they were dropped
+		
+		//if tiles were dropped in an empty spot, put the dropped tiles back into the list of tile sets
+		if(movingTiles != null) {
+			String s = movingTiles.toString();
+			int x = movingTiles.getX();
+			int y = movingTiles.getY();
+			TileSet newTileSet = new TileSet(s, x, y);
+			tileSets.add(0, newTileSet);
+			movingTiles = null;
+		}
+		repaint();
+	}
+	
+	private void dragged(int x, int y) {
+		int changeX = x - mouseX;
+		int changeY = y - mouseY;
+		movingTiles.changeXY(changeX, changeY);
+		mouseX = x;
+		mouseY = y;
+		repaint();
+	}
 	
 }
