@@ -22,6 +22,9 @@ public class GamePanel extends JPanel {
 	private ArrayList<TileSet> tileSets = new ArrayList<TileSet>();
 	private ArrayList<String> sevenLetterWords = new ArrayList<String>();
 	private Random rand = new Random();
+	private TileSet movingTiles;
+	private int mouseX;
+	private int mouseY;
 	
 	public GamePanel(SpeedWords speedWords) {
 		this.speedWords = speedWords;
