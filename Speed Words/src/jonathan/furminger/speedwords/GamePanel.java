@@ -117,7 +117,17 @@ public class GamePanel extends JPanel {
 	
 	private void released() {
 		//if tiles were dropped on other tiles, connect the dropped tiles to the tiles onto which they were dropped
-		
+		if(movingTiles != null) {
+			boolean addedToTiles = false;
+			for(int i = 0; i <tileSets.size() && !addedToTiles; i++) {
+				TileSet tileSet = tileSets.get(i);
+				addedToTiles = tileSet.insertTiles(movingTiles);
+				if(addedToTiles) {
+					movingTiles = null;
+				}
+			}
+			
+		}
 		//if tiles were dropped in an empty spot, put the dropped tiles back into the list of tile sets
 		if(movingTiles != null) {
 			String s = movingTiles.toString();

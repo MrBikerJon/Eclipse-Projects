@@ -46,7 +46,7 @@ public class SpeedWords extends JFrame {
 		initGUI();
 		
 		setTitle("Speed Words");
-		setResizable(false);
+		setResizable(true);
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -76,6 +76,7 @@ public class SpeedWords extends JFrame {
 		JPanel timerPanel = new JPanel();
 		timerPanel.setBackground(Color.RED);
 		leftPanel.add(timerPanel);
+		
 		swTimerPanel.setBackground(Color.RED);
 		timerPanel.add(swTimerPanel);
 		
