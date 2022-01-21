@@ -94,4 +94,9 @@ public class SpeedWords extends JFrame {
 		scrollPane.setPreferredSize(size);
 		mainPanel.add(scrollPane);
 	}
+	
+	public void addToScore(int newPoints) {
+		scorePanel.addToScore(newPoints);
+	}
+	
 }

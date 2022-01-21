@@ -48,6 +48,7 @@ public class GamePanel extends JPanel {
 			}
 			
 		});
+		
 		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
 				int x = e.getX();
@@ -107,6 +108,9 @@ public class GamePanel extends JPanel {
 						if(tileSet.getNumberOfTiles() == 0) {
 							tileSets.remove(i);
 						}
+						else {
+							checkWord(tileSet);
+						}
 					}
 					else {
 						movingTiles = tileSet;
@@ -119,7 +123,7 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void released() {
-		//if tiles were dropped on other tiles, connect the dropped tiles to the tiles onto which they were dropped
+		//if dropped on other tiles, connect it to the tiles
 		if(movingTiles != null) {
 			boolean addedToTiles = false;
 			for(int i = 0; i <tileSets.size() && !addedToTiles; i++) {
@@ -127,11 +131,12 @@ public class GamePanel extends JPanel {
 				addedToTiles = tileSet.insertTiles(movingTiles);
 				if(addedToTiles) {
 					movingTiles = null;
+					checkWord(tileSet);
 				}
 			}
 			
 		}
-		//if tiles were dropped in an empty spot, put the dropped tiles back into the list of tile sets
+		//if not dropped on other tiles, return it to the list of tile sets
 		if(movingTiles != null) {
 			String s = movingTiles.toString();
 			int x = movingTiles.getX();
@@ -139,17 +144,20 @@ public class GamePanel extends JPanel {
 			TileSet newTileSet = new TileSet(s, x, y);
 			tileSets.add(0, newTileSet);
 			movingTiles = null;
+			checkWord(newTileSet);
 		}
 		repaint();
 	}
 	
 	private void dragged(int x, int y) {
-		int changeX = x - mouseX;
-		int changeY = y - mouseY;
-		movingTiles.changeXY(changeX, changeY);
-		mouseX = x;
-		mouseY = y;
-		repaint();
+		if(movingTiles != null) {
+			int changeX = x - mouseX;
+			int changeY = y - mouseY;
+			movingTiles.changeXY(changeX, changeY);
+			mouseX = x;
+			mouseY = y;
+			repaint();
+		}
 	}
 	
 	private void checkWord(TileSet tileSet) {
@@ -157,6 +165,8 @@ public class GamePanel extends JPanel {
 		boolean isAWord = dictionary.isAWord(s);
 		if(isAWord) {
 			tileSet.setValid(true);
+			int points = tileSet.getPoints();
+			speedWords.addToScore(points);
 		}
 		else {
 			tileSet.setValid(false);
