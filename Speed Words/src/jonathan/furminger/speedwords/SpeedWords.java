@@ -46,7 +46,7 @@ public class SpeedWords extends JFrame {
 		initGUI();
 		
 		setTitle("Speed Words");
-		setResizable(true);
+		setResizable(false);
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
