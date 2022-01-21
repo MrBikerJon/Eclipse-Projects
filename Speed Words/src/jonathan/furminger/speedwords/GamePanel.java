@@ -28,6 +28,7 @@ public class GamePanel extends JPanel {
 	private TileSet movingTiles;
 	private int mouseX;
 	private int mouseY;
+	private Dictionary dictionary = new Dictionary();
 	
 	public GamePanel(SpeedWords speedWords) {
 		this.speedWords = speedWords;
@@ -88,6 +89,8 @@ public class GamePanel extends JPanel {
 		String s = sevenLetterWords.get(choose);
 		TileSet tileSet = new TileSet(s, START_X, START_Y);
 		tileSets.add(tileSet);
+		
+		checkWord(tileSet);
 		repaint();
 	}
 	
@@ -147,6 +150,17 @@ public class GamePanel extends JPanel {
 		mouseX = x;
 		mouseY = y;
 		repaint();
+	}
+	
+	private void checkWord(TileSet tileSet) {
+		String s = tileSet.toString();
+		boolean isAWord = dictionary.isAWord(s);
+		if(isAWord) {
+			tileSet.setValid(true);
+		}
+		else {
+			tileSet.setValid(false);
+		}
 	}
 	
 }
