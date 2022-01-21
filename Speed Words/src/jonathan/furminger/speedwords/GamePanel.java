@@ -29,6 +29,7 @@ public class GamePanel extends JPanel {
 	private int mouseX;
 	private int mouseY;
 	private Dictionary dictionary = new Dictionary();
+	private ArrayList<String> formedWords = new ArrayList<String>();
 	
 	public GamePanel(SpeedWords speedWords) {
 		this.speedWords = speedWords;
@@ -85,6 +86,7 @@ public class GamePanel extends JPanel {
 	
 	public void restart() {
 		tileSets.clear();
+		formedWords.clear();
 		int range = sevenLetterWords.size();
 		int choose = rand.nextInt(range);
 		String s = sevenLetterWords.get(choose);
@@ -163,10 +165,36 @@ public class GamePanel extends JPanel {
 	private void checkWord(TileSet tileSet) {
 		String s = tileSet.toString();
 		boolean isAWord = dictionary.isAWord(s);
-		if(isAWord) {
+		boolean foundBefore = formedWords.contains(s);
+		
+		if(isAWord && !foundBefore) {
 			tileSet.setValid(true);
 			int points = tileSet.getPoints();
 			speedWords.addToScore(points);
+			
+			// if this is the first word found,
+			// add it to the list
+			if(formedWords.size() == 0) {
+				formedWords.add(s);
+			}
+			else {
+			
+			// otherwise, insert word before the
+			// first word it is alphabetically less than
+			boolean added = false;
+			for(int i = 0; i < formedWords.size() && !added; i++) {
+				String formedWord = formedWords.get(i);
+				if(s.compareTo(formedWord) < 0) {
+					formedWords.add(i, s);
+					added = true;
+				}
+			}
+				
+			// if the word is not less than any of the words,
+			// add it to the end of the list
+			
+			}
+			speedWords.setWordList(formedWords);
 		}
 		else {
 			tileSet.setValid(false);

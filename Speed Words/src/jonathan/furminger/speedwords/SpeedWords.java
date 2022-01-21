@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -97,6 +98,15 @@ public class SpeedWords extends JFrame {
 	
 	public void addToScore(int newPoints) {
 		scorePanel.addToScore(newPoints);
+	}
+	
+	public void setWordList(ArrayList<String> wordList) {
+		String s = "";
+		for(int i = 0; i < wordList.size(); i++) {
+			String word = wordList.get(i);
+			s = s + word + "\n";
+		}
+		textArea.setText(s);
 	}
 	
 }
