@@ -30,6 +30,7 @@ public class GamePanel extends JPanel {
 	private int mouseY;
 	private Dictionary dictionary = new Dictionary();
 	private ArrayList<String> formedWords = new ArrayList<String>();
+	private boolean outOfTime = false;
 	
 	public GamePanel(SpeedWords speedWords) {
 		this.speedWords = speedWords;
@@ -94,11 +95,13 @@ public class GamePanel extends JPanel {
 		tileSets.add(tileSet);
 		
 		checkWord(tileSet);
+		outOfTime = false;
+		movingTiles = null;
 		repaint();
 	}
 	
 	private void clicked(int x, int y, boolean leftClicked) {
-		if (movingTiles == null) {
+		if (movingTiles == null && !outOfTime) {
 			mouseX = x;
 			mouseY = y;
 			
@@ -199,6 +202,10 @@ public class GamePanel extends JPanel {
 		else {
 			tileSet.setValid(false);
 		}
+	}
+	
+	public void setOutOfTime(boolean outOfTime) {
+		this.outOfTime = outOfTime;
 	}
 	
 }

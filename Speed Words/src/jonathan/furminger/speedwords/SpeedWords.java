@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -52,6 +53,7 @@ public class SpeedWords extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		swTimerPanel.start();
 	}
 
 	private void initGUI() {
@@ -107,6 +109,22 @@ public class SpeedWords extends JFrame {
 			s = s + word + "\n";
 		}
 		textArea.setText(s);
+	}
+	
+	public void outOfTime() {
+		gamePanel.setOutOfTime(true);
+		String message = "Time's up! Do you want to play again?";
+		int option = JOptionPane.showConfirmDialog(this,  message, "Play Again?", JOptionPane.YES_NO_OPTION);
+		if(option == JOptionPane.YES_OPTION) {
+			textArea.setText("");
+			scorePanel.reset();
+			gamePanel.restart();
+			swTimerPanel.setTime(60);
+			swTimerPanel.start();
+		}
+		else {
+			System.exit(0);
+		}
 	}
 	
 }

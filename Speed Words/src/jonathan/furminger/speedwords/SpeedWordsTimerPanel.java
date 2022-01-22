@@ -16,4 +16,8 @@ public class SpeedWordsTimerPanel extends TimerPanel {
 			this.speedWords = speedWords;
 		}
 
+		protected void timesUp() {
+			speedWords.outOfTime();
+		}
+		
 }
