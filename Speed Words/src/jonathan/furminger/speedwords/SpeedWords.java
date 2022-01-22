@@ -31,6 +31,7 @@ public class SpeedWords extends JFrame {
 	
 	private GamePanel gamePanel = new GamePanel(this);
 
+	
 	public static void main(String[] args) {
 		try {
 			String className = UIManager.getCrossPlatformLookAndFeelClassName();
@@ -70,7 +71,7 @@ public class SpeedWords extends JFrame {
 		JPanel leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		leftPanel.setBackground(TAN);
-		add(leftPanel);
+		mainPanel.add(leftPanel);
 		
 		// score panel
 		leftPanel.add(scorePanel);

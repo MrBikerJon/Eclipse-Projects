@@ -20,9 +20,11 @@ public class ScorePanel extends JPanel {
 		this.initialScore = initialScore;
 		score = initialScore;
 		setBackground(color);
+		
 		JLabel scoreTitleLabel = new JLabel("Score: ");
 		scoreTitleLabel.setFont(SMALL_FONT);
 		add(scoreTitleLabel);
+		
 		scoreLabel.setFont(BIG_FONT);
 		add(scoreLabel);
 	}
