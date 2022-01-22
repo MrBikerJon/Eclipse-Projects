@@ -19,8 +19,9 @@ public class WizardOfYesNo extends JFrame {
 		
 		JLabel label = new JLabel();
 		label.setText(answer);
-		Font font = new Font("Times New Roman", Font.PLAIN, 18);
+		Font font = new Font(Font.SERIF, Font.BOLD, 32);
 		label.setFont(font);
+		label.setHorizontalAlignment(JLabel.CENTER);
 		add(label);
 		
 		setSize(200, 100);
