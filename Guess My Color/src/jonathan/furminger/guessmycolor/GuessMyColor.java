@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.Random;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +19,10 @@ public class GuessMyColor extends JFrame {
 	
 	private JPanel samplePanel = new JPanel();
 	private JPanel targetPanel = new JPanel();
+	
+	private int targetRed = 0;
+	private int targetGreen = 0;
+	private int targetBlue = 0;
 	
 	public GuessMyColor() {
 		initGUI();
@@ -75,10 +81,40 @@ public class GuessMyColor extends JFrame {
 		buttonPanel.setBackground(Color.BLACK);
 		add(buttonPanel, BorderLayout.PAGE_END);
 		
+		JButton moreRedButton = new JButton("+");
+		moreRedButton.setBackground(Color.RED);
+		buttonPanel.add(moreRedButton);
+		
+		JButton lessRedButton = new JButton("-");
+		lessRedButton.setBackground(Color.RED);
+		buttonPanel.add(lessRedButton);
+		
+		JButton moreGreenButton = new JButton("+");
+		moreGreenButton.setBackground(Color.GREEN);
+		buttonPanel.add(moreGreenButton);
+		
+		JButton lessGreenButton = new JButton("-");
+		lessGreenButton.setBackground(Color.GREEN);
+		buttonPanel.add(lessGreenButton);
+		
+		JButton moreBlueButton = new JButton("+");
+		moreBlueButton.setBackground(Color.BLUE);
+		buttonPanel.add(moreBlueButton);
+		
+		JButton lessBlueButton = new JButton("-");
+		lessBlueButton.setBackground(Color.BLUE);
+		buttonPanel.add(lessBlueButton);
+		
+		
 	}
 	
 	private void generateTargetColor() {
-		Color targetColor = new Color(50, 200, 150);
+		Random rand = new Random();
+		targetRed = rand.nextInt(18) * 15;
+		targetBlue = rand.nextInt(18) * 15;
+		targetGreen = rand.nextInt(18) * 15;
+		
+		Color targetColor = new Color(targetRed, targetGreen, targetBlue);
 		targetPanel.setBackground(targetColor);
 	}
 	
