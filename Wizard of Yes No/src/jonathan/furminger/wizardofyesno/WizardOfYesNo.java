@@ -1,14 +1,17 @@
 package jonathan.furminger.wizardofyesno;
 
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 public class WizardOfYesNo extends JFrame {
 	
-	private static final String[] ANSWER = {"Yes", "No"};
+	private static final long serialVersionUID = 1L;
+	private static final String[] ANSWER = {"Yes.", "Go for it!", "Sure!", "Good idea!", "No.", "I wouldn't", "Bad idea", "That's a big no no"};
 
 	
 	public WizardOfYesNo() {
@@ -24,14 +27,33 @@ public class WizardOfYesNo extends JFrame {
 		label.setHorizontalAlignment(JLabel.CENTER);
 		add(label);
 		
-		setSize(200, 100);
+		setTitle("Wizard of Yes/No");
+		setResizable(false);
+		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 	}
 	
 	public static void main(String[] args) {
-		new WizardOfYesNo();
+		try {
+			String className = UIManager.getSystemLookAndFeelClassName();
+			UIManager.setLookAndFeel(className);
+			
+		} catch (Exception e) {
+			
+		}
+		
+		
+		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				new WizardOfYesNo();
+				
+			}
+		});
 	}
 
 }
