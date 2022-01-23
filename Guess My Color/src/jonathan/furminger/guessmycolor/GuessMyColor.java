@@ -2,6 +2,7 @@ package jonathan.furminger.guessmycolor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 
@@ -25,6 +26,8 @@ public class GuessMyColor extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		generateTargetColor();
 	}
 	
 	public static void main(String[] args) {
@@ -49,30 +52,34 @@ public class GuessMyColor extends JFrame {
 		titleLabel.setFont(titleFont);
 		titleLabel.setHorizontalTextPosition(JLabel.CENTER);
 		titleLabel.setText("Guess My Color");
+		titleLabel.setBackground(Color.BLACK);
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setOpaque(true);
 		add(titleLabel, BorderLayout.PAGE_START);
 		
 		JPanel centerPanel = new JPanel();
-		centerPanel.setBackground(Color.BLUE);
+		centerPanel.setBackground(Color.WHITE);
 		add(centerPanel, BorderLayout.CENTER);
 		
+		Dimension size = new Dimension(50, 50);
+		
 		samplePanel.setBackground(Color.BLACK);
+		samplePanel.setPreferredSize(size);
 		centerPanel.add(samplePanel);
 		
 		targetPanel.setBackground(Color.CYAN);
+		targetPanel.setPreferredSize(size);
 		centerPanel.add(targetPanel);
 		
-		JPanel leftPanel = new JPanel();
-		leftPanel.setBackground(Color.RED);
-		add(leftPanel, BorderLayout.LINE_START);
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBackground(Color.BLACK);
+		add(buttonPanel, BorderLayout.PAGE_END);
 		
-		JPanel rightPanel = new JPanel();
-		rightPanel.setBackground(Color.GREEN);
-		add(rightPanel, BorderLayout.LINE_END);
-		
-		JPanel bottomPanel = new JPanel();
-		bottomPanel.setBackground(Color.YELLOW);
-		add(bottomPanel, BorderLayout.PAGE_END);
-		
+	}
+	
+	private void generateTargetColor() {
+		Color targetColor = new Color(50, 200, 150);
+		targetPanel.setBackground(targetColor);
 	}
 	
 }
