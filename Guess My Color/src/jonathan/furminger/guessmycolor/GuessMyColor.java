@@ -13,7 +13,20 @@ import javax.swing.UIManager;
 public class GuessMyColor extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	private JPanel samplePanel = new JPanel();
+	private JPanel targetPanel = new JPanel();
+	
+	public GuessMyColor() {
+		initGUI();
+		setTitle("Guess My Color");
+		setResizable(false);
+		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
 	public static void main(String[] args) {
 		try {
 			String className = UIManager.getCrossPlatformLookAndFeelClassName();
@@ -30,16 +43,6 @@ public class GuessMyColor extends JFrame {
 		});
 	}
 
-	public GuessMyColor() {
-		initGUI();
-		setTitle("Guess My Color");
-		setResizable(false);
-		pack();
-		setLocationRelativeTo(null);
-		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-	}
-	
 	private void initGUI() {
 		JLabel titleLabel = new JLabel();
 		Font titleFont = new Font(Font.SERIF, Font.BOLD, 32);
@@ -51,6 +54,12 @@ public class GuessMyColor extends JFrame {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setBackground(Color.BLUE);
 		add(centerPanel, BorderLayout.CENTER);
+		
+		samplePanel.setBackground(Color.BLACK);
+		centerPanel.add(samplePanel);
+		
+		targetPanel.setBackground(Color.CYAN);
+		centerPanel.add(targetPanel);
 		
 		JPanel leftPanel = new JPanel();
 		leftPanel.setBackground(Color.RED);
