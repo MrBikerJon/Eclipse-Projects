@@ -1,12 +1,19 @@
 package jonathan.furminger.wizardofyesno;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
+
+import jonathan.furminger.mycomponents.TitleLabel;
 
 public class WizardOfYesNo extends JFrame {
 	
@@ -15,6 +22,10 @@ public class WizardOfYesNo extends JFrame {
 
 	
 	public WizardOfYesNo() {
+		
+		TitleLabel titleLabel = new TitleLabel("Wizard of Yes/No");
+		add(titleLabel, BorderLayout.PAGE_START);
+		
 		Random rand = new Random();
 		int numberOfAnswers = ANSWER.length;
 		int pick = rand.nextInt(numberOfAnswers);
@@ -25,7 +36,32 @@ public class WizardOfYesNo extends JFrame {
 		Font font = new Font(Font.SERIF, Font.BOLD, 32);
 		label.setFont(font);
 		label.setHorizontalAlignment(JLabel.CENTER);
-		add(label);
+		label.setOpaque(true);
+		if(pick > 5) {
+			label.setBackground(Color.RED);
+		} 
+		else {
+			label.setBackground(Color.GREEN);
+		}
+		
+		add(label, BorderLayout.CENTER);
+		
+		String disclaimer = "This is only a suggestion. Use your own good judgment. The Wizard of Yes/No is not responsible for the consequences of your decisions.";
+		
+		// 		JTextArea disclaimerTextArea = new JTextArea(disclaimer, 3, 30);
+		JTextArea disclaimerTextArea = new JTextArea(disclaimer);
+		disclaimerTextArea.setLineWrap(true);
+		disclaimerTextArea.setWrapStyleWord(true);
+		disclaimerTextArea.setEditable(false);
+		//add(disclaimerTextArea, BorderLayout.PAGE_END);
+		
+		JScrollPane scrollPane = new JScrollPane(disclaimerTextArea);
+		
+		Dimension size = new Dimension(0, 50);
+		
+		scrollPane.setPreferredSize(size);
+		
+		add(scrollPane, BorderLayout.PAGE_END);
 		
 		setTitle("Wizard of Yes/No");
 		setResizable(false);
