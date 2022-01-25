@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -127,12 +128,21 @@ public class Framed extends JFrame {
 	}
 	
 	private void newGame() {
+		
 		for(int row = 0; row < GRIDSIZE; row++) {
 			for(int col = 0; col < GRIDSIZE; col++) {
 				lightButton[row][col].turnOn();
 			}
 		}
 		lightButton[1][1].toggle();
+	
+		Random rand = new Random();
+		int numberOfTimes = rand.nextInt(10) + 10;
+		for(int i = 0; i < numberOfTimes; i++) {
+			int row = rand.nextInt(GRIDSIZE - 1);
+			int col = rand.nextInt(GRIDSIZE - 1);
+			toggleLights(row, col);
+		}
 	}
 
 }
