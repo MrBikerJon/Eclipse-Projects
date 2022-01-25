@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -65,6 +66,9 @@ public class Framed extends JFrame {
 						int row = button.getRow();
 						int col = button.getCol();
 						toggleLights(row, col);
+						
+						// check if the game is over
+						endGameIfDone();
 					}
 			});
 				centerPanel.add(lightButton[row][col]);
@@ -142,6 +146,28 @@ public class Framed extends JFrame {
 			int row = rand.nextInt(GRIDSIZE - 1);
 			int col = rand.nextInt(GRIDSIZE - 1);
 			toggleLights(row, col);
+		}
+	}
+	
+	private void endGameIfDone() {
+		boolean done = lightButton[0][0].isLit()
+				&& lightButton[0][1].isLit()
+				&& lightButton[0][2].isLit()
+				&& lightButton[1][0].isLit()
+				&& !lightButton[1][1].isLit()
+				&& lightButton[1][2].isLit()
+				&& lightButton[2][0].isLit()
+				&& lightButton[2][1].isLit()
+				&& lightButton[2][2].isLit();
+		if(done) {
+			String message = "Congratulations! You won! Do you want to play again?";
+			int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
+			if(option == JOptionPane.YES_OPTION) {
+				newGame();
+			} 
+			else {
+				System.exit(0);
+			}
 		}
 	}
 
