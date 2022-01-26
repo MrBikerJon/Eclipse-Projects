@@ -3,6 +3,7 @@ package jonathan.furminger.watchyourstep;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -35,6 +36,7 @@ public class WatchYourStep extends JFrame {
 	
 	public WatchYourStep() {
 		initGUI();
+		setHoles();
 		setTitle("Watch Your Step");
 		setResizable(false);
 		pack();
@@ -58,6 +60,40 @@ public class WatchYourStep extends JFrame {
 			}
 		}
 		
+	}
+	
+	private void setHoles() {
+		Random rand = new Random();
+		for(int i = 0; i < NUMBEROFHOLES; i++) {
+			int pickRow = rand.nextInt(GRIDSIZE - 1);
+			int pickCol = rand.nextInt(GRIDSIZE - 1);
+			while(terrain[pickRow][pickCol].hasHole()) {
+				pickRow = rand.nextInt(GRIDSIZE - 1);
+				pickCol = rand.nextInt(GRIDSIZE - 1);
+			}
+			terrain[pickRow][pickCol].setHole(true);
+			addToNeighborsHoleCount(pickRow, pickCol);
+			terrain[pickRow][pickCol].reveal(true);
+		}
+
+	}
+	
+	private void addToNeighborsHoleCount(int row, int col) {
+		addToHoleCount(row-1, col-1);
+		addToHoleCount(row-1, col);
+		addToHoleCount(row-1, col+1);
+		addToHoleCount(row, col-1);
+		addToHoleCount(row, col+1);
+		addToHoleCount(row+1, col-1);
+		addToHoleCount(row+1, col);
+		addToHoleCount(row+1, col+1);
+	}
+	
+	private void addToHoleCount(int row, int col) {
+		if(row > -1 && row < GRIDSIZE && col > -1 && col < GRIDSIZE) {
+			terrain[row][col].increaseHoleCount();
+			terrain[row][col].reveal(true);
+		}
 	}
 
 }

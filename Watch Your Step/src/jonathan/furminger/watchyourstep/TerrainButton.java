@@ -37,7 +37,7 @@ public class TerrainButton extends JButton {
 		return revealed;
 	}
 	
-	public void hasHole(boolean hasHole) {
+	public void setHole(boolean hasHole) {
 		hole = hasHole;
 	}
 	
