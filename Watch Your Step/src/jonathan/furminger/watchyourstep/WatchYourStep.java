@@ -1,3 +1,7 @@
+/*
+ * A game from the book "DIY Java Games" by Annette GodtLand
+ */
+
 package jonathan.furminger.watchyourstep;
 
 import java.awt.BorderLayout;
