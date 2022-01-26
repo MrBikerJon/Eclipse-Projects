@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -83,7 +84,6 @@ public class WatchYourStep extends JFrame {
 			}
 			terrain[pickRow][pickCol].setHole(true);
 			addToNeighborsHoleCount(pickRow, pickCol);
-			terrain[pickRow][pickCol].reveal(true);
 		}
 
 	}
@@ -102,13 +102,22 @@ public class WatchYourStep extends JFrame {
 	private void addToHoleCount(int row, int col) {
 		if(row > -1 && row < GRIDSIZE && col > -1 && col < GRIDSIZE) {
 			terrain[row][col].increaseHoleCount();
-			terrain[row][col].reveal(true);
 		}
 	}
 	
 	private void clickedTerrain(int row, int col) {
+		if(terrain[row][col].hasHole()) {
+			String message = "You stepped on a hole! Game Over! Do you want to play again?";
+			promptForNewGame(message);
+		}
+		else {
 		check(row, col);
 		checkNeighbors(row, col);
+		if(totalRevealed == GRIDSIZE*GRIDSIZE-NUMBEROFHOLES) {
+			String message = "You won! Would you like to play again?";
+			promptForNewGame(message);
+			}
+		}
 	}
 	
 	private void check(int row, int col) {
@@ -116,6 +125,10 @@ public class WatchYourStep extends JFrame {
 				&& !terrain[row][col].hasHole() 
 				&& !terrain[row][col].isRevealed()) {
 			terrain[row][col].reveal(true);
+			totalRevealed++;
+			if(!terrain[row][col].isNextToHoles()) {
+				checkNeighbors(row, col);
+			}
 		}
 	}
 	
@@ -128,6 +141,37 @@ public class WatchYourStep extends JFrame {
 		check(row+1, col-1);
 		check(row+1, col);
 		check(row+1, col+1);
+	}
+	
+	private void promptForNewGame(String message) {
+		showHoles();
+		int option = JOptionPane.showConfirmDialog(this, message, "Play Again?", JOptionPane.YES_NO_OPTION);
+		if(option == JOptionPane.YES_OPTION) {
+			newGame();
+		}
+		else {
+			System.exit(0);
+		}
+	}
+	
+	private void newGame() {
+		for(int row = 0; row < GRIDSIZE; row++) {
+			for(int col = 0; col < GRIDSIZE; col++) {
+				terrain[row][col].reset();
+			}
+		}
+		setHoles();
+		totalRevealed = 0;
+	}
+	
+	private void showHoles() {
+		for(int row = 0; row < GRIDSIZE; row++) {
+			for(int col = 0; col < GRIDSIZE; col++) {
+				if(terrain[row][col].hasHole()) {
+					terrain[row][col].reveal(true);
+				}
+			}
+		}
 	}
 
 }
