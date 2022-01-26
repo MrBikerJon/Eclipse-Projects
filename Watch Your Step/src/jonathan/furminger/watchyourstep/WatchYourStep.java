@@ -3,6 +3,8 @@ package jonathan.furminger.watchyourstep;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -56,6 +58,14 @@ public class WatchYourStep extends JFrame {
 		for(int row = 0; row < GRIDSIZE; row++) {
 			for(int col = 0; col < GRIDSIZE; col++) {
 				terrain[row][col] = new TerrainButton(row, col);
+				terrain[row][col].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						TerrainButton button = (TerrainButton) e.getSource();
+						int row = button.getRow();
+						int col = button.getCol();
+						clickedTerrain(row, col);
+					}
+				});
 				centerPanel.add(terrain[row][col]);
 			}
 		}
@@ -94,6 +104,30 @@ public class WatchYourStep extends JFrame {
 			terrain[row][col].increaseHoleCount();
 			terrain[row][col].reveal(true);
 		}
+	}
+	
+	private void clickedTerrain(int row, int col) {
+		check(row, col);
+		checkNeighbors(row, col);
+	}
+	
+	private void check(int row, int col) {
+		if(row > -1 && row < GRIDSIZE && col > -1 && col < GRIDSIZE 
+				&& !terrain[row][col].hasHole() 
+				&& !terrain[row][col].isRevealed()) {
+			terrain[row][col].reveal(true);
+		}
+	}
+	
+	private void checkNeighbors(int row, int col) {
+		check(row-1, col-1);
+		check(row-1, col);
+		check(row-1, col+1);
+		check(row, col-1);
+		check(row, col+1);
+		check(row+1, col-1);
+		check(row+1, col);
+		check(row+1, col+1);
 	}
 
 }
