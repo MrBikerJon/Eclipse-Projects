@@ -36,4 +36,25 @@ public TileButton(ImageIcon imageIcon, int imageId, int row, int col) {
 	setFocusPainted(false);
 }
 
+private ImageIcon getImage() {
+	return imageIcon;
+}
+
+public int getRow() {
+	return row;
+}
+
+public int getCol() {
+	return col;
+}
+
+public int getImageId() {
+	return imageId;
+}
+
+public static void setTileSizeAndMaxTiles(int size, int max) {
+	tileSize = size;
+	maxTiles = max;
+}
+
 }
