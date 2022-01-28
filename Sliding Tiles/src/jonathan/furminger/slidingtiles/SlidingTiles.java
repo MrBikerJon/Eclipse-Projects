@@ -3,6 +3,8 @@ package jonathan.furminger.slidingtiles;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +22,11 @@ public class SlidingTiles extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static final String FILENAME = "slidingTilesImage.jpg";
+	private static final int UP = 0;
+	private static final int DOWN = 1;
+	private static final int LEFT = 2;
+	private static final int RIGHT = 3;
+	
 	private int tileSize = 50;
 	private int gridSize = 4;
 
@@ -80,6 +87,7 @@ public class SlidingTiles extends JFrame {
 	private void divideImage() {
 		centerPanel.setLayout(new GridLayout(gridSize, gridSize));
 		add(centerPanel, BorderLayout.CENTER);
+		centerPanel.removeAll();
 		int imageId = 0;
 		for(int row = 0; row < gridSize; row++) {
 			for(int col = 0; col < gridSize; col++) {
@@ -88,10 +96,34 @@ public class SlidingTiles extends JFrame {
 				BufferedImage subimage = image.getSubimage(x, y, tileSize, tileSize);
 				ImageIcon imageIcon = new ImageIcon(subimage);
 				tile[row][col] = new TileButton(imageIcon, imageId, row, col);
+				tile[row][col].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						TileButton button = (TileButton) e.getSource();
+						clickedTile(button);
+					}
+				});
 				centerPanel.add(tile[row][col]);
 				imageId++;
 			}
 		}
+		
+		centerPanel.validate();
 	}
-	
-}
+
+	private void clickedTile(TileButton clickedTile) {
+		int row = clickedTile.getRow();
+		int col = clickedTile.getCol();
+		if(row > 0 && tile[row-1][col].hasNoImage()) {
+			clickedTile.swap(tile[row-1][col]);
+		} 
+		else if(row < gridSize-1 && tile[row+1][col].hasNoImage()) {
+			clickedTile.swap(tile[row+1][col]);
+			}
+		else if(col > 0 && tile[row][col-1].hasNoImage()) {
+			clickedTile.swap(tile[row][col-1]);
+		}
+		else if(col < gridSize-1 && tile[row][col+1].hasNoImage()) {
+			clickedTile.swap(tile[row][col+1]);
+		}
+		}
+	}
