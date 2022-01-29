@@ -1,6 +1,7 @@
 package jonathan.furminger.slidingtiles;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -68,8 +70,6 @@ public class SlidingTiles extends JFrame {
 				new SlidingTiles();
 			}
 		});
-		
-
 	}
 	
 	
@@ -81,8 +81,17 @@ public class SlidingTiles extends JFrame {
 		divideImage();
 		
 		// button panel
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBackground(Color.BLACK);
+		add(buttonPanel, BorderLayout.PAGE_END);
 		
-		
+		JButton scrambleButton = new JButton("Scramble");
+		scrambleButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newGame();
+			}
+		});
+		buttonPanel.add(scrambleButton);
 	}
 
 	private void divideImage() {
@@ -127,6 +136,9 @@ public class SlidingTiles extends JFrame {
 		else if(col < gridSize-1 && tile[row][col+1].hasNoImage()) {
 			clickedTile.swap(tile[row][col+1]);
 		}
+		if(imagesInOrder()) {
+			tile[gridSize-1][gridSize-1].showImage();
+		}
 		}
 	
 	private void scramble() {
@@ -134,7 +146,7 @@ public class SlidingTiles extends JFrame {
 		int openCol = gridSize-1;
 		
 		Random rand = new Random();
-		for(int i = 0; i < gridSize * 25; i++) {
+		for(int i = 0; i < 25*gridSize; i++) {
 			int direction = rand.nextInt(gridSize);
 			System.out.println(direction);
 			switch(direction) {
@@ -166,4 +178,35 @@ public class SlidingTiles extends JFrame {
 		}
 	}
 	
+	private boolean imagesInOrder() {
+		int id = 0;
+		boolean inOrder = true;
+		
+		for(int row = 0; row < gridSize && inOrder; row++) {
+			for(int col = 0; col < gridSize && inOrder; col++) {
+				int currentId = tile[row][col].getImageId();
+				if(currentId != id) {
+					inOrder = false;
+				}
+				id++;
+			}
+		}
+		return inOrder;
 	}
+	
+	private void newGame() {
+		int imageId = 0;
+		for(int row = 0; row < gridSize; row++) {
+			for(int col = 0; col < gridSize; col++) {
+				int x = col*tileSize;
+				int y = row*tileSize;
+				BufferedImage subimage = image.getSubimage(x, y, tileSize, tileSize);
+				ImageIcon imageIcon = new ImageIcon(subimage);
+				tile[row][col].setImage(imageIcon, imageId);
+				imageId++;
+			}
+		}
+		scramble();
+	}
+	
+}
