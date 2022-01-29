@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -107,7 +108,8 @@ public class SlidingTiles extends JFrame {
 			}
 		}
 		
-		centerPanel.validate();
+		centerPanel.revalidate();
+		scramble();
 	}
 
 	private void clickedTile(TileButton clickedTile) {
@@ -126,4 +128,42 @@ public class SlidingTiles extends JFrame {
 			clickedTile.swap(tile[row][col+1]);
 		}
 		}
+	
+	private void scramble() {
+		int openRow = gridSize-1;
+		int openCol = gridSize-1;
+		
+		Random rand = new Random();
+		for(int i = 0; i < gridSize * 25; i++) {
+			int direction = rand.nextInt(gridSize);
+			System.out.println(direction);
+			switch(direction) {
+			case UP:
+				if(openRow > 0) {
+					tile[openRow][openCol].swap(tile[openRow-1][openCol]);
+					openRow--;
+				}
+				break;
+			case DOWN:
+				if(openRow < gridSize-1) {
+					tile[openRow][openCol].swap(tile[openRow+1][openCol]);
+					openRow++;
+				}
+				break;
+			case LEFT:
+				if(openCol > 0) {
+					tile[openRow][openCol].swap(tile[openRow][openCol-1]);
+					openCol--;
+				}
+				break;
+			case RIGHT:
+				if(openCol < gridSize-1) {
+					tile[openRow][openCol].swap(tile[openRow][openCol+1]);
+					openCol++;
+				}
+				break;
+			}
+		}
+	}
+	
 	}
