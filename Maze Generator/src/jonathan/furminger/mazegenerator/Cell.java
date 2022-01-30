@@ -15,7 +15,9 @@ public class Cell extends JPanel {
 	public static final int BOTTOM = 2;
 	public static final int LEFT = 3;
 
-	private int row, col = -1;
+	private int row = -1;
+	private int col = -1;
+
 	private boolean[] wall = {true, true, true, true};
 	
 	public Cell(int row, int col) {
@@ -31,7 +33,12 @@ public class Cell extends JPanel {
 		g.setColor(Color.BLACK);
 		
 		// draw the walls
-		
+		if(isWall(TOP)) {
+			g.drawLine(0,  0, SIZE, 0);
+		}
+		if(isWall(LEFT)) {
+			g.drawLine(0, 0, 0, SIZE);
+		}
 		// draw the path
 		
 		// draw the balls
