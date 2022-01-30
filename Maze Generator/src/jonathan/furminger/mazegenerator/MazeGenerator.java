@@ -174,11 +174,13 @@ public class MazeGenerator extends JFrame {
 		}
 	}
 	
-	private void moveTo(int nextRow, int nextCol) {
+	private void moveTo(int nextRow, int nextCol, int firstDirection, int secondDirection) {
 		cell[row][col].setCurrent(false);
+		cell[row][col].addPath(firstDirection);
 		row = nextRow;
 		col = nextCol;
 		cell[row][col].setCurrent(true);
+		cell[row][col].addPath(secondDirection);
 	}
 	
 	private void moveBall(int direction) {
@@ -186,25 +188,25 @@ public class MazeGenerator extends JFrame {
 		case KeyEvent.VK_UP :
 			//move up if this cell does not have a top wall
 			if(!cell[row][col].isWall(Cell.TOP)) {
-				moveTo(row-1, col);
+				moveTo(row-1, col, Cell.TOP, Cell.BOTTOM);
 			}
 			break;
 		case KeyEvent.VK_DOWN :
 			// move down if this cell does not have a bottom wall
 			if(!cell[row][col].isWall(Cell.BOTTOM)) {
-				moveTo(row+1, col);
+				moveTo(row+1, col, Cell.BOTTOM, Cell.TOP);
 			}
 			break;
 		case KeyEvent.VK_LEFT :
 			// move left if this cell does not have a left wall
 			if(!cell[row][col].isWall(Cell.LEFT)) {
-				moveTo(row, col-1);
+				moveTo(row, col-1, Cell.LEFT, Cell.RIGHT);
 			}
 			break;
 		case KeyEvent.VK_RIGHT :
 			// move right if this cell does not have a right wall
 			if(!cell[row][col].isWall(Cell.RIGHT)) {
-				moveTo(row, col+1);
+				moveTo(row, col+1, Cell.RIGHT, Cell.LEFT);
 			}
 			break;
 		}

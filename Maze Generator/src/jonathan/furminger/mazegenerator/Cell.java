@@ -125,7 +125,7 @@ public class Cell extends JPanel {
 		repaint();
 	}
 	
-	public void addPAth(int side) {
+	public void addPath(int side) {
 		path[side] = true;
 		repaint();
 	}
