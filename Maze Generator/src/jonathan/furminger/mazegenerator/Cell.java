@@ -21,6 +21,7 @@ public class Cell extends JPanel {
 	private boolean[] wall = {true, true, true, true};
 	private boolean current = false;
 	private boolean end = false;
+	private boolean[] path = {false, false, false, false};
 	
 	public Cell(int row, int col) {
 		this.row = row;
@@ -42,6 +43,19 @@ public class Cell extends JPanel {
 			g.drawLine(0, 0, 0, SIZE);
 		}
 		// draw the path
+		g.setColor(Color.GREEN);
+		if(path[TOP]) {
+			g.drawLine(SIZE/2, 0, SIZE/2, SIZE/2);
+		}
+		if(path[BOTTOM]) {
+			g.drawLine(SIZE/2, SIZE, SIZE/2, SIZE/2);
+		}
+		if(path[LEFT]) {
+			g.drawLine(0, SIZE/2, SIZE/2, SIZE/2);
+		}
+		if(path[RIGHT]) {
+			g.drawLine(SIZE, SIZE/2, SIZE/2, SIZE/2);
+		}
 		
 		// draw the balls
 		if(current) {
@@ -108,6 +122,11 @@ public class Cell extends JPanel {
 	
 	public void setEnd(boolean end) {
 		this.end = end;
+		repaint();
+	}
+	
+	public void addPAth(int side) {
+		path[side] = true;
 		repaint();
 	}
 	

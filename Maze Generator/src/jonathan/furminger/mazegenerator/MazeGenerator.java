@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -69,6 +71,12 @@ public class MazeGenerator extends JFrame {
 		// button panel
 		
 		// listeners
+		addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				moveBall(keyCode);
+			}
+		});
 		
 	}
 	
@@ -163,6 +171,42 @@ public class MazeGenerator extends JFrame {
 				r = nextCell.getRow();
 				c = nextCell.getCol();
 			}
+		}
+	}
+	
+	private void moveTo(int nextRow, int nextCol) {
+		cell[row][col].setCurrent(false);
+		row = nextRow;
+		col = nextCol;
+		cell[row][col].setCurrent(true);
+	}
+	
+	private void moveBall(int direction) {
+		switch(direction) {
+		case KeyEvent.VK_UP :
+			//move up if this cell does not have a top wall
+			if(!cell[row][col].isWall(Cell.TOP)) {
+				moveTo(row-1, col);
+			}
+			break;
+		case KeyEvent.VK_DOWN :
+			// move down if this cell does not have a bottom wall
+			if(!cell[row][col].isWall(Cell.BOTTOM)) {
+				moveTo(row+1, col);
+			}
+			break;
+		case KeyEvent.VK_LEFT :
+			// move left if this cell does not have a left wall
+			if(!cell[row][col].isWall(Cell.LEFT)) {
+				moveTo(row, col-1);
+			}
+			break;
+		case KeyEvent.VK_RIGHT :
+			// move right if this cell does not have a right wall
+			if(!cell[row][col].isWall(Cell.RIGHT)) {
+				moveTo(row, col+1);
+			}
+			break;
 		}
 	}
 
