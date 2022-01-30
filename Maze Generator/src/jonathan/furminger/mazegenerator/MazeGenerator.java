@@ -20,6 +20,11 @@ public class MazeGenerator extends JFrame {
 	private int rows = 5;
 	private int cols = 5;
 	private Cell[][] cell = new Cell[rows][cols];
+	
+	private int row = 0;
+	private int col = 0;
+	private int endRow = row-1;
+	private int endCol = col-1;
 
 	private TitleLabel titleLabel = new TitleLabel("Maze");
 	private JPanel mazePanel = new JPanel();
@@ -79,6 +84,14 @@ public class MazeGenerator extends JFrame {
 			}
 		}
 		generateMaze();
+		
+		row = 0;
+		col = 0;
+		endRow = rows-1;
+		endCol = cols-1;
+		cell[row][col].setCurrent(true);
+		cell[endRow][endCol].setEnd(true);
+		
 	}
 	
 	private boolean isAvailable(int r, int c) {

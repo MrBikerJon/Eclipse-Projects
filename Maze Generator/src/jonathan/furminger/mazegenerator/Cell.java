@@ -19,6 +19,8 @@ public class Cell extends JPanel {
 	private int col = -1;
 
 	private boolean[] wall = {true, true, true, true};
+	private boolean current = false;
+	private boolean end = false;
 	
 	public Cell(int row, int col) {
 		this.row = row;
@@ -42,6 +44,14 @@ public class Cell extends JPanel {
 		// draw the path
 		
 		// draw the balls
+		if(current) {
+			g.setColor(Color.GREEN);
+			g.fillOval(3,  3,  SIZE-6, SIZE-6);
+		}
+		else if(end) {
+			g.setColor(Color.RED);
+			g.fillOval(3,  3, SIZE-6, SIZE-6);
+		}
 		
 	}
 	
@@ -91,6 +101,15 @@ public class Cell extends JPanel {
 		}
 	}
 	
+	public void setCurrent(boolean current) {
+		this.current = current;
+		repaint();
+	}
+	
+	public void setEnd(boolean end) {
+		this.end = end;
+		repaint();
+	}
 	
 }
 
