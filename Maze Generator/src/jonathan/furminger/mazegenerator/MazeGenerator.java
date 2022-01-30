@@ -108,7 +108,7 @@ public class MazeGenerator extends JFrame {
 		
 			ArrayList<Cell> neighbors = new ArrayList<Cell>();
 			if(isAvailable(r-1, c)) {
-				neighbors.add(cell[r][c]);
+				neighbors.add(cell[r-1][c]);
 			}
 			if(isAvailable(r+1, c)) {
 				neighbors.add(cell[r+1][c]);
@@ -121,16 +121,35 @@ public class MazeGenerator extends JFrame {
 			}
 			
 			
-		// if one or more found, add this
-		// cell to the list to try again
+		// if one or more was found
+			if(neighbors.size() > 0) {
+	
+				// if more than one was found, add this
+				// cell to the list to try again
+				if(neighbors.size() > 1) {
+					tryLaterCell.add(cell[r][c]);
+				}
+				
+				// pick a neighbor and remove the wall
 		
-		// pick a neighbor and remove the wall
-		
-		// go to the neighbor and increment
-		// the number visited
-		
-		// if none was found, go to one of the
-		// cells that was saved to try later
+				int pick = rand.nextInt(neighbors.size());
+				Cell neighbor = neighbors.get(pick);
+				cell[r][c].openTo(neighbor);
+				
+				// go to the neighbor and increment
+				// the number visited
+				r = neighbor.getRow();
+				c = neighbor.getCol();
+				visitedCells++;
+				
+			}
+			else {
+				// if none was found, go to one of the
+				// cells that was saved to try later
+				Cell nextCell = tryLaterCell.remove(0);
+				r = nextCell.getRow();
+				c = nextCell.getCol();
+			}
 		}
 	}
 
