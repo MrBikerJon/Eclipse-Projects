@@ -62,6 +62,36 @@ public class Cell extends JPanel {
 		return wall[index];
 	}
 	
+	public boolean hasAllWalls() {
+		boolean allWalls = isWall(TOP) && isWall(RIGHT) && isWall(BOTTOM) && isWall(LEFT);
+		return allWalls;
+	}
+	
+	public void removeWall(int w) {
+		wall[w] = false;
+		repaint();
+	}
+	
+	public void openTo(Cell neighbor) {
+		if(row < neighbor.getRow()) {
+			removeWall(BOTTOM);
+			neighbor.removeWall(TOP);
+		}
+		else if(row > neighbor.getRow()) {
+			removeWall(TOP);
+			neighbor.removeWall(BOTTOM);
+		}
+		else if(col < neighbor.getCol()) {
+			removeWall(RIGHT);
+			neighbor.removeWall(LEFT);
+		}
+		else if(col > neighbor.getCol()) {
+			removeWall(LEFT);
+			neighbor.removeWall(RIGHT);
+		}
+	}
+	
+	
 }
 
 

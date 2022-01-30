@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -75,6 +77,60 @@ public class MazeGenerator extends JFrame {
 				cell[r][c] = new Cell(r, c);
 				mazePanel.add(cell[r][c]);
 			}
+		}
+		generateMaze();
+	}
+	
+	private boolean isAvailable(int r, int c) {
+		boolean available = false;
+		if(r >= 0 && r < rows && c >= 0 && c < cols && cell[r][c].hasAllWalls()) {
+			available = true;
+		}
+		return available;
+	}
+	
+	private void generateMaze() {
+		
+		ArrayList<Cell> tryLaterCell = new ArrayList<Cell>();
+		int totalCells = rows * cols;
+		int visitedCells = 1;
+		
+		// start at a random cell
+		Random rand = new Random();
+		int r = rand.nextInt(rows);
+		int c = rand.nextInt(cols);
+		
+		// while not all cells have yet been visited
+		
+		while(visitedCells < totalCells) {
+		
+		// find all neighbors with all walls intact
+		
+			ArrayList<Cell> neighbors = new ArrayList<Cell>();
+			if(isAvailable(r-1, c)) {
+				neighbors.add(cell[r][c]);
+			}
+			if(isAvailable(r+1, c)) {
+				neighbors.add(cell[r+1][c]);
+			}
+			if(isAvailable(r, c-1)) {
+				neighbors.add(cell[r][c-1]);
+			}
+			if(isAvailable(r, c+1)) {
+				neighbors.add(cell[r][c+1]);
+			}
+			
+			
+		// if one or more found, add this
+		// cell to the list to try again
+		
+		// pick a neighbor and remove the wall
+		
+		// go to the neighbor and increment
+		// the number visited
+		
+		// if none was found, go to one of the
+		// cells that was saved to try later
 		}
 	}
 
