@@ -230,7 +230,20 @@ public class SlidingTiles extends JFrame {
 	
 	private void open() {
 		JFileChooser chooser = new JFileChooser();
+		ImageFileFilter fileFilter = new ImageFileFilter();
+		chooser.setFileFilter(fileFilter);
 		int option = chooser.showOpenDialog(this);
+		
+		if(option == JFileChooser.APPROVE_OPTION) {
+			File file = chooser.getSelectedFile();
+			try {
+				image = ImageIO.read(file);
+				divideImage();
+			} catch (IOException e) {
+				String message = "File " + file.getPath() + " could not be opened";
+				JOptionPane.showMessageDialog(this, message);
+			}
+		}
 	}
 	
 }
