@@ -93,7 +93,29 @@ public class SlidingTiles extends JFrame {
 				open();
 			}
 		});
-		
+		JMenu sizeMenu = new JMenu("Size");
+		menuBar.add(sizeMenu);
+		JMenuItem size3MenuItem = new JMenuItem("3 x 3");
+		size3MenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setGridSize(3);
+			}
+		});
+		sizeMenu.add(size3MenuItem);
+		JMenuItem size4MenuItem = new JMenuItem("4 x 4");
+		size4MenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setGridSize(4);
+			}
+		});
+		sizeMenu.add(size4MenuItem);
+		JMenuItem size5MenuItem = new JMenuItem("5 x 5");
+		size5MenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setGridSize(5);
+			}
+		});
+		sizeMenu.add(size5MenuItem);
 		
 		// title
 		TitleLabel titleLabel = new TitleLabel("Sliding Tiles");
@@ -258,6 +280,15 @@ public class SlidingTiles extends JFrame {
 			}
 			
 		}
+	}
+	
+	private void setGridSize(int size) {
+		gridSize = size;
+		tileSize = IMAGESIZE / gridSize;
+		TileButton.setTileSizeAndMaxTiles(tileSize, gridSize*gridSize);
+		tile = new TileButton[gridSize][gridSize];
+		divideImage();
+		pack();
 	}
 	
 }
