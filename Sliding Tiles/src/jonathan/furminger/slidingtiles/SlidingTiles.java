@@ -67,7 +67,7 @@ public class SlidingTiles extends JFrame {
 	public static void main(String[] args) {
 
 		try {
-			String className = UIManager.getCrossPlatformLookAndFeelClassName();
+			String className = UIManager.getSystemLookAndFeelClassName();
 			UIManager.setLookAndFeel(className);
 		} catch (Exception e) { }
 		
@@ -232,9 +232,9 @@ public class SlidingTiles extends JFrame {
 	
 	private void open() {
 		JFileChooser chooser = new JFileChooser();
-		int option = chooser.showOpenDialog(this);
 		ImageFileFilter fileFilter = new ImageFileFilter();
 		chooser.setFileFilter(fileFilter);
+		int option = chooser.showOpenDialog(this);
 		
 		if(option == JFileChooser.APPROVE_OPTION) {
 			File file = chooser.getSelectedFile();
@@ -242,6 +242,12 @@ public class SlidingTiles extends JFrame {
 				BufferedImage newImage = ImageIO.read(file);
 				int width = newImage.getWidth();
 				int height = newImage.getHeight();
+				if(width < height) {
+					height = width;
+				}
+				else {
+					width = height;
+				}
 				Graphics g = image.getGraphics();
 				g.drawImage(newImage, 0,  0,  IMAGESIZE,  IMAGESIZE,  0,  0,  width,  height,  this);
 				g.dispose();
