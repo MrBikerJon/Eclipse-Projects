@@ -3,6 +3,7 @@ package jonathan.furminger.slidingtiles;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ public class SlidingTiles extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static final String FILENAME = "slidingTilesImage.jpg";
+	private static final int IMAGESIZE = 200;
 	private static final int UP = 0;
 	private static final int DOWN = 1;
 	private static final int LEFT = 2;
@@ -231,6 +233,25 @@ public class SlidingTiles extends JFrame {
 	private void open() {
 		JFileChooser chooser = new JFileChooser();
 		int option = chooser.showOpenDialog(this);
+		ImageFileFilter fileFilter = new ImageFileFilter();
+		chooser.setFileFilter(fileFilter);
+		
+		if(option == JFileChooser.APPROVE_OPTION) {
+			File file = chooser.getSelectedFile();
+			try {
+				BufferedImage newImage = ImageIO.read(file);
+				int width = newImage.getWidth();
+				int height = newImage.getHeight();
+				Graphics g = image.getGraphics();
+				g.drawImage(newImage, 0,  0,  IMAGESIZE,  IMAGESIZE,  0,  0,  width,  height,  this);
+				g.dispose();
+				divideImage();
+			} catch (IOException e) {
+				String message = file.getPath() + " could not be opened";
+				JOptionPane.showMessageDialog(this,  message);
+			}
+			
+		}
 	}
 	
 }
