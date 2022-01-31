@@ -14,7 +14,11 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -74,6 +78,22 @@ public class SlidingTiles extends JFrame {
 	
 	
 	private void initGUI() {
+		
+		// menu bar
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		JMenu fileMenu = new JMenu("File");
+		menuBar.add(fileMenu);
+		JMenuItem openMenuItem = new JMenuItem("Open");
+		fileMenu.add(openMenuItem);
+		openMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				open();
+			}
+		});
+		
+		
+		// title
 		TitleLabel titleLabel = new TitleLabel("Sliding Tiles");
 		add(titleLabel, BorderLayout.PAGE_START);
 		
@@ -148,7 +168,6 @@ public class SlidingTiles extends JFrame {
 		Random rand = new Random();
 		for(int i = 0; i < 25*gridSize; i++) {
 			int direction = rand.nextInt(gridSize);
-			System.out.println(direction);
 			switch(direction) {
 			case UP:
 				if(openRow > 0) {
@@ -207,6 +226,11 @@ public class SlidingTiles extends JFrame {
 			}
 		}
 		scramble();
+	}
+	
+	private void open() {
+		JFileChooser chooser = new JFileChooser();
+		int option = chooser.showOpenDialog(this);
 	}
 	
 }
