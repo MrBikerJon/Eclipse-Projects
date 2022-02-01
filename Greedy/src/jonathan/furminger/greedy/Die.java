@@ -5,6 +5,9 @@ package jonathan.furminger.greedy;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -20,8 +23,19 @@ public class Die extends JPanel {
 	private static final int SELECTED = 1;
 	private static final int HELD = 2;
 	
-	private int value = 2;
+	private int value = 1;
 	private int state = AVAILABLE;
+	Random rand = new Random();
+	
+	// die constructor
+	public Die() {
+		roll();
+		addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				click();
+			}
+		});
+	}
 	
 	public Dimension getPreferredSize() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
@@ -77,6 +91,39 @@ public class Die extends JPanel {
 	
 	private void drawDot(Graphics g, int x, int y) {
 		g.fillOval(x-5, y-5, 10, 10);
+	}
+	
+	public int roll() {
+		value = rand.nextInt(6)+1;
+		repaint();
+		return value;
+	}
+	
+	public void click() {
+		if(state == AVAILABLE) {
+			state = SELECTED;
+			repaint();
+		}
+		else if(state == SELECTED) {
+			state = AVAILABLE;
+			repaint();
+		}
+	}
+	
+	public boolean isAvailable() {
+		return state == AVAILABLE;
+	}
+	
+	public boolean isSelected() {
+		return state == SELECTED;
+	}
+	
+	public boolean isHeld() {
+		return state == HELD;
+	}
+	
+	public int getValue() {
+		return value;
 	}
 	
 }
