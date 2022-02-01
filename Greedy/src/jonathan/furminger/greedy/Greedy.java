@@ -141,5 +141,21 @@ public class Greedy extends JFrame {
 		JButton endRoundButton = new JButton("End Round");
 		buttonPanel.add(endRoundButton);
 	}
+	
+	private boolean isValidSelection() {
+		int[] count = {0, 0, 0, 0, 0, 0};
+		int totalCount = 0;
+		boolean valid = true;
+		newPoints = 0;
+		
+		for(int i = 0; i < count.length; i++) {
+			if(dice[i].isSelected()) {
+				int value = dice[i].getValue();
+				count[value-1]++;
+				totalCount++;
+			}
+		}
+		return valid;
+	}
 
 }
