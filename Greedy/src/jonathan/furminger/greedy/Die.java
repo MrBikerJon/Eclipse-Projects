@@ -37,6 +37,16 @@ public class Die extends JPanel {
 		});
 	}
 	
+	// testing die constructor
+	public Die(int value) {
+		this.value = value;
+		addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				click();
+			}
+		});
+	}
+	
 	public Dimension getPreferredSize() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
 		return size;
