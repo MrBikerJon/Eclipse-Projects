@@ -48,7 +48,9 @@ public class Greedy extends JFrame {
 		add(titleLabel, BorderLayout.PAGE_START);
 		
 		// main panel
-		JPanel mainPanel = new JPanel();add(mainPanel, BorderLayout.CENTER);
+		JPanel mainPanel = new JPanel();
+		add(mainPanel, BorderLayout.CENTER);
+		
 		Die die = new Die();
 		mainPanel.add(die);
 		

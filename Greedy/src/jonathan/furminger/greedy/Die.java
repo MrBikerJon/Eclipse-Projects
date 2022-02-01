@@ -20,7 +20,7 @@ public class Die extends JPanel {
 	private static final int SELECTED = 1;
 	private static final int HELD = 2;
 	
-	private int value = 1;
+	private int value = 2;
 	private int state = AVAILABLE;
 	
 	public Dimension getPreferredSize() {
@@ -28,7 +28,7 @@ public class Die extends JPanel {
 		return size;
 	}
 	
-	// method to paint the component and lebel the sections for drawing different parts of the die
+	// method to paint the component and label the sections for drawing different parts of the die
 	public void paintComponent(Graphics g) {
 		
 		// fill the background
@@ -50,9 +50,33 @@ public class Die extends JPanel {
 		g.setColor(Color.BLACK);
 		g.drawRect(0,  0, WIDTH-1, HEIGHT-1);
 		
-		// draw the date
+		// draw the dots
+		switch(value) {
+		case 5 : 
+			drawDot(g, WIDTH/4, HEIGHT/4);
+			drawDot(g, WIDTH-(WIDTH/4), HEIGHT-(HEIGHT/4));
+		case 3 :
+			drawDot(g, WIDTH-(WIDTH/4), HEIGHT/4);
+			drawDot(g, WIDTH/4, HEIGHT-(HEIGHT/4));
+		case 1 :
+			drawDot(g, WIDTH/2, HEIGHT/2);
+			break;
+		case 6 :
+			drawDot(g, WIDTH/4, HEIGHT/2);
+			drawDot(g, WIDTH/2 + WIDTH/4, HEIGHT/2);
+		case 4 : 
+			drawDot(g, WIDTH/4, HEIGHT/4);
+			drawDot(g, WIDTH-(WIDTH/4), HEIGHT-(HEIGHT/4));
+		case 2 :
+			drawDot(g, WIDTH-(WIDTH/4), HEIGHT/4);
+			drawDot(g, WIDTH/4, (HEIGHT-HEIGHT/4));
+		}
 		
 		
+	}
+	
+	private void drawDot(Graphics g, int x, int y) {
+		g.fillOval(x-5, y-5, 10, 10);
 	}
 	
 }
