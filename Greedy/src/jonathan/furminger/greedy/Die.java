@@ -126,4 +126,17 @@ public class Die extends JPanel {
 		return value;
 	}
 	
+	public void hold() {
+		state = HELD;
+		repaint();
+	}
+	
+	public void makeAvailable() {
+		state = AVAILABLE;
+		repaint();
+	}
+	
+	
+	
+	
 }
