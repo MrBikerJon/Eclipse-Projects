@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import jonathan.furminger.mycomponents.TitleLabel;
@@ -47,6 +48,9 @@ public class Greedy extends JFrame {
 		add(titleLabel, BorderLayout.PAGE_START);
 		
 		// main panel
+		JPanel mainPanel = new JPanel();add(mainPanel, BorderLayout.CENTER);
+		Die die = new Die();
+		mainPanel.add(die);
 		
 		// score panel
 		
