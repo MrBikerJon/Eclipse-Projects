@@ -122,14 +122,9 @@ public class Greedy extends JFrame {
 		JPanel dicePanel = new JPanel();
 		dicePanel.setBackground(Color.GREEN);
 		diceRowPanel.add(dicePanel);
-		dice[0] = new Die(1);
-		dice[1] = new Die(2);
-		dice[2] = new Die(3);
-		dice[3] = new Die(4);
-		dice[4] = new Die(5);
-		dice[5] = new Die(6);
 		
 		for(int i = 0; i < 6; i++) {
+			dice[i] = new Die();
 			dice[i].addMouseListener(new MouseAdapter() {
 				public void mouseReleased(MouseEvent e) {
 					clickedDie();
@@ -170,6 +165,51 @@ public class Greedy extends JFrame {
 				&& count[4] == 1 && count[5] == 1) {
 					newPoints += 250;
 		}
+		else {
+			for(int i = 0; i < count.length; i++) {
+				switch(count[i]) {
+				case 1:
+					if(i == 0) {
+						newPoints += 10;
+					}
+					else if (i == 4) {
+						newPoints += 5;
+					}
+					else {
+						valid = false;
+					}
+					break;
+				case 2:
+					if(i == 0) {
+						newPoints += 20;
+					}
+					else if(i == 4) {
+						newPoints += 10;
+					}
+					else {
+						valid = false;
+					}
+					break;
+				case 3:
+					if(i == 0) {
+						newPoints += 100;
+					}
+					else {
+						newPoints += (i + 1) * 10;
+					}
+					break;
+				case 4:
+					newPoints += 200;
+					break;
+				case 5:
+					newPoints += 300;
+					break;
+				case 6:
+					newPoints += 500;
+					break;
+				}
+			}
+		}
 			
 		return valid;
 	}
@@ -182,7 +222,7 @@ public class Greedy extends JFrame {
 			rollButton.setEnabled(false);
 		}
 		
-		pointsLabel.setText(""+(points + newPoints));
+		pointsLabel.setText(""+ (points + newPoints));
 	}
 
 }
