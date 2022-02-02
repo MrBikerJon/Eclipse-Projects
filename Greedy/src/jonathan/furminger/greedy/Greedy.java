@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -33,7 +35,7 @@ public class Greedy extends JFrame {
 	private JLabel roundLabel = new JLabel("1");
 	
 	private Font smallFont = new Font(Font.DIALOG, Font.PLAIN, 12);
-	private Font bigFont = new Font(Font.DIALOG, Font.BOLD, 36);
+	private Font bigFont = new Font(Font.DIALOG, Font.BOLD, 32);
 	
 	private JButton rollButton = new JButton("Roll");
 	
@@ -128,6 +130,11 @@ public class Greedy extends JFrame {
 		dice[5] = new Die(6);
 		
 		for(int i = 0; i < 6; i++) {
+			dice[i].addMouseListener(new MouseAdapter() {
+				public void mouseReleased(MouseEvent e) {
+					clickedDie();
+				}
+			});
 			dicePanel.add(dice[i]);
 		}
 		
@@ -155,7 +162,27 @@ public class Greedy extends JFrame {
 				totalCount++;
 			}
 		}
+		if(totalCount == 0) {
+			valid = false;
+		}
+		else if (count[0] == 1 && count[1] == 1
+				&& count[2] ==1 && count[3] == 1
+				&& count[4] == 1 && count[5] == 1) {
+					newPoints += 250;
+		}
+			
 		return valid;
+	}
+	
+	public void clickedDie() {
+		if(isValidSelection()) {
+			rollButton.setEnabled(true);
+		}
+		else {
+			rollButton.setEnabled(false);
+		}
+		
+		pointsLabel.setText(""+(points + newPoints));
 	}
 
 }
