@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -139,6 +141,16 @@ public class Greedy extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBackground(Color.BLACK);
 		add(buttonPanel, BorderLayout.PAGE_END);
+		
+		rollButton.setEnabled(false);
+		rollButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updatePoints();
+				rollRemainingDice();
+				rollButton.setEnabled(false);
+			}
+		});
+		
 		buttonPanel.add(rollButton);
 		JButton endRoundButton = new JButton("End Round");
 		buttonPanel.add(endRoundButton);
@@ -223,6 +235,37 @@ public class Greedy extends JFrame {
 		}
 		
 		pointsLabel.setText(""+ (points + newPoints));
+	}
+	
+	private void updatePoints() {
+		points += newPoints;
+		pointsLabel.setText("" + points);
+		newPoints = 0;
+	}
+	
+	private void rollRemainingDice() {
+		int count = 0;
+		for(int i = 0; i < dice.length; i++) {
+			if(dice[i].isSelected()) {
+				dice[i].hold();
+			}
+			else if(! dice[i].isSelected()) {
+				dice[i].roll();
+				count++;
+			}
+		}
+		
+		if(count == 0) {
+			rollAllDice();
+		}
+	}
+	
+	private void rollAllDice() {
+		for(int i = 0; i < dice.length; i++) {
+			dice[i].makeAvailable();
+			dice[i].roll();
+		}
+		rollButton.setEnabled(false);
 	}
 
 }
