@@ -100,6 +100,12 @@ public class MazeGenerator extends JFrame {
 	}
 	
 	private void newMaze() {
+		if(type == TYPE_MAZE) {
+			titleLabel.setText("Maze");
+		}
+		else {
+			titleLabel.setText("Anti-Maze");
+		}
 		mazePanel.removeAll();
 		mazePanel.setLayout(new GridLayout(rows, cols));
 		
@@ -107,7 +113,7 @@ public class MazeGenerator extends JFrame {
 		
 		for(int r = 0 ; r < rows; r++) {
 			for(int c = 0; c < cols; c++) {
-				cell[r][c] = new Cell(r, c);
+				cell[r][c] = new Cell(r, c, type);
 				mazePanel.add(cell[r][c]);
 			}
 		}

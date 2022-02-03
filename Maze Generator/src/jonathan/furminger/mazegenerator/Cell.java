@@ -17,16 +17,17 @@ public class Cell extends JPanel {
 
 	private int row = -1;
 	private int col = -1;
+	private int type = MazeGenerator.TYPE_MAZE;
 
 	private boolean[] wall = {true, true, true, true};
 	private boolean current = false;
 	private boolean end = false;
 	private boolean[] path = {false, false, false, false};
 	
-	public Cell(int row, int col) {
+	public Cell(int row, int col, int type) {
 		this.row = row;
 		this.col = col;
-		
+		this.type = type;
 	}
 	
 	public void paintComponent(Graphics g) {
