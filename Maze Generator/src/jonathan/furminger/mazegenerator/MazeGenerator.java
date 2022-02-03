@@ -89,7 +89,7 @@ public class MazeGenerator extends JFrame {
 		});
 		buttonPanel.add(newMazeButton);
 		
-		// listeners
+		// listeners   
 		addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				int keyCode = e.getKeyCode();
