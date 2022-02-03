@@ -88,6 +88,14 @@ public class MazeGenerator extends JFrame {
 			}
 		});
 		buttonPanel.add(newMazeButton);
+		JButton optionsButton = new JButton("Options");
+		optionsButton.setFocusable(false);
+		optionsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeOptions();
+			}
+		});
+		buttonPanel.add(optionsButton);
 		
 		// listeners   
 		addKeyListener(new KeyAdapter() {
@@ -268,6 +276,14 @@ public class MazeGenerator extends JFrame {
 			JOptionPane.showMessageDialog(null, message);
 			
 		}
+	}
+	
+	private void changeOptions() {
+		OptionsDialog dialog = new OptionsDialog(rows, cols, type);
+		dialog.setResizable(false);
+		dialog.pack();
+		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(true);
 	}
 
 }
