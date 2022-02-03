@@ -23,6 +23,10 @@ public class MazeGenerator extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
+	public static final int TYPE_MAZE = 0;
+	public static final int TYPE_ANTIMAZE = 1;
+	private int type = TYPE_ANTIMAZE;
+	
 	private int rows = 30;
 	private int cols = 20;
 	private Cell[][] cell = new Cell[rows][cols];
