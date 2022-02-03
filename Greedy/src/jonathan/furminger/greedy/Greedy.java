@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -153,6 +154,11 @@ public class Greedy extends JFrame {
 		
 		buttonPanel.add(rollButton);
 		JButton endRoundButton = new JButton("End Round");
+		endRoundButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				endRound();
+			}
+		});
 		buttonPanel.add(endRoundButton);
 	}
 	
@@ -245,11 +251,11 @@ public class Greedy extends JFrame {
 	
 	private void rollRemainingDice() {
 		int count = 0;
-		for(int i = 0; i < dice.length; i++) {
+		for(int i = 0; i < 6; i++) {
 			if(dice[i].isSelected()) {
 				dice[i].hold();
 			}
-			else if(! dice[i].isSelected()) {
+			else if(!dice[i].isSelected()) {
 				dice[i].roll();
 				count++;
 			}
@@ -261,11 +267,40 @@ public class Greedy extends JFrame {
 	}
 	
 	private void rollAllDice() {
-		for(int i = 0; i < dice.length; i++) {
+		for(int i = 0; i < 6; i++) {
 			dice[i].makeAvailable();
 			dice[i].roll();
 		}
 		rollButton.setEnabled(false);
+	}
+	
+	private void endRound() {
+		if(isValidSelection() && newPoints > 0) {
+			score += score + newPoints;
+			points = 0;
+			newPoints = 0;
+			pointsLabel.setText("0");
+			scoreLabel.setText("" + score);
+			if(round < 10) {
+				round++;
+				roundLabel.setText("" + round);
+				rollAllDice();
+			}
+			else {
+				String message = "Would you like to play again?";
+				int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
+				if(option == JOptionPane.YES_OPTION) {
+					score = 0;
+					round = 1;
+					scoreLabel.setText("0");
+					roundLabel.setText("1");
+					rollAllDice();
+				}
+				else {
+					System.exit(0);
+				}
+			}
+		}
 	}
 
 }
