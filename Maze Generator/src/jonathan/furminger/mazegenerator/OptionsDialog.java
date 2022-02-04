@@ -1,6 +1,10 @@
 package jonathan.furminger.mazegenerator;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -24,6 +28,22 @@ public class OptionsDialog extends JDialog {
 		setTitle("Maze Generator Options");
 		
 		// main panel
+		JPanel mainPanel = new JPanel();
+		add(mainPanel, BorderLayout.CENTER);
+		JLabel rowsLabel = new JLabel("Rows:");
+		mainPanel.add(rowsLabel);
+		rowsField.setText("" + rows);
+		mainPanel.add(rowsField);
+		JLabel colsLabel = new JLabel("Columns:");
+		mainPanel.add(colsLabel);
+		colsField.setText("" + cols);
+		mainPanel.add(colsField);
+		
+		JLabel typeLabel = new JLabel("Maze Type:");
+		mainPanel.add(typeLabel);
+		mainPanel.add(mazeButton);
+		mainPanel.add(antiMazeButton);
+		
 		
 		// button panel
 		
