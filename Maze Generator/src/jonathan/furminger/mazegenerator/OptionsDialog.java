@@ -2,6 +2,8 @@ package jonathan.furminger.mazegenerator;
 
 import java.awt.BorderLayout;
 
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +31,7 @@ public class OptionsDialog extends JDialog {
 		
 		// main panel
 		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		add(mainPanel, BorderLayout.CENTER);
 		JLabel rowsLabel = new JLabel("Rows:");
 		mainPanel.add(rowsLabel);
@@ -44,8 +47,21 @@ public class OptionsDialog extends JDialog {
 		mainPanel.add(mazeButton);
 		mainPanel.add(antiMazeButton);
 		
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(mazeButton);
+		buttonGroup.add(antiMazeButton);
+		
+		if(type == MazeGenerator.TYPE_MAZE) {
+			mazeButton.setSelected(true);
+		}
+		else {
+			antiMazeButton.setSelected(true);
+		}
+		
 		
 		// button panel
+		JPanel buttonPanel = new JPanel();
+		add(buttonPanel, BorderLayout.PAGE_END);
 		
 	}
 }
