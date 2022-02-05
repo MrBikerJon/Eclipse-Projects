@@ -24,7 +24,7 @@ public class OptionsDialog extends JDialog {
 	private JTextField colsField = new JTextField(3);
 	private JRadioButton mazeButton = new JRadioButton("Maze");
 	private JRadioButton antiMazeButton = new JRadioButton("Anti-Maze");
-	
+	private boolean canceled = true;
 	
 	public OptionsDialog(int rows, int cols, int type) {
 		this.rows = rows;
@@ -114,6 +114,10 @@ public class OptionsDialog extends JDialog {
 	
 	public int getMazeType() {
 		return type;
+	}
+	
+	public boolean isCanceled() {
+		return canceled;
 	}
 	
 }
