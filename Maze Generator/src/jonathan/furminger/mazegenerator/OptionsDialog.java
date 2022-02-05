@@ -73,7 +73,15 @@ public class OptionsDialog extends JDialog {
 			}
 		});
 		buttonPanel.add(okButton);
+		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cancel();
+			}
+		});
+		buttonPanel.add(cancelButton);
 		
+		getRootPane().setDefaultButton(okButton);
 	}
 	
 	private void close() {
@@ -92,6 +100,7 @@ public class OptionsDialog extends JDialog {
 				type = MazeGenerator.TYPE_ANTIMAZE;
 			}
 			setVisible(false);
+			canceled = false;
 		}
 		else {
 			String message = "There must be more than one row and more than one column.";
@@ -118,6 +127,10 @@ public class OptionsDialog extends JDialog {
 	
 	public boolean isCanceled() {
 		return canceled;
+	}
+	
+	private void cancel() {
+		setVisible(false);
 	}
 	
 }
