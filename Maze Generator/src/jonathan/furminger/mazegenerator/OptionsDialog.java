@@ -108,7 +108,7 @@ public class OptionsDialog extends JDialog {
 		return rows;
 	}
 	
-	public int getCols() {
+	public int getColumns() {
 		return cols;
 	}
 	

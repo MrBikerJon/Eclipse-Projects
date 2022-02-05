@@ -284,6 +284,10 @@ public class MazeGenerator extends JFrame {
 		dialog.pack();
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(true);
+		rows = dialog.getRows();
+		cols = dialog.getColumns();
+		type = dialog.getMazeType();
+		
 	}
 
 }
