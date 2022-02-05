@@ -9,6 +9,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -76,6 +77,7 @@ public class OptionsDialog extends JDialog {
 	}
 	
 	private void close() {
+		try {
 		String rowsString = rowsField.getText();
 		String colsString = colsField.getText();
 		int newRows = Integer.parseInt(rowsString);
@@ -89,7 +91,29 @@ public class OptionsDialog extends JDialog {
 			else {
 				type = MazeGenerator.TYPE_ANTIMAZE;
 			}
+			setVisible(false);
 		}
-		setVisible(false);
+		else {
+			String message = "There must be more than one row and more than one column.";
+			JOptionPane.showMessageDialog(this, message);
+			}
+		}
+		catch (NumberFormatException e) {
+			String message = "Rows and Columns must be numbers";
+			JOptionPane.showMessageDialog(this, message);
+		}
 	}
+	
+	public int getRows() {
+		return rows;
+	}
+	
+	public int getCols() {
+		return cols;
+	}
+	
+	public int getMazeType() {
+		return type;
+	}
+	
 }
