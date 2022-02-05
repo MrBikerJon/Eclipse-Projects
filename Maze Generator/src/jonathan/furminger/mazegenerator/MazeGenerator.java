@@ -135,6 +135,7 @@ public class MazeGenerator extends JFrame {
 		cell[endRow][endCol].setEnd(true);
 		
 		mazePanel.revalidate();
+		pack();
 		
 	}
 	
@@ -280,6 +281,7 @@ public class MazeGenerator extends JFrame {
 	
 	private void changeOptions() {
 		OptionsDialog dialog = new OptionsDialog(rows, cols, type);
+		dialog.setModal(true);
 		dialog.setResizable(false);
 		dialog.pack();
 		dialog.setLocationRelativeTo(null);
@@ -287,7 +289,7 @@ public class MazeGenerator extends JFrame {
 		rows = dialog.getRows();
 		cols = dialog.getColumns();
 		type = dialog.getMazeType();
-		
+		newMaze();
 	}
 
 }
