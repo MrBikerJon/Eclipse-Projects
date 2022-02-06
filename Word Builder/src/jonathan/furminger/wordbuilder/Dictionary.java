@@ -20,6 +20,7 @@ public class Dictionary {
 		for(int i = 0; i <26; i++) {
 			wordList[i] = new ArrayList<String>();
 		}
+		
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(FILENAME));
 			String word = in.readLine();
@@ -29,7 +30,7 @@ public class Dictionary {
 				wordList[list].add(word);
 				word = in.readLine();
 			}
-		in.close();
+			in.close();
 		}
 		catch (FileNotFoundException e) {
 			String message = "File " + FILENAME + " was not found.";
@@ -42,9 +43,36 @@ public class Dictionary {
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+		Dictionary dictionary = new Dictionary();
+		String word = "Hello";
+		if(dictionary.isAWord(word)) {
+			System.out.println(word + " is a word");
+		}
+		else {
+			System.out.println(word + " is not a word");
+		}
 	}
 
+	public boolean isAWord(String word) {
+		boolean found = false;
+		word = word.toUpperCase();
+		char letter = word.charAt(0);
+		int list = ALPHABET.indexOf(letter);
+		int index = 0;
+		String word2 = "";
+		
+		while(index < wordList[list].size()
+				&& word2.compareTo(word) < 0
+				&& !found) {
+			word2 = wordList[list].get(index);
+			if(word2.equals(word)) {
+				found = true;
+			}
+			index++;
+		}
+		
+		return found;
+	}
 
 }
