@@ -3,6 +3,7 @@ package jonathan.furminger.wordbuilder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,6 +25,11 @@ public class LetterPanel extends JPanel {
 	private int size = 40;
 	private Font bigFont = new Font(Font.DIALOG, Font.BOLD, 30);
 	private Font smallFont = new Font(Font.DIALOG, Font.BOLD, 12);
+	private FontMetrics bigFM;
+	private FontMetrics smallFM;
+	private int column = -1;
+	
+	
 
 	public LetterPanel(String letter, int points) {
 		this.letter = letter;
@@ -52,12 +58,14 @@ public class LetterPanel extends JPanel {
 			g.drawRect(0,  0,  size-1,  size-1);
 			
 			g.setFont(bigFont);
-			int x = 5;
+			int letterWidth = bigFM.stringWidth(letter);
+			int x = (size-letterWidth)/2;
 			int y = size * 3 / 4;
 			g.drawString(letter, x, y);
 			
 			g.setFont(smallFont);
-			x = size - 12;
+			letterWidth = smallFM.stringWidth("" + points);
+			x = size - letterWidth - 2;
 			y = size * 17 / 20;
 			g.drawString("" + points, x, y);
 		}
@@ -73,10 +81,49 @@ public class LetterPanel extends JPanel {
 				JOptionPane.showMessageDialog(null,  message);
 			}
 		}
+		bigFM = getFontMetrics(bigFont);
+		smallFM = getFontMetrics(smallFont);
 	}
 	
 	public Dimension preferredSize() {
 		Dimension dimension = new Dimension(size, size);
 		return dimension;
+	}
+	
+	public String getLetter() {
+		return letter;
+	}
+	
+	public int getPoints() {
+		return points;
+	}
+	
+	public int getColumn() {
+		return column;
+	}
+	
+	public int getPanelSize() {
+		return size;
+	}
+	
+	public void setColumn(int column) {
+		this.column = column;
+	}
+	
+	public void setEmpty() {
+		letter = "";
+		points = -1;
+		repaint();
+	}
+	
+	public boolean isEmpty() {
+		return points == -1;
+	}
+	
+	public void copy(LetterPanel letterPanel2) {
+		letter = letterPanel2.getLetter();
+		points = letterPanel2.getPoints();
+		column = letterPanel2.getColumn();
+		repaint();
 	}
 }
