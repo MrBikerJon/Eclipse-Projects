@@ -1,6 +1,7 @@
 package jonathan.furminger.wordbuilder;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -49,6 +50,16 @@ public class LetterPanel extends JPanel {
 			}
 			g.setColor(Color.BLACK);
 			g.drawRect(0,  0,  size-1,  size-1);
+			
+			g.setFont(bigFont);
+			int x = 5;
+			int y = size * 3 / 4;
+			g.drawString(letter, x, y);
+			
+			g.setFont(smallFont);
+			x = size - 12;
+			y = size * 17 / 20;
+			g.drawString("" + points, x, y);
 		}
 	}
 	
@@ -62,5 +73,10 @@ public class LetterPanel extends JPanel {
 				JOptionPane.showMessageDialog(null,  message);
 			}
 		}
+	}
+	
+	public Dimension preferredSize() {
+		Dimension dimension = new Dimension(size, size);
+		return dimension;
 	}
 }

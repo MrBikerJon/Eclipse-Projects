@@ -4,12 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import jonathan.furminger.mycomponents.TitleLabel;
 
 public class WordBuilder extends JFrame {
+	
+	private JPanel mainPanel = new JPanel();
 
 	public WordBuilder() {
 		initGUI();
@@ -41,7 +44,9 @@ public class WordBuilder extends JFrame {
 		
 		
 		// main panel
-		
+		add(mainPanel, BorderLayout.CENTER);
+		LetterPanel letterPanel = new LetterPanel("A", 1);
+		mainPanel.add(letterPanel);
 		
 		// score panel
 		
