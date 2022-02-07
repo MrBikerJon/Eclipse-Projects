@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class LetterPanel extends JPanel {
@@ -36,8 +40,27 @@ public class LetterPanel extends JPanel {
 			g.fillRect(0, 0, size, size);
 		}
 		else {
+			if(image == null) {
+				g.setColor(Color.WHITE);
+				g.fillRect(0,  0,  size,  size);
+			}
+			else {
+				g.drawImage(image,  0,  0,  this);
+			}
 			g.setColor(Color.BLACK);
 			g.drawRect(0,  0,  size-1,  size-1);
+		}
+	}
+	
+	private void initPanel() {
+		if(image == null) { 
+			try {
+				image = ImageIO.read(new File(IMAGENAME));
+			}
+			catch (IOException e) {
+				String message = "File " + IMAGENAME + " could not be opened";
+				JOptionPane.showMessageDialog(null,  message);
+			}
 		}
 	}
 }
