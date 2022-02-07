@@ -14,11 +14,12 @@ import jonathan.furminger.mycomponents.TitleLabel;
 
 public class WordBuilder extends JFrame {
 	
-	private JPanel mainPanel = new JPanel();
 	private static final int ROWS = 8;
 	private static final int COLS = 12;
 	private static final int MAX = 15;
 	private LetterPanel[][] board = new LetterPanel[ROWS][COLS];
+
+	private JPanel mainPanel = new JPanel();
 	private JPanel boardPanel = new JPanel();
 
 	public WordBuilder() {
@@ -63,6 +64,15 @@ public class WordBuilder extends JFrame {
 		boardPanel.setBackground(Color.BLACK);
 		boardPanel.setLayout(new GridLayout(ROWS, COLS));
 		mainPanel.add(boardPanel);
+		
+		BagOfLetters letters = new BagOfLetters();
+		for (int row = 0; row < ROWS; row++) {
+			for(int col = 0; col < COLS; col++) {
+				LetterPanel letterPanel = letters.pickALetter();
+				board[row][col] = letterPanel;
+				boardPanel.add(letterPanel);
+			}
+		}
 		
 		// button panel
 		

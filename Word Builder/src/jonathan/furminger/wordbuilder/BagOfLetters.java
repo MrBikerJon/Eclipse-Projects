@@ -25,7 +25,7 @@ public class BagOfLetters {
 		LetterPanel letterPanel = null;
 		int size = letterPanels.size();
 		if(size > 0) {
-			int pick = rand.nextInt(size-1);
+			int pick = rand.nextInt(size);
 			letterPanel = letterPanels.remove(pick);
 		}
 		return letterPanel;
