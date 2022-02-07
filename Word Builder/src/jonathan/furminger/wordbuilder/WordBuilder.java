@@ -1,7 +1,9 @@
 package jonathan.furminger.wordbuilder;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,6 +15,11 @@ import jonathan.furminger.mycomponents.TitleLabel;
 public class WordBuilder extends JFrame {
 	
 	private JPanel mainPanel = new JPanel();
+	private static final int ROWS = 8;
+	private static final int COLS = 12;
+	private static final int MAX = 15;
+	private LetterPanel[][] board = new LetterPanel[ROWS][COLS];
+	private JPanel boardPanel = new JPanel();
 
 	public WordBuilder() {
 		initGUI();
@@ -45,8 +52,6 @@ public class WordBuilder extends JFrame {
 		
 		// main panel
 		add(mainPanel, BorderLayout.CENTER);
-		LetterPanel letterPanel = new LetterPanel("A", 1);
-		mainPanel.add(letterPanel);
 		
 		// score panel
 		
@@ -55,7 +60,9 @@ public class WordBuilder extends JFrame {
 		
 		
 		// board panel
-		
+		boardPanel.setBackground(Color.BLACK);
+		boardPanel.setLayout(new GridLayout(ROWS, COLS));
+		mainPanel.add(boardPanel);
 		
 		// button panel
 		
