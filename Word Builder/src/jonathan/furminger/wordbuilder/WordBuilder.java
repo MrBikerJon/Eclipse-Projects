@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -110,6 +112,7 @@ public class WordBuilder extends JFrame {
 		mainPanel.add(playPanel);
 		for(int i = 0; i < MAX; i++) {
 			LetterPanel letterPanel = new LetterPanel();
+			letterPanel.setColumn(i);
 			played[i] = letterPanel;
 			playPanel.add(letterPanel);
 		}
@@ -128,9 +131,19 @@ public class WordBuilder extends JFrame {
 		for (int row = 0; row < ROWS; row++) {
 			for(int col = 0; col < COLS; col++) {
 				LetterPanel letterPanel = letters.pickALetter();
+				letterPanel.setColumn(col);
 				board[row][col] = letterPanel;
 				boardPanel.add(letterPanel);
 			}
+		}
+		
+		for(int col = 0; col < COLS; col++) {
+			board[0][col].addMouseListener(new MouseAdapter() {
+				public void mouseReleased(MouseEvent e) {
+					LetterPanel letterPanel = (LetterPanel) e.getSource();
+					click(letterPanel);
+				}
+			});
 		}
 		
 		// button panel
@@ -152,6 +165,15 @@ public class WordBuilder extends JFrame {
 		
 		
 		// listeners
+	}
+	
+	private void click(LetterPanel letterPanel) {
+		int wordLength = word.length();
+		if(!letterPanel.isEmpty() && wordLength < MAX) {
+			played[wordLength].copy(letterPanel);
+			word += letterPanel.getLetter();
+			points += letterPanel.getPoints();
+		}
 	}
 
 }
