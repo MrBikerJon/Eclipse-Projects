@@ -2,10 +2,13 @@ package jonathan.furminger.wordbuilder;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -91,6 +94,10 @@ public class WordBuilder extends JFrame {
 		pointsLabel.setFont(BIGFONT);
 		scorePanel.add(pointsLabel);
 		
+		Dimension boxSize = new Dimension(20, 0);
+		Component box = Box.createRigidArea(boxSize);
+		scorePanel.add(box);
+		
 		scoreTitleLabel.setFont(SMALLFONT);
 		scorePanel.add(scoreTitleLabel);
 		
@@ -98,11 +105,23 @@ public class WordBuilder extends JFrame {
 		scorePanel.add(scoreLabel);
 		
 		// play panel
+		playPanel.setLayout(new GridLayout(1, MAX));
+		playPanel.setBackground(TAN);
+		mainPanel.add(playPanel);
+		for(int i = 0; i < MAX; i++) {
+			LetterPanel letterPanel = new LetterPanel();
+			played[i] = letterPanel;
+			playPanel.add(letterPanel);
+		}
 		
 		
 		// board panel
 		boardPanel.setBackground(Color.BLACK);
 		boardPanel.setLayout(new GridLayout(ROWS, COLS));
+		int panelSize = played[0].getPanelSize();
+		Dimension maxSize = new Dimension(COLS*panelSize, ROWS*panelSize);
+		boardPanel.setMaximumSize(maxSize);
+		
 		mainPanel.add(boardPanel);
 		
 		BagOfLetters letters = new BagOfLetters();
@@ -115,6 +134,21 @@ public class WordBuilder extends JFrame {
 		}
 		
 		// button panel
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBackground(Color.BLACK);
+		mainPanel.add(buttonPanel, BorderLayout.PAGE_END);
+		
+		acceptButton.setEnabled(false);
+		buttonPanel.add(acceptButton);
+		
+		undoButton.setEnabled(false);
+		buttonPanel.add(undoButton);
+		
+		clearButton.setEnabled(false);
+		buttonPanel.add(clearButton);
+		
+		JButton endButton = new JButton("End Game");
+		buttonPanel.add(endButton);
 		
 		
 		// listeners
