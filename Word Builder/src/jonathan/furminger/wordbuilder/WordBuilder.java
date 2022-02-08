@@ -3,9 +3,12 @@ package jonathan.furminger.wordbuilder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -17,10 +20,25 @@ public class WordBuilder extends JFrame {
 	private static final int ROWS = 8;
 	private static final int COLS = 12;
 	private static final int MAX = 15;
+	private static final String FILENAME = "highScores.txt";
+	private static final Color TAN = new Color(222,191,168);
+	private static final Font SMALLFONT = new Font(Font.DIALOG, Font.PLAIN, 12);
+	private static final Font BIGFONT = new Font(Font.DIALOG, Font.PLAIN, 30);
+	
 	private LetterPanel[][] board = new LetterPanel[ROWS][COLS];
+	private LetterPanel[] played = new LetterPanel[MAX];
+	private String word = "";
+	private Dictionary dictionary = new Dictionary();
 
-	private JPanel mainPanel = new JPanel();
-	private JPanel boardPanel = new JPanel();
+	private JPanel mainPanel, boardPanel, scorePanel, playPanel = new JPanel();
+	private JLabel pointsTitleLabel = new JLabel("Points: ");
+	private JLabel scoreTitleLabel = new JLabel("Score: ");
+	private JLabel pointsLabel = new JLabel("0");
+	private JLabel scoreLabel = new JLabel("0");
+	
+	private JButton acceptButton = new JButton("Accept");
+	private JButton undoButton = new JButton("Undo");
+	private JButton clearButton = new JButton("Clear");
 
 	public WordBuilder() {
 		initGUI();
