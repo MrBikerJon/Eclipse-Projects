@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,14 +24,19 @@ public class WordBuilder extends JFrame {
 	private static final String FILENAME = "highScores.txt";
 	private static final Color TAN = new Color(222,191,168);
 	private static final Font SMALLFONT = new Font(Font.DIALOG, Font.PLAIN, 12);
-	private static final Font BIGFONT = new Font(Font.DIALOG, Font.PLAIN, 30);
+	private static final Font BIGFONT = new Font(Font.DIALOG, Font.BOLD, 30);
 	
 	private LetterPanel[][] board = new LetterPanel[ROWS][COLS];
 	private LetterPanel[] played = new LetterPanel[MAX];
+	private int points = 0;
+	private int score = 0;
 	private String word = "";
 	private Dictionary dictionary = new Dictionary();
 
-	private JPanel mainPanel, boardPanel, scorePanel, playPanel = new JPanel();
+	private JPanel mainPanel = new JPanel();
+	private JPanel boardPanel = new JPanel();
+	private JPanel scorePanel = new JPanel();
+	private JPanel playPanel = new JPanel();
 	private JLabel pointsTitleLabel = new JLabel("Points: ");
 	private JLabel scoreTitleLabel = new JLabel("Score: ");
 	private JLabel pointsLabel = new JLabel("0");
@@ -70,10 +76,26 @@ public class WordBuilder extends JFrame {
 		
 		
 		// main panel
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		mainPanel.setBackground(TAN);
 		add(mainPanel, BorderLayout.CENTER);
-		
+
 		// score panel
+		scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.X_AXIS));
+		scorePanel.setBackground(TAN);
+		mainPanel.add(scorePanel);
 		
+		pointsTitleLabel.setFont(SMALLFONT);
+		scorePanel.add(pointsTitleLabel);
+		
+		pointsLabel.setFont(BIGFONT);
+		scorePanel.add(pointsLabel);
+		
+		scoreTitleLabel.setFont(SMALLFONT);
+		scorePanel.add(scoreTitleLabel);
+		
+		scoreLabel.setFont(BIGFONT);
+		scorePanel.add(scoreLabel);
 		
 		// play panel
 		
