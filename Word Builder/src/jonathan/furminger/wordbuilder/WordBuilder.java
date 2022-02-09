@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -152,6 +154,11 @@ public class WordBuilder extends JFrame {
 		mainPanel.add(buttonPanel, BorderLayout.PAGE_END);
 		
 		acceptButton.setEnabled(false);
+		acceptButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				accept();
+			}
+		});
 		buttonPanel.add(acceptButton);
 		
 		undoButton.setEnabled(false);
@@ -173,7 +180,52 @@ public class WordBuilder extends JFrame {
 			played[wordLength].copy(letterPanel);
 			word += letterPanel.getLetter();
 			points += letterPanel.getPoints();
+			
+			int col = letterPanel.getColumn();
+			for(int row = 0; row < ROWS-1; row++) {
+				board[row][col].copy(board[row+1][col]);
+			}
+			board[ROWS-1][col].setEmpty();
+			
+			updateButtonsAndPoints();
 		}
+	}
+	
+	private void updateButtonsAndPoints() {
+		if (word.length() == 0) {
+			acceptButton.setEnabled(false);
+			undoButton.setEnabled(false);
+			clearButton.setEnabled(false);
+			pointsLabel.setText("0");
+		}
+		else if (word.length() < 3) {
+			acceptButton.setEnabled(false);
+			undoButton.setEnabled(true);
+			clearButton.setEnabled(true);
+			pointsLabel.setText("0");
+		}
+		else {
+			if(dictionary.isAWord(word)) {
+				acceptButton.setEnabled(true);
+			}
+			else {
+				acceptButton.setEnabled(false);
+			}
+			undoButton.setEnabled(true);
+			clearButton.setEnabled(true);
+			int newPoints = points * word.length();
+			pointsLabel.setText("" + newPoints);
+		}
+	}
+	
+	private void accept() {
+		score += points * word.length();
+		scoreLabel.setText("" + score);
+		for(int i = 0; i < word.length(); i++) {
+			played[i].setEmpty();
+		}
+		points = 0;word = "";
+		updateButtonsAndPoints();
 	}
 
 }
