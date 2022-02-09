@@ -162,9 +162,19 @@ public class WordBuilder extends JFrame {
 		buttonPanel.add(acceptButton);
 		
 		undoButton.setEnabled(false);
+		undoButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				undo();
+			}
+		});
 		buttonPanel.add(undoButton);
 		
 		clearButton.setEnabled(false);
+		clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clear();
+			}
+		});
 		buttonPanel.add(clearButton);
 		
 		JButton endButton = new JButton("End Game");
@@ -226,6 +236,28 @@ public class WordBuilder extends JFrame {
 		}
 		points = 0;word = "";
 		updateButtonsAndPoints();
+	}
+	
+	private void undo() {
+		int last = word.length()-1;
+		word = word.substring(0, last);
+		LetterPanel lastPlayedPanel = played[last];
+		points -= lastPlayedPanel.getPoints();
+		int col = lastPlayedPanel.getColumn();
+		for(int row = ROWS-1; row > 0; row--) {
+			board[row][col].copy(board[row-1][col]);
+		}
+		board[0][col].copy(lastPlayedPanel);
+		lastPlayedPanel.setEmpty();
+		
+		updateButtonsAndPoints();
+	}
+	
+	private void clear() {
+		int numberOfTimes = word.length();
+		for(int i = 0; i < numberOfTimes; i++) {
+			undo();
+		}
 	}
 
 }
