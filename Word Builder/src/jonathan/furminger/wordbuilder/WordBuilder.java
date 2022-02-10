@@ -11,12 +11,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -178,6 +185,12 @@ public class WordBuilder extends JFrame {
 		buttonPanel.add(clearButton);
 		
 		JButton endButton = new JButton("End Game");
+		endButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				endGame();
+			}
+		});
+		
 		buttonPanel.add(endButton);
 		
 		
@@ -257,6 +270,27 @@ public class WordBuilder extends JFrame {
 		int numberOfTimes = word.length();
 		for(int i = 0; i < numberOfTimes; i++) {
 			undo();
+		}
+	}
+	
+	private void endGame() {
+		ArrayList<String> records = new ArrayList<String>();
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(new File (FILENAME)));
+			String s = in.readLine();
+			while(!(s == null)) {
+				records.add(s);
+				s = in.readLine();
+			}
+			in.close();
+		}
+		catch (FileNotFoundException e) {
+			String message = FILENAME + " was not found. A new high score list will be created.";
+			JOptionPane.showMessageDialog(this, message);
+		}
+		catch (IOException e) {
+			String message = FILENAME + " could not be opened. A new high score list will be created.";
+			JOptionPane.showMessageDialog(this, message);
 		}
 	}
 
