@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -195,11 +197,16 @@ public class WordBuilder extends JFrame {
 				endGame();
 			}
 		});
-		
 		buttonPanel.add(endButton);
-		
-		
+	
+	
 		// listeners
+		addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				resizeWindow();
+			}
+		});
+	
 	}
 	
 	private void click(LetterPanel letterPanel) {
@@ -318,9 +325,22 @@ public class WordBuilder extends JFrame {
 			if(records.size() > 10) {
 				records.remove(10);
 			}
+			saveRecords(records);
 		}
-		saveRecords(records);
-		JOptionPane.showMessageDialog(this, message);
+		
+		message += "TOP 10 HIGH SCORES\n";
+		for(int i = 0; i < records.size(); i++) {
+			message += records.get(i) + "\n";
+		}
+		message += "Do you want to play again?";
+		int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
+		if(option == JOptionPane.YES_OPTION) {
+			newGame();
+		}
+		else {
+			System.exit(0);
+		}
+		
 	}
 	
 	private void saveRecords(ArrayList<String> records) {
@@ -335,6 +355,24 @@ public class WordBuilder extends JFrame {
 		catch (IOException e) {
 			String message = "The high score records could not be saved";
 			JOptionPane.showMessageDialog(this, message);
+		}
+	}
+	
+	private void newGame() {
+		clear();
+		
+		BagOfLetters letters = new BagOfLetters();
+		for(int row = 0; row < ROWS; row++) {
+			for(int col = 0; col < COLS; col++) {
+				LetterPanel letterPanel = letters.pickALetter();
+				letterPanel.setColumn(col);
+				board[row][col].copy(letterPanel);
+			}
+			score = 0;
+			points = 0;
+			word = "";
+			scoreLabel.setText("0");
+			updateButtonsAndPoints();
 		}
 	}
 
