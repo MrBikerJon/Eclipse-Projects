@@ -12,11 +12,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -275,11 +280,18 @@ public class WordBuilder extends JFrame {
 	
 	private void endGame() {
 		ArrayList<String> records = new ArrayList<String>();
+		int index = 0;
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(new File (FILENAME)));
 			String s = in.readLine();
 			while(!(s == null)) {
 				records.add(s);
+				int indexOfBlank = s.indexOf(" ");
+				String scoreString = s.substring(0, indexOfBlank);
+				int oldScore = Integer.parseInt(scoreString);
+				if(oldScore > score) {
+					index++;
+				}
 				s = in.readLine();
 			}
 			in.close();
@@ -290,6 +302,38 @@ public class WordBuilder extends JFrame {
 		}
 		catch (IOException e) {
 			String message = FILENAME + " could not be opened. A new high score list will be created.";
+			JOptionPane.showMessageDialog(this, message);
+		}
+		catch (NumberFormatException e) {
+			String message = FILENAME + " could not be read. A new high score list will be created";
+			JOptionPane.showMessageDialog(this, message);
+		}
+		String message = "";
+		if(index < 10) {
+			message += "Your score of " + score + " is one of the top 10 highest scores!\n";
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			Date date = new Date();
+			String newRecord = score + " " + dateFormat.format(date);
+			records.add(index, newRecord);
+			if(records.size() > 10) {
+				records.remove(10);
+			}
+		}
+		saveRecords(records);
+		JOptionPane.showMessageDialog(this, message);
+	}
+	
+	private void saveRecords(ArrayList<String> records) {
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter(new File(FILENAME)));
+			for (int i = 0; i < records.size(); i++) {
+				out.write(records.get(i));
+				out.newLine();
+			}
+			out.close();
+		}
+		catch (IOException e) {
+			String message = "The high score records could not be saved";
 			JOptionPane.showMessageDialog(this, message);
 		}
 	}
