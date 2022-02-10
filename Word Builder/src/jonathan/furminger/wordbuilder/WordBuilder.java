@@ -81,10 +81,18 @@ public class WordBuilder extends JFrame {
 	public WordBuilder() {
 		initGUI();
 		setTitle("Word Builder");
-		pack();
-		setLocationRelativeTo(null);
+		readSettings();
+		if(windowX < 0) {
+			pack();
+			setLocationRelativeTo(null);
+		}
+		else {
+			setLocation(windowX, windowY);
+			setSize(windowW, windowH);
+		}
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setExtendedState(windowState);
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -459,6 +467,31 @@ public class WordBuilder extends JFrame {
 		catch (IOException e) {
 			String message = "Settings could not be saved.";
 			JOptionPane.showMessageDialog(this, message);
+		}
+
+	}
+	
+	private void readSettings() {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(new File(SETTINGS_FILE)));
+			String s = in.readLine();
+			windowX = Integer.parseInt(s);
+			s = in.readLine();
+			windowY = Integer.parseInt(s);
+			s = in.readLine();
+			windowW = Integer.parseInt(s);
+			s = in.readLine();
+			windowH = Integer.parseInt(s);
+			s = in.readLine();
+			windowState = Integer.parseInt(s);
+			
+			in.close();
+		}
+		catch (FileNotFoundException e) {
+		}
+		catch (IOException e) {
+		}
+		catch (NumberFormatException e) {
 		}
 
 	}
