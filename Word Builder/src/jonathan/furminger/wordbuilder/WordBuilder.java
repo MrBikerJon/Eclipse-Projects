@@ -7,12 +7,14 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.io.BufferedReader;
@@ -48,6 +50,13 @@ public class WordBuilder extends JFrame {
 	private static final Color TAN = new Color(222,191,168);
 	private static final Font SMALLFONT = new Font(Font.DIALOG, Font.PLAIN, 12);
 	private static final Font BIGFONT = new Font(Font.DIALOG, Font.BOLD, 30);
+	private final static String SETTINGS_FILE = "wordBuilderSettings.txt";
+	
+	private int windowX = -1;
+	private int windowY = -1;
+	private int windowH = -1;
+	private int windowW = -1;
+	private int windowState = JFrame.NORMAL;
 	
 	private LetterPanel[][] board = new LetterPanel[ROWS][COLS];
 	private LetterPanel[] played = new LetterPanel[MAX];
@@ -217,6 +226,12 @@ public class WordBuilder extends JFrame {
 				resizeWindow();
 			}
 		});
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				saveSettings();
+			}
+		});
 	
 	}
 	
@@ -349,6 +364,7 @@ public class WordBuilder extends JFrame {
 			newGame();
 		}
 		else {
+			saveSettings();
 			System.exit(0);
 		}
 		
@@ -414,6 +430,37 @@ public class WordBuilder extends JFrame {
 		pointsLabel.setFont(bigFont);
 		scoreTitleLabel.setFont(smallFont);
 		scoreLabel.setFont(bigFont);
+	}
+	
+	private void saveSettings() {
+		
+		Point location = getLocation();
+		int x = location.x;
+		int y = location.y;
+		Dimension size = getSize();
+		int w = size.width;
+		int h = size.height;
+		int state = getExtendedState();
+		
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter(new File(SETTINGS_FILE)));
+			out.write("" + x);
+			out.newLine();
+			out.write("" + y);
+			out.newLine();
+			out.write("" + w);
+			out.newLine();
+			out.write("" + h);
+			out.newLine();
+			out.write("" + state);
+			
+			out.close();
+		}
+		catch (IOException e) {
+			String message = "Settings could not be saved.";
+			JOptionPane.showMessageDialog(this, message);
+		}
+
 	}
 
 }
