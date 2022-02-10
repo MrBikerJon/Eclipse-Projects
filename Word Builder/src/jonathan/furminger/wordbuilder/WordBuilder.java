@@ -13,6 +13,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -133,6 +135,7 @@ public class WordBuilder extends JFrame {
 			playPanel.add(letterPanel);
 		}
 		
+		mainPanel.add(Box.createGlue());
 		
 		// board panel
 		boardPanel.setBackground(Color.BLACK);
@@ -161,6 +164,8 @@ public class WordBuilder extends JFrame {
 				}
 			});
 		}
+		
+		mainPanel.add(Box.createGlue());
 		
 		// button panel
 		JPanel buttonPanel = new JPanel();
@@ -203,6 +208,12 @@ public class WordBuilder extends JFrame {
 		// listeners
 		addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
+				resizeWindow();
+			}
+		});
+		
+		addWindowStateListener(new WindowStateListener() {
+			public void windowStateChanged(WindowEvent e) {
 				resizeWindow();
 			}
 		});
@@ -374,6 +385,35 @@ public class WordBuilder extends JFrame {
 			scoreLabel.setText("0");
 			updateButtonsAndPoints();
 		}
+	}
+	
+	private void resizeWindow() {
+		int newWidth = mainPanel.getWidth();
+		int newHeight = mainPanel.getHeight();
+		int panelSize = newWidth/MAX;
+		if(panelSize > newHeight/10) {
+			panelSize = newHeight/10;
+		}
+		Dimension boardSize = new Dimension(panelSize*COLS, panelSize*ROWS);
+		boardPanel.setMaximumSize(boardSize);
+		for(int row = 0; row < ROWS; row++) {
+			for(int col = 0; col < COLS; col++) {
+				board[row][col].resize(panelSize);
+			}
+		}
+		
+		Dimension playSize = new Dimension(panelSize*MAX, panelSize);
+		playPanel.setMaximumSize(playSize);
+		for(int i = 0; i < played.length; i++) {
+			played[i].resize(panelSize);
+		}
+		
+		Font bigFont = new Font(Font.DIALOG, Font.BOLD, panelSize*3/4);
+		Font smallFont = new Font(Font.DIALOG, Font.PLAIN, panelSize*3/10);
+		pointsTitleLabel.setFont(smallFont);
+		pointsLabel.setFont(bigFont);
+		scoreTitleLabel.setFont(smallFont);
+		scoreLabel.setFont(bigFont);
 	}
 
 }
