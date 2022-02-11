@@ -13,9 +13,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
@@ -35,6 +37,13 @@ public class ImageResizer extends JFrame {
 	
 	private ImagePanel imagePanel = new ImagePanel(this);
 	private File file = new File("");
+	private double ratio = 1.0;
+	private JTextField scaleWField = new JTextField("1", 5);
+	private JTextField scaleHField = new JTextField("1", 5);
+	private JTextField cropXField = new JTextField("0", 5);
+	private JTextField cropYField = new JTextField("0", 5);
+	private JTextField cropWField = new JTextField("0", 5);
+	private JTextField cropHField = new JTextField("0", 5);
 
 	public ImageResizer() {
 		initGUI();
@@ -93,10 +102,59 @@ public class ImageResizer extends JFrame {
 		});
 		toolbar.add(loadButton);
 		
+		JButton saveButton = new JButton(saveIcon);
+		saveButton.setToolTipText("Save Image");
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				save();
+			}
+		});
+		toolbar.add(saveButton);
+		
+		toolbar.addSeparator();
 		
 		// scale options
+		JButton scaleButton = new JButton(scaleIcon);
+		scaleButton.setToolTipText("Scale Image");
+		toolbar.add(scaleButton);
+		
+		JLabel scaleWLabel = new JLabel(widthIcon);
+		toolbar.add(scaleWLabel);
+		
+		toolbar.add(scaleWField);
+		
+		JLabel scaleHLabel = new JLabel(heightIcon);
+		toolbar.add(scaleHLabel);
+		
+		toolbar.add(scaleHField);
+		
+		toolbar.addSeparator();
 		
 		// crop options
+		JButton cropButton = new JButton(cropIcon);
+		cropButton.setToolTipText("Crop Image");
+		toolbar.add(cropButton);
+		
+		JLabel cropXLabel = new JLabel(xIcon);
+		toolbar.add(cropXLabel);
+		
+		toolbar.add(cropXField);
+		
+		JLabel cropYLabel = new JLabel(yIcon);
+		toolbar.add(cropYLabel);
+		
+		toolbar.add(cropYField);
+		
+		JLabel cropWLabel = new JLabel(widthIcon);
+		toolbar.add(cropWLabel);
+		
+		toolbar.add(cropWField);
+		
+		JLabel cropHLabel = new JLabel(heightIcon);
+		toolbar.add(cropHLabel);
+		
+		toolbar.add(cropHField);
+		
 		
 		// image panel
 		JScrollPane scrollPane = new JScrollPane(imagePanel);
@@ -118,6 +176,42 @@ public class ImageResizer extends JFrame {
 				String message =  "Could not open the file " + file.getPath();
 				JOptionPane.showMessageDialog(this, message);
 			}
+		}
+	}
+	
+	private void save() {
+		JFileChooser chooser = new JFileChooser(file);
+		int option = chooser.showSaveDialog(this);
+		if(option == JFileChooser.APPROVE_OPTION) {
+			file = chooser.getSelectedFile();
+			chooser.setSelectedFile(file);
+			String fileName = file.getPath();
+			String f = fileName.toLowerCase();
+			if(!f.endsWith(".jpg")) {
+				fileName += ".jpg";
+				file = new File(fileName);
+			}
+			if (file.exists()) {
+				String message = "Do you want to overwrite the file " + file.getPath();
+				int replace = JOptionPane.showConfirmDialog(this, message, "Replace image?", JOptionPane.YES_NO_OPTION);
+				if(replace == JOptionPane.YES_OPTION) {
+					writeImage();
+				}
+			}
+			else {
+				writeImage();
+			}
+		}
+	}
+	
+	private void writeImage() {
+		BufferedImage image = imagePanel.getImage();
+		try {
+			ImageIO.write(image, "jpg", file);
+		}
+		catch (IOException e) {
+			String message = "Could not save " + file.getPath();
+			JOptionPane.showMessageDialog(this, message);
 		}
 	}
 
