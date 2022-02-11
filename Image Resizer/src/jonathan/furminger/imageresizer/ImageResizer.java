@@ -11,9 +11,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
@@ -32,6 +34,7 @@ public class ImageResizer extends JFrame {
 	private static final String IMAGE_Y = "/y16.gif";
 	
 	private ImagePanel imagePanel = new ImagePanel(this);
+	private File file = new File("");
 
 	public ImageResizer() {
 		initGUI();
@@ -96,21 +99,26 @@ public class ImageResizer extends JFrame {
 		// crop options
 		
 		// image panel
-		mainPanel.add(imagePanel, BorderLayout.CENTER);
-		
+		JScrollPane scrollPane = new JScrollPane(imagePanel);
+		mainPanel.add(scrollPane, BorderLayout.CENTER);
+
 	}
 	
 	private void load() {
-		File file = new File("slidingTilesImage.jpg");
-		try {
-			BufferedImage image = ImageIO.read(file);
-			imagePanel.setImage(image);
+		JFileChooser chooser = new JFileChooser(file);
+		chooser.setFileFilter(new JPGFilter());
+		int option = chooser.showOpenDialog(this);
+		if(option == JFileChooser.APPROVE_OPTION) {
+			file = chooser.getSelectedFile();
+			try {
+				BufferedImage image = ImageIO.read(file);
+				imagePanel.setImage(image);
+			}
+			catch (IOException e) {
+				String message =  "Could not open the file " + file.getPath();
+				JOptionPane.showMessageDialog(this, message);
+			}
 		}
-		catch (IOException e) {
-			String message =  "Could not open the file " + file.getPath();
-			JOptionPane.showMessageDialog(this, message);
-		}
-
 	}
 
 }

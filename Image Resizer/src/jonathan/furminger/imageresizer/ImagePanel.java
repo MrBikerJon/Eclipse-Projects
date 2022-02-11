@@ -38,6 +38,7 @@ public class ImagePanel extends JPanel {
 	public void setImage(BufferedImage image) {
 		this.image = image;
 		repaint();
+		revalidate();
 	}
 	
 	public void paintComponent(Graphics g) {
