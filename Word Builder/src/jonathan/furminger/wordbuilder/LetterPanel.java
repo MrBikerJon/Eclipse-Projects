@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -17,7 +18,7 @@ public class LetterPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private static final Color BROWN = new Color(49, 22, 3);
-	private static final String IMAGENAME = "WoodTile.jpg";
+	private static final String IMAGENAME = "/WoodTile.jpg";
 	
 	private String letter = "";
 	private int points = -1;
@@ -74,7 +75,9 @@ public class LetterPanel extends JPanel {
 	private void initPanel() {
 		if(image == null) { 
 			try {
-				image = ImageIO.read(new File(IMAGENAME));
+				InputStream input = getClass().getResourceAsStream(IMAGENAME);
+				
+				image = ImageIO.read(input);
 			}
 			catch (IOException e) {
 				String message = "File " + IMAGENAME + " could not be opened";
