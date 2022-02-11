@@ -2,8 +2,11 @@ package jonathan.furminger.imageresizer;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -116,16 +119,31 @@ public class ImageResizer extends JFrame {
 		// scale options
 		JButton scaleButton = new JButton(scaleIcon);
 		scaleButton.setToolTipText("Scale Image");
+		scaleButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scale();
+			}
+		});
 		toolbar.add(scaleButton);
 		
 		JLabel scaleWLabel = new JLabel(widthIcon);
 		toolbar.add(scaleWLabel);
 		
+		scaleWField.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				changedScaleW();
+			}
+		});
 		toolbar.add(scaleWField);
 		
 		JLabel scaleHLabel = new JLabel(heightIcon);
 		toolbar.add(scaleHLabel);
 		
+		scaleHField.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				changedScaleH();
+			}
+		});
 		toolbar.add(scaleHField);
 		
 		toolbar.addSeparator();
@@ -171,6 +189,8 @@ public class ImageResizer extends JFrame {
 			try {
 				BufferedImage image = ImageIO.read(file);
 				imagePanel.setImage(image);
+				int width = image.getWidth();
+				int height = image.getHeight();setScaleFields(width, height);
 			}
 			catch (IOException e) {
 				String message =  "Could not open the file " + file.getPath();
@@ -213,6 +233,64 @@ public class ImageResizer extends JFrame {
 			String message = "Could not save " + file.getPath();
 			JOptionPane.showMessageDialog(this, message);
 		}
+	}
+	
+	private void setScaleFields(int width, int height) {
+		scaleWField.setText("" + width);
+		scaleHField.setText("" + height);
+		double dWidth = (double) width;
+		double dHeight = (double) height;
+		ratio = dWidth / dHeight;
+	}
+	
+	private void scale() {
+		String w = scaleWField.getText();
+		int newWidth = Integer.parseInt(w);
+		String h = scaleHField.getText();
+		int newHeight = Integer.parseInt(h);
+		
+		BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+		
+		Graphics g = newImage.createGraphics();
+		
+		BufferedImage oldImage = imagePanel.getImage();
+		
+		g.drawImage(oldImage, 0,  0,  newWidth,  newHeight,  this);
+		g.dispose();
+		imagePanel.setImage(newImage);
+		
+	}
+	
+	private void changedScaleW() {
+		String s = scaleWField.getText();
+		if(isValid(s, 1)) {
+			int scaleW = Integer.parseInt(s);
+			double dHeight = scaleW / ratio;
+			int scaleH = (int) dHeight;
+			scaleHField.setText("" + scaleH);
+		}
+		else {
+			String message = s + " is not a valid width.";
+			JOptionPane.showMessageDialog(this, message);
+			scaleWField.requestFocus();
+		}
+	}
+	
+	private void changedScaleH() {
+		String s = scaleHField.getText();
+		int scaleH = Integer.parseInt(s);
+		double dWidth = scaleH * ratio;
+		int scaleW = (int) dWidth;
+		scaleWField.setText("" + scaleW);
+	}
+	
+	private boolean isValid(String s, int minVal) {
+		boolean valid = false;
+		int i = Integer.parseInt(s);
+		if(i >= minVal) {
+			valid = true;
+		}
+		return valid;
 	}
 
 }
