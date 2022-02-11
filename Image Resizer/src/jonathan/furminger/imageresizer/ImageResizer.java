@@ -156,21 +156,41 @@ public class ImageResizer extends JFrame {
 		JLabel cropXLabel = new JLabel(xIcon);
 		toolbar.add(cropXLabel);
 		
+		cropXField.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				changedCropX();
+			}
+		});
 		toolbar.add(cropXField);
 		
 		JLabel cropYLabel = new JLabel(yIcon);
 		toolbar.add(cropYLabel);
 		
+		cropYField.addActionListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				changedCropY();
+			}
+		});
 		toolbar.add(cropYField);
 		
 		JLabel cropWLabel = new JLabel(widthIcon);
 		toolbar.add(cropWLabel);
 		
+		cropWField.addActionListener(new FocusAdapter() {
+			public void focusLost(FocusAdapter e) {
+				changedCropW();
+			}
+		});
 		toolbar.add(cropWField);
 		
 		JLabel cropHLabel = new JLabel(heightIcon);
 		toolbar.add(cropHLabel);
 		
+		cropHField.addActionListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				changedCropH();
+			}
+		});
 		toolbar.add(cropHField);
 		
 		
@@ -244,20 +264,27 @@ public class ImageResizer extends JFrame {
 	}
 	
 	private void scale() {
-		String w = scaleWField.getText();
-		int newWidth = Integer.parseInt(w);
-		String h = scaleHField.getText();
-		int newHeight = Integer.parseInt(h);
-		
-		BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-		
-		Graphics g = newImage.createGraphics();
-		
-		BufferedImage oldImage = imagePanel.getImage();
-		
-		g.drawImage(oldImage, 0,  0,  newWidth,  newHeight,  this);
-		g.dispose();
-		imagePanel.setImage(newImage);
+		try {
+			String w = scaleWField.getText();
+			int newWidth = Integer.parseInt(w);
+			String h = scaleHField.getText();
+			int newHeight = Integer.parseInt(h);
+			
+			BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+			
+			Graphics g = newImage.createGraphics();
+			
+			BufferedImage oldImage = imagePanel.getImage();
+			
+			g.drawImage(oldImage, 0,  0,  newWidth,  newHeight,  this);
+			g.dispose();
+			imagePanel.setImage(newImage);
+		}
+		catch (Exception e) {
+			String message = "The image could not be scaled.";
+			JOptionPane.showMessageDialog(this, message);
+		}
+
 		
 	}
 	
@@ -267,6 +294,9 @@ public class ImageResizer extends JFrame {
 			int scaleW = Integer.parseInt(s);
 			double dHeight = scaleW / ratio;
 			int scaleH = (int) dHeight;
+			if(scaleH < 1) {
+				scaleH = 1;
+			}
 			scaleHField.setText("" + scaleH);
 		}
 		else {
@@ -278,19 +308,52 @@ public class ImageResizer extends JFrame {
 	
 	private void changedScaleH() {
 		String s = scaleHField.getText();
-		int scaleH = Integer.parseInt(s);
-		double dWidth = scaleH * ratio;
-		int scaleW = (int) dWidth;
-		scaleWField.setText("" + scaleW);
+		if(isValid(s, 1)) {
+			int scaleH = Integer.parseInt(s);
+			double dWidth = scaleH * ratio;
+			int scaleW = (int) dWidth;
+			if(scaleW < 1) {
+				scaleW = 1;
+			}
+			scaleWField.setText("" + scaleW);
+		}
+		else {
+			String message = s + " is not a valid height.";
+			JOptionPane.showMessageDialog(this, message);
+			scaleHField.requestFocus();
+		}
 	}
 	
 	private boolean isValid(String s, int minVal) {
 		boolean valid = false;
-		int i = Integer.parseInt(s);
-		if(i >= minVal) {
-			valid = true;
+		try {
+			int i = Integer.parseInt(s);
+			if(i >= minVal) {
+				valid = true;
+			}	
 		}
+		catch (NumberFormatException e) {}
 		return valid;
+	}
+	
+	private void changedCropX() {
+		String s = cropXField.getText();
+		if(isValid(s, 0)) {}
+	}
+	
+	private void changedCropY() {
+		String s = cropYField.getText();
+		if(isValid(s, 0)) {}
+	}
+	
+	private void changedCropW() {
+		String s = cropWField.getText();
+		if(isValid(s, 0)) {}
+	}
+	
+	private void changedCropH() {
+		String s = cropHField.getText();
+		if(isValid(s, 0)) {}
 	}
 
 }
