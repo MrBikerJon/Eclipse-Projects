@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -29,6 +30,13 @@ public class ImagePanel extends JPanel {
 				int x = e.getX();
 				int y = e.getY();
 				imageClicked(x, y);
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				int x = e.getX();
+				int y = e.getY();
+				cropDragged(x, y);
 			}
 		});
 	}
@@ -91,6 +99,35 @@ public class ImagePanel extends JPanel {
 		cropY = 0;
 		cropH = 0;
 		cropW = 0;
+		repaint();
+	}
+	
+	private void imageClicked(int x, int y) {
+		startX = x;
+		startY = y;
+		cropX = x;
+		cropY = y;
+		imageResizer.setCropFields(cropX, cropY, cropW, cropH);
+		repaint();
+	}
+	
+	private void cropDragged(int x, int y) {
+		if(x > startX) {
+			cropW = x - startX;
+		}
+		else {
+			cropW = startX - x;
+			cropX = x;
+		}
+		
+		if(y > startY) {
+			cropH = y - startY;
+		}
+		else {
+			cropH = startY - y;
+			cropY = y;
+		}
+		imageResizer.setCropFields(cropX, cropY, cropW, cropH);
 		repaint();
 	}
 

@@ -59,7 +59,7 @@ public class ImageResizer extends JFrame {
 	
 	public static void main(String[] args) {
 		try {
-			String className = UIManager.getCrossPlatformLookAndFeelClassName();
+			String className = UIManager.getSystemLookAndFeelClassName();
 			UIManager.setLookAndFeel(className);
 		}
 		catch (Exception e) {
@@ -133,6 +133,10 @@ public class ImageResizer extends JFrame {
 			public void focusLost(FocusEvent e) {
 				changedScaleW();
 			}
+			public void focusGained(FocusEvent e) {
+				JTextField field = (JTextField) e.getSource();
+				field.selectAll();
+			}
 		});
 		toolbar.add(scaleWField);
 		
@@ -142,6 +146,10 @@ public class ImageResizer extends JFrame {
 		scaleHField.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
 				changedScaleH();
+			}
+			public void focusGained(FocusEvent e) {
+				JTextField field = (JTextField) e.getSource();
+				field.selectAll();
 			}
 		});
 		toolbar.add(scaleHField);
@@ -165,6 +173,10 @@ public class ImageResizer extends JFrame {
 			public void focusLost(FocusEvent e) {
 				changedCropX();
 			}
+			public void focusGained(FocusEvent e) {
+				JTextField field = (JTextField) e.getSource();
+				field.selectAll();
+			}
 		});
 		toolbar.add(cropXField);
 		
@@ -174,6 +186,10 @@ public class ImageResizer extends JFrame {
 		cropYField.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
 				changedCropY();
+			}
+			public void focusGained(FocusEvent e) {
+				JTextField field = (JTextField) e.getSource();
+				field.selectAll();
 			}
 		});
 		toolbar.add(cropYField);
@@ -185,6 +201,10 @@ public class ImageResizer extends JFrame {
 			public void focusLost(FocusEvent e) {
 				changedCropW();
 			}
+			public void focusGained(FocusEvent e) {
+				JTextField field = (JTextField) e.getSource();
+				field.selectAll();
+			}
 		});
 		toolbar.add(cropWField);
 		
@@ -194,6 +214,10 @@ public class ImageResizer extends JFrame {
 		cropHField.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
 				changedCropH();
+			}
+			public void focusGained(FocusEvent e) {
+				JTextField field = (JTextField) e.getSource();
+				field.selectAll();
 			}
 		});
 		toolbar.add(cropHField);
