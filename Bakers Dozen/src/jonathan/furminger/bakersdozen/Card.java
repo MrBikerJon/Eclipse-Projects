@@ -1,5 +1,7 @@
 package jonathan.furminger.bakersdozen;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
 
 public class Card {
@@ -39,5 +41,24 @@ public class Card {
 	
 	public int getY() {
 		return y;
+	}
+	
+	public void setXY(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void addToXY(int changeX, int changeY) {
+		x += changeX;
+		y += changeY;
+	}
+	
+	public void draw (Graphics g) {
+		g.drawImage(image, x, y, null);
+	}
+	
+	public static void drawOutline(Graphics g, int x, int y) {
+		g.setColor(Color.BLACK);
+		g.drawRoundRect(x, y, width, height, 8, 8);
 	}
 }
