@@ -151,6 +151,11 @@ public class ImageResizer extends JFrame {
 		// crop options
 		JButton cropButton = new JButton(cropIcon);
 		cropButton.setToolTipText("Crop Image");
+		cropButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				crop();
+			}
+		});
 		toolbar.add(cropButton);
 		
 		JLabel cropXLabel = new JLabel(xIcon);
@@ -166,7 +171,7 @@ public class ImageResizer extends JFrame {
 		JLabel cropYLabel = new JLabel(yIcon);
 		toolbar.add(cropYLabel);
 		
-		cropYField.addActionListener(new FocusAdapter() {
+		cropYField.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
 				changedCropY();
 			}
@@ -176,8 +181,8 @@ public class ImageResizer extends JFrame {
 		JLabel cropWLabel = new JLabel(widthIcon);
 		toolbar.add(cropWLabel);
 		
-		cropWField.addActionListener(new FocusAdapter() {
-			public void focusLost(FocusAdapter e) {
+		cropWField.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
 				changedCropW();
 			}
 		});
@@ -186,7 +191,7 @@ public class ImageResizer extends JFrame {
 		JLabel cropHLabel = new JLabel(heightIcon);
 		toolbar.add(cropHLabel);
 		
-		cropHField.addActionListener(new FocusAdapter() {
+		cropHField.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
 				changedCropH();
 			}
@@ -339,21 +344,72 @@ public class ImageResizer extends JFrame {
 	private void changedCropX() {
 		String s = cropXField.getText();
 		if(isValid(s, 0)) {}
+		else {
+			String message = "The value " + s + " is invalid.";
+			JOptionPane.showMessageDialog(this, message);
+			cropXField.requestFocus();
+		}
 	}
 	
 	private void changedCropY() {
 		String s = cropYField.getText();
 		if(isValid(s, 0)) {}
+		else {
+			String message = "The value " + s + "is invalid";
+			JOptionPane.showMessageDialog(this,  message);
+			cropYField.requestFocus();
+		}
 	}
 	
 	private void changedCropW() {
 		String s = cropWField.getText();
 		if(isValid(s, 0)) {}
+		else {
+			String message = "The value " + s + " is invalid.";
+			JOptionPane.showMessageDialog(this,  message);
+			cropWField.requestFocus();
+		}
 	}
 	
 	private void changedCropH() {
 		String s = cropHField.getText();
 		if(isValid(s, 0)) {}
+		else {
+			String message = "The value " + s + " is invalid.";
+			JOptionPane.showMessageDialog(this, message);
+			cropHField.requestFocus();
+		}
+	}
+	
+	private void crop() {
+		try {
+			String s = cropXField.getText();
+			int cropX = Integer.parseInt(s);
+			s = cropYField.getText();
+			int cropY = Integer.parseInt(s);
+			s = cropWField.getText();
+			int cropW = Integer.parseInt(s);
+			s = cropHField.getText();
+			int cropH = Integer.parseInt(s);
+			
+			BufferedImage image = imagePanel.getImage();
+			BufferedImage croppedImage = image.getSubimage(cropX,  cropY,  cropW,  cropH);
+			imagePanel.setImage(croppedImage);
+			setScaleFields(cropW, cropH);
+			setCropFields(0, 0, 0, 0);
+		}
+		catch (Exception e) {
+			String message = "The image could not be cropped";
+			JOptionPane.showMessageDialog(this,  message);
+		}
+
+	}
+	
+	public void setCropFields(int cropX, int cropY, int cropW, int cropH) {
+		cropXField.setText("" + cropX);
+		cropYField.setText("" + cropY);
+		cropWField.setText("" + cropW);
+		cropHField.setText("" + cropH);
 	}
 
 }
