@@ -14,4 +14,20 @@ public class CardStack {
 		this.stackY = stackY;
 		this.overlap = overlap;
 	}
+	
+	public void add(Card card) {
+		int cardx = stackX;
+		int cardy = overlap*cards.size() + stackY;
+		card.setXY(cardx, cardy);
+		cards.add(card);
+	}
+	
+	public void addToBeginning(Card card) {
+		card.setXY(stackX, stackY);
+		cards.add(0, card);
+		for(int i = 1; i < cards.size(); i++) {
+			Card nextCard = cards.get(i);
+			nextCard.addToXY(0, overlap);
+		}
+	}
 }
