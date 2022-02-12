@@ -343,7 +343,10 @@ public class ImageResizer extends JFrame {
 	
 	private void changedCropX() {
 		String s = cropXField.getText();
-		if(isValid(s, 0)) {}
+		if(isValid(s, 0)) {
+			int cropX = Integer.parseInt(s);
+			imagePanel.setCropX(cropX);
+		}
 		else {
 			String message = "The value " + s + " is invalid.";
 			JOptionPane.showMessageDialog(this, message);
@@ -353,7 +356,10 @@ public class ImageResizer extends JFrame {
 	
 	private void changedCropY() {
 		String s = cropYField.getText();
-		if(isValid(s, 0)) {}
+		if(isValid(s, 0)) {
+			int cropY = Integer.parseInt(s);
+			imagePanel.setCropY(cropY);
+		}
 		else {
 			String message = "The value " + s + "is invalid";
 			JOptionPane.showMessageDialog(this,  message);
@@ -363,7 +369,10 @@ public class ImageResizer extends JFrame {
 	
 	private void changedCropW() {
 		String s = cropWField.getText();
-		if(isValid(s, 0)) {}
+		if(isValid(s, 0)) {
+			int cropW = Integer.parseInt(s);
+			imagePanel.setCropW(cropW);
+		}
 		else {
 			String message = "The value " + s + " is invalid.";
 			JOptionPane.showMessageDialog(this,  message);
@@ -373,7 +382,10 @@ public class ImageResizer extends JFrame {
 	
 	private void changedCropH() {
 		String s = cropHField.getText();
-		if(isValid(s, 0)) {}
+		if(isValid(s, 0)) {
+			int cropH = Integer.parseInt(s);
+			imagePanel.setCropH(cropH);
+		}
 		else {
 			String message = "The value " + s + " is invalid.";
 			JOptionPane.showMessageDialog(this, message);
@@ -397,6 +409,7 @@ public class ImageResizer extends JFrame {
 			imagePanel.setImage(croppedImage);
 			setScaleFields(cropW, cropH);
 			setCropFields(0, 0, 0, 0);
+			imagePanel.resetCrop();
 		}
 		catch (Exception e) {
 			String message = "The image could not be cropped";
