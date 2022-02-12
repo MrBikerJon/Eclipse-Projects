@@ -1,5 +1,6 @@
 package jonathan.furminger.bakersdozen;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -11,6 +12,7 @@ import jonathan.furminger.mycomponents.TitleLabel;
 public class BakersDozen extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private TablePanel tablePanel = new TablePanel();
 
 	public BakersDozen() {
 		initGUI();
@@ -39,6 +41,12 @@ public class BakersDozen extends JFrame {
 	
 	private void initGUI() {
 		TitleLabel titleLabel = new TitleLabel("Baker's Dozen");
+		add(titleLabel, BorderLayout.PAGE_START);
+		
+		// table panel
+		add(tablePanel, BorderLayout.CENTER);
+		
+		// button panel
 		
 	}
 
