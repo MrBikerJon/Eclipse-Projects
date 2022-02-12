@@ -22,10 +22,10 @@ public class DrawDeckImage {
 		int imageWidth = cardWidth * 13;
 		int imageHeight = cardHeight * 4;
 		
-		BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 		
 		Graphics g = image.getGraphics();
-		g.setColor(Color.GREEN);
+		g.setColor(new Color(0, 0, 0, 0));
 		g.fillRect(0, 0, imageWidth, imageHeight);
 		
 		Font font = new Font(Font.DIALOG, Font.BOLD, 24);
