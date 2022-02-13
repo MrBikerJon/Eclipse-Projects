@@ -1,5 +1,6 @@
 package jonathan.furminger.bakersdozen;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class CardStack {
@@ -29,5 +30,31 @@ public class CardStack {
 			Card nextCard = cards.get(i);
 			nextCard.addToXY(0, overlap);
 		}
+	}
+	
+	public void draw(Graphics g) {
+		if(cards.size() > 0 && overlap == 0) {
+			int lastIndex = cards.size()-1;
+			Card card = cards.get(lastIndex);
+			card.draw(g);
+		}
+		else {
+			for(int i = 0; i < cards.size(); i++) {
+				Card card = cards.get(i);
+				card.draw(g);
+			}
+		}
+	}
+	
+	public int size() {
+		return cards.size();
+	}
+	
+	public int getX() {
+		return stackX;
+	}
+	
+	public int getY() {
+		return stackY;
 	}
 }
