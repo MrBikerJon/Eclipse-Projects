@@ -57,4 +57,18 @@ public class CardStack {
 	public int getY() {
 		return stackY;
 	}
+	
+	public void clear() {
+		cards.clear();
+	}
+	
+	public Card getLast() {
+		int index = cards.size()-1;
+		return cards.get(index);
+	}
+	
+	public void removeLast() {
+		int index = cards.size()-1;
+		cards.remove(index);
+	}
 }
