@@ -26,6 +26,7 @@ public class TablePanel extends JPanel {
 	private static final int OVERLAP = (int) (CARDHEIGHT*.65);	
 	
 	private Deck deck;
+	private Deck savedDeck = new Deck();
 	CardStack[] foundation = new CardStack[4];
 	CardStack[] column = new CardStack[13];
 	
@@ -73,9 +74,6 @@ public class TablePanel extends JPanel {
 				dragged(x, y);
 			}
 		});
-		
-		
-		
 	}
 	
 	public Dimension getPreferredSize() {
@@ -84,6 +82,15 @@ public class TablePanel extends JPanel {
 	}
 
 	private void deal() {
+		// clear the foundations and columns
+		for(int i = 0; i < 4; i++) {
+			foundation[i].clear();
+		}
+		
+		for(int i = 0; i < 13; i++) {
+			column[i].clear();
+		}
+		
 		// deal 4 rows of 13 columns
 		for(int row = 0; row < 4; row++) {
 			for(int col = 0; col < 13; col++) {
@@ -232,6 +239,12 @@ public class TablePanel extends JPanel {
 	
 	public void newGame() {
 		deck = new Deck();
+		savedDeck.copyFrom(deck);
+		deal();
+	}
+	
+	public void replay() {
+		deck.copyFrom(savedDeck);
 		deal();
 	}
 	

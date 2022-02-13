@@ -1,9 +1,14 @@
 package jonathan.furminger.bakersdozen;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -47,7 +52,25 @@ public class BakersDozen extends JFrame {
 		add(tablePanel, BorderLayout.CENTER);
 		
 		// button panel
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBackground(Color.BLACK);
+		add(buttonPanel, BorderLayout.PAGE_END);
 		
+		JButton newButton = new JButton("New Game");
+		newButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tablePanel.newGame();
+			}
+		});
+		buttonPanel.add(newButton);
+		
+		JButton replayButton = new JButton("Replay");
+		replayButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tablePanel.replay();
+			}
+		});
+		buttonPanel.add(replayButton);
 	}
 
 }

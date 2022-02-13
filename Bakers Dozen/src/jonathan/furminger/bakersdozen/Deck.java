@@ -70,4 +70,17 @@ public class Deck {
 	public int size() {
 		return cards.size();
 	}
+	
+	private Card get(int index) {
+		Card card = cards.get(index);
+		return card;
+	}
+	
+	public void copyFrom(Deck deck) {
+		cards.clear();
+		for(int i = 0; i < deck.size(); i++) {
+			Card card = deck.get(i);
+			cards.add(card);
+		}
+	}
 }
