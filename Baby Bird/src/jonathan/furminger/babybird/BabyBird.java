@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -76,7 +77,19 @@ public class BabyBird extends JFrame {
 	}
 	
 	public void nextBird() {
-		birdNestPanel.removeBird();
+		int birdsRemaining = birdNestPanel.removeBird();
+		if(birdsRemaining < 0) {
+			String message = "You have no birds left. Do you want to play again?";
+			int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
+			if(option == JOptionPane.YES_OPTION) {
+				birdNestPanel.setBirdCount(LIVES - 1);
+				scorePanel.reset();
+				flightPanel.restart();
+			}
+			else {
+				System.exit(0);
+			}
+		}
 	}
 	
 	public void addToScore(int points) {

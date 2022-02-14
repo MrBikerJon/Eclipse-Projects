@@ -1,6 +1,7 @@
 package jonathan.furminger.babybird;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -32,7 +33,7 @@ public class Wall {
 	private String pointsString;
 	private int pointsX;
 	
-	public Wall() {
+	public Wall(FontMetrics fm) {
 		if(wallImage == null) {
 			wallImage = FileIO.readImageFile(this, WALL_IMAGE_FILE);
 			width = wallImage.getWidth();
@@ -52,6 +53,10 @@ public class Wall {
 		//turn values into a number 10 to 1 so the
 		// smallest gap has the highest score
 		points = 10 - intValue;
+		
+		pointsString = "" + points;
+		int pointsWidth = fm.stringWidth(pointsString);
+		pointsX = (width / 2) - (pointsWidth / 2);
 		
 		range = TOP_MAX - TOP_MIN;
 		pick = rand.nextInt(range);
@@ -74,8 +79,9 @@ public class Wall {
 		else {
 			g.drawImage(topImage, x, 0, null);
 			g.drawImage(bottomImage, x, bottomY, null);
-			
 		}
+		g.setColor(Color.BLACK);
+		g.drawString(pointsString, x + pointsX, bottomY + POINTS_OFFSET);
 	}
 	
 	public void move() {
@@ -99,6 +105,22 @@ public class Wall {
 	
 	public int getPoints() {
 		return points;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return 0;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getChangeX() {
+		return CHANGE_X;
 	}
 	
 }

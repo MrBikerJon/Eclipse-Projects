@@ -80,5 +80,25 @@ public class Bird {
 	public BufferedImage getImage() {
 		return birds[FLAP_GLIDE];
 	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getChangeY() {
+		return (int) changeY;
+	}
 
 }
