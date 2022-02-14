@@ -1,11 +1,13 @@
 package jonathan.furminger.matchthree;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
 
@@ -23,6 +25,10 @@ public class BallPanel extends JPanel {
 	private static final int DIRECTION_UP = 3;
 	private static final int DIRECTION_DOWN = 4;
 	
+	private static final Cursor HORIZONTAL_ARROWS = new Cursor(Cursor.W_RESIZE_CURSOR);
+	private static final Cursor VERTICAL_ARROWS = new Cursor(Cursor.N_RESIZE_CURSOR);
+	private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+	
 	private MatchThree game;
 	private Cell[][] cells = new Cell[ROWS][COLS];
 	
@@ -35,6 +41,13 @@ public class BallPanel extends JPanel {
 				int x = e.getX();
 				int y = e.getY();
 				clicked(x, y);
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseMoved(MouseEvent e) {
+				int x = e.getX();
+				int y = e.getY();
+				mouseMovedTo(x, y);
 			}
 		});
 	}
@@ -133,7 +146,23 @@ public class BallPanel extends JPanel {
 			swap(row, col, row+1, col);
 			break;
 		}
-		
+	}
+	
+	private void mouseMovedTo(int x, int y) {
+		int direction = getSwapDirection(x, y);
+		switch(direction) {
+		case DIRECTION_LEFT :
+		case DIRECTION_RIGHT :
+			setCursor(HORIZONTAL_ARROWS);
+			break;
+		case DIRECTION_UP :
+		case DIRECTION_DOWN :
+			setCursor(VERTICAL_ARROWS);
+			break;
+		default :
+			setCursor(DEFAULT_CURSOR);
+			break;
+		}
 	}
 
 }
