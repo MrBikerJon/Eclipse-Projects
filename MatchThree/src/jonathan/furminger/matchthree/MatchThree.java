@@ -68,5 +68,10 @@ public class MatchThree extends JFrame {
 	public void addToScore(int newPoints) {
 		scorePanel.addToScore(newPoints);
 	}
+	
+	public void restart() {
+		scorePanel.reset();
+		ballPanel.setInitialBalls();
+	}
 
 }

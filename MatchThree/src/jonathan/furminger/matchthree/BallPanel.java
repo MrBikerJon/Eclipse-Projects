@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class BallPanel extends JPanel {
@@ -147,9 +148,10 @@ public class BallPanel extends JPanel {
 					}
 					repaint();
 					if(points > 0) {
-						validSwap = true;
 						game.addToScore(points);
 						removeMarkedChains();
+						validSwap = true;
+						endGameIfDone();
 					}
 					else {
 						repeat = false;
@@ -383,6 +385,76 @@ public class BallPanel extends JPanel {
 				|| twoMatchToLeft(row, col + 2);
 		
 		return inChain;
+	}
+	
+	private boolean isValidSwap(int row1, int col1, int direction) {
+		boolean valid = false;
+		
+		// set the rows and columns of the cells to swap
+		int row2 = row1;
+		int col2 = col1;
+		switch(direction) {
+		case DIRECTION_LEFT :
+			col2 = col1 - 1;
+			break;
+		case DIRECTION_RIGHT :
+			col2 = col1 + 1;
+			break;
+		case DIRECTION_UP :
+			row2 = row1 - 1;
+			break;
+		case DIRECTION_DOWN :
+			row2 = row1 + 1;
+			break;
+		}
+		
+		// swap the two cells
+		Cell temp = new Cell();
+		temp.copy(cells[row1][col1]);
+		cells[row1][col1].copy(cells[row2][col2]);
+		cells[row2][col2].copy(temp);
+		
+		// if either of the swapped calls is now in a chain,
+		// it is a valid swap
+		if(inChain(row1, col1) || inChain(row2, col2)) {
+			valid = true;
+		}
+		
+		// swap the two cells back
+		temp.copy(cells[row2][col2]);
+		cells[row2][col2].copy(cells[row1][col1]);
+		cells[row1][col1].copy(temp);
+		
+		return valid;
+	}
+	
+	private boolean validMovesRemaining() {
+		boolean movesRemaining = false;
+		for(int row = 0; row < ROWS && !movesRemaining; row++) {
+			for(int col = 0; col < COLS && ! movesRemaining; col++) {
+				if(row < ROWS - 1) {
+					movesRemaining = isValidSwap(row, col, DIRECTION_DOWN);
+				}
+				if(!movesRemaining && col < COLS - 1) {
+					movesRemaining = isValidSwap(row, col, DIRECTION_RIGHT);
+				}
+			}
+		}
+		return movesRemaining;
+	}
+	
+	private void endGameIfDone() {
+		boolean gameOver = !validMovesRemaining();
+		if(gameOver) {
+			String message = "No more moves are possible. Do you want to play again?";
+			int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
+			if(option == JOptionPane.YES_OPTION) {
+				game.restart();
+			}
+			else {
+				System.exit(0);
+			}
+		}
 	}
 	
 }
