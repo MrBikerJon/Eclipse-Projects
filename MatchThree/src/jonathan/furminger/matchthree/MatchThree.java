@@ -3,8 +3,11 @@ package jonathan.furminger.matchthree;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -61,7 +64,21 @@ public class MatchThree extends JFrame {
 		mainPanel.add(ballPanel);
 		
 		// button panel
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBackground(Color.BLACK);
+		mainPanel.add(buttonPanel);
 		
+		JButton hintButton = new JButton("Hint");
+		hintButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showHint();
+			}
+		});
+		buttonPanel.add(hintButton);
+	}
+	
+	public void showHint() {
+		ballPanel.showHint();
 	}
 	
 

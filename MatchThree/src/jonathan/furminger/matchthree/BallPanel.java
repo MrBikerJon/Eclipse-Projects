@@ -32,6 +32,9 @@ public class BallPanel extends JPanel {
 	
 	private MatchThree game;
 	private Cell[][] cells = new Cell[ROWS][COLS];
+	private int hintRow = -1;
+	private int hintCol = -1;
+	private boolean showHint = false;
 	
 	public BallPanel(MatchThree game) {
 		this.game = game;
@@ -62,6 +65,9 @@ public class BallPanel extends JPanel {
 				}
 			}
 		}
+		if(!validMovesRemaining()) {
+			setInitialBalls();
+		}
 		repaint();
 	}
 	
@@ -82,6 +88,14 @@ public class BallPanel extends JPanel {
 				int y = row * Cell.SIZE;
 				cells[row][col].draw(g, x, y);
 			}
+		}
+		
+		// hint
+		if(showHint) {
+			g.setColor(Color.WHITE);
+			int x = hintCol * Cell.SIZE;
+			int y = hintRow * Cell.SIZE;
+			g.drawRect(x, y, Cell.SIZE, Cell.SIZE);
 		}
 	}
 	
@@ -146,6 +160,16 @@ public class BallPanel extends JPanel {
 						int newPoints = markChainsAndGetPointsInCol(col);
 						points += newPoints;
 					}
+					
+					if(showHint) {
+						showHint = false;
+						if((row1 == hintRow && col1 == hintCol) || (row2 == hintRow && col2 == hintCol)) {
+								int losePoints = points * -2;
+								game.addToScore(losePoints);
+						}
+
+					}
+					
 					repaint();
 					if(points > 0) {
 						game.addToScore(points);
@@ -418,6 +442,8 @@ public class BallPanel extends JPanel {
 		// it is a valid swap
 		if(inChain(row1, col1) || inChain(row2, col2)) {
 			valid = true;
+			hintRow = row1;
+			hintCol = col1;
 		}
 		
 		// swap the two cells back
@@ -455,6 +481,11 @@ public class BallPanel extends JPanel {
 				System.exit(0);
 			}
 		}
+	}
+	
+	public void showHint() {
+		showHint = true;
+		repaint();
 	}
 	
 }
