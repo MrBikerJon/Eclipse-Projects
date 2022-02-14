@@ -63,5 +63,10 @@ public class MatchThree extends JFrame {
 		// button panel
 		
 	}
+	
+
+	public void addToScore(int newPoints) {
+		scorePanel.addToScore(newPoints);
+	}
 
 }
