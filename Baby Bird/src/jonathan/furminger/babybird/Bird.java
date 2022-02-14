@@ -76,5 +76,9 @@ public class Bird {
 		Rectangle bounds = new Rectangle(x, y, width, height);
 		return bounds;
 	}
+	
+	public BufferedImage getImage() {
+		return birds[FLAP_GLIDE];
+	}
 
 }

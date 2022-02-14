@@ -3,6 +3,7 @@ package jonathan.furminger.babybird;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -15,9 +16,11 @@ import jonathan.furminger.mycomponents.TitleLabel;
 public class BabyBird extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static final int LIVES = 4;
 	
 	private ScorePanel scorePanel = new ScorePanel(0, Color.GREEN);
 	private FlightPanel flightPanel = new FlightPanel(this);
+	private BirdNestPanel birdNestPanel;
 
 	public static void main(String[] args) {
 		try {
@@ -60,9 +63,24 @@ public class BabyBird extends JFrame {
 		mainPanel.add(flightPanel);
 		
 		// bottom panel
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.setBackground(Color.BLACK);
+		add(bottomPanel, BorderLayout.PAGE_END);
 		
 		// bird nest panel
+		Bird bird = flightPanel.getBird();
+		BufferedImage birdImage = bird.getImage();
+		birdNestPanel = new BirdNestPanel(birdImage, LIVES - 1);
+		bottomPanel.add(birdNestPanel);
 		
+	}
+	
+	public void nextBird() {
+		birdNestPanel.removeBird();
+	}
+	
+	public void addToScore(int points) {
+		scorePanel.addToScore(points);
 	}
 
 }

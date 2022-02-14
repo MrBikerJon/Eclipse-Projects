@@ -88,6 +88,8 @@ public class FlightPanel extends JPanel {
 			wall.move();
 			if(wall.isPastWindowEdge()) {
 				walls.remove(i);
+				int points = wall.getPoints();
+				babyBird.addToScore(points);
 			}
 		}
 		
@@ -98,7 +100,7 @@ public class FlightPanel extends JPanel {
 		Rectangle bottomWallBounds = firstWall.getBottomBounds();
 		if(birdBounds.intersects(topWallBounds) 
 				|| birdBounds.intersects(bottomWallBounds)) {
-			timer.stop();
+			nextLife();
 		}
 		
 		// should another wall be added?
@@ -111,6 +113,20 @@ public class FlightPanel extends JPanel {
 		
 		// repaint
 		repaint();
+	}
+	
+	public Bird getBird() {
+		return bird;
+	}
+	
+	private void nextLife() {
+		babyBird.nextBird();
+		
+		count = 0;
+		
+		walls.clear();
+		Wall wall = new Wall();
+		walls.add(wall);
 	}
 
 }

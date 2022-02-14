@@ -19,6 +19,7 @@ public class Wall {
 	private static final int TOP_MAX = 300;
 	private static final int GAP_MIN = 100;
 	private static final int GAP_MAX = 240;
+	private static final int POINTS_OFFSET = 80;
 	
 	private int x = FlightPanel.WIDTH;
 	private int bottomY;
@@ -27,6 +28,9 @@ public class Wall {
 	private BufferedImage topImage;
 	private BufferedImage bottomImage;
 	private Random rand = new Random();
+	private int points = 1;
+	private String pointsString;
+	private int pointsX;
 	
 	public Wall() {
 		if(wallImage == null) {
@@ -38,6 +42,16 @@ public class Wall {
 		int range = GAP_MAX - GAP_MIN;
 		int pick = rand.nextInt(range);
 		int gap = pick + GAP_MIN;
+		
+		// calculate ratio of picked gap to possible range
+		float ratio = (float) pick / range;
+		
+		// turn ratio into a number 1 to 10
+		int intValue = (int) (ratio * 10);
+		
+		//turn values into a number 10 to 1 so the
+		// smallest gap has the highest score
+		points = 10 - intValue;
 		
 		range = TOP_MAX - TOP_MIN;
 		pick = rand.nextInt(range);
@@ -81,6 +95,10 @@ public class Wall {
 	public Rectangle getBottomBounds() {
 		Rectangle bounds = new Rectangle(x, bottomY, width, bottomHeight);
 		return bounds;
+	}
+	
+	public int getPoints() {
+		return points;
 	}
 	
 }
