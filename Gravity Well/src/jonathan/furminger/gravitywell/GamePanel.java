@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -110,23 +111,25 @@ public class GamePanel extends JPanel {
 		setFocusable(true);
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				int code = e.getKeyCode();
-				switch(code) {
-				case KeyEvent.VK_RIGHT :
-					// fire right thrusters to move left
-					lander.accelerateLeft();
-					break;
-				case KeyEvent.VK_LEFT :
-					// fire left thrusters to move right
-					lander.accelerateRight();
-					break;
-				case KeyEvent.VK_DOWN :
-					// fire bottom thrusters to move up
-					lander.accelerateUp();
-					break;
+				if(!lander.isOutOfFuel()) {
+					int code = e.getKeyCode();
+					switch(code) {
+					case KeyEvent.VK_RIGHT :
+						// fire right thrusters to move left
+						lander.accelerateLeft();
+						break;
+					case KeyEvent.VK_LEFT :
+						// fire left thrusters to move right
+						lander.accelerateRight();
+						break;
+					case KeyEvent.VK_DOWN :
+						// fire bottom thrusters to move up
+						lander.accelerateUp();
+						break;
+					}
+					lander.move();
+					repaint();
 				}
-				lander.move();
-				repaint();
 			}
 			
 			public void keyReleased(KeyEvent e) {
@@ -159,7 +162,8 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void ready() {
-		
+		lander.nextLander();
+		state = STATE_FLYING;
 	}
 	
 	private void fly() {
@@ -177,18 +181,57 @@ public class GamePanel extends JPanel {
 				}
 			}
 		}
+		
+		if(!landed) {
+			Rectangle landerBounds = lander.getBounds();
+			if(landscape.intersects(landerBounds)) {
+				state = STATE_CRASHED;
+			}
+			else if(lander.isOutOfFuel()) {
+				lander.stopAcceleration();
+			}
+		}
 	}
 	
 	private void safeLanding() {
-		
+		lander.stopSound();
+		int points = lander.getLandingPoints();
+		String message = "You landed safely. You got " + points + " points.";
+		JOptionPane.showMessageDialog(this, message);
+		scorePanel.addToScore(points);
+		lander.addFuel(points);
+		state = STATE_READY;
 	}
 	
 	private void badLanding() {
+		lander.stopSound();
+		String message = "You were going too fast!";
+		JOptionPane.showMessageDialog(this, message);
+		state = STATE_READY;
 		
 	}
 	
 	private void crashed() {
-		
+		lander.stopSound();
+		if(lander.isOutOfFuel()) {
+			timer.stop();
+			String message = "You ran out of fuel. Do you want to play again?";
+			int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
+			if(option == JOptionPane.YES_OPTION) {
+				scorePanel.reset();
+				lander.reset();
+				timer.start();
+				state = STATE_READY;
+			}
+			else {
+				System.exit(0);
+			}
+		}
+		else {
+			String message = "You crashed!";
+			JOptionPane.showMessageDialog(this, message);
+			state = STATE_READY;
+		}
 	}
 	
 }

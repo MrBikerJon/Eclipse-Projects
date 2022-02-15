@@ -32,4 +32,24 @@ public class FuelGauge {
 		double percent = currentAmount / FULL_TANK;
 		currentWidth = (int) (percent * WIDTH);
 	}
+	
+	public void addFuel(double addFuel) {
+		currentAmount += addFuel;
+		
+		// do not overfill
+		if(currentAmount > FULL_TANK) {
+			currentAmount = FULL_TANK;
+		}
+		
+		calculateWidth();
+	}
+	
+	public boolean isEmpty() {
+		return currentAmount <= 0;
+	}
+	
+	public void refill() {
+		currentAmount = FULL_TANK;
+		calculateWidth();
+	}
 }
