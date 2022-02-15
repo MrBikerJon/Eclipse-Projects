@@ -12,4 +12,11 @@ public class Brick {
 		y = row * TILE_SIZE;
 	}
 
+	public void moveLeft() {
+		x -= TILE_SIZE;
+	}
+	
+	public void moveRight() {
+		x += TILE_SIZE;
+	}
 }
