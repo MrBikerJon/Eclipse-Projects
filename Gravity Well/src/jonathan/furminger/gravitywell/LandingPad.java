@@ -2,6 +2,7 @@ package jonathan.furminger.gravitywell;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class LandingPad {
 
@@ -29,7 +30,27 @@ public class LandingPad {
 	public void draw(Graphics g) {
 		g.setColor(Color.RED);
 		g.drawLine(x1,  y, x2, y);
+		
 		g.setColor(Color.BLACK);
 		g.drawString(label, labelX, labelY);
 	}
+	
+	public boolean contains(Lander lander) {
+		boolean contains = false;
+		Rectangle landerBounds = lander.getBounds();
+		int landerX1 = landerBounds.x;
+		int landerX2 = landerX1 + landerBounds.width;
+		int landerBottom = landerBounds.y + landerBounds.height;
+		if(landerX1 >= x1 
+				&& landerX2 <= x2 
+				&& landerBottom >= y) {
+			contains = true;
+		}
+		return contains;
+	}
+	
+	public int getMultiplier() {
+		return multiplier;
+	}
+	
 }

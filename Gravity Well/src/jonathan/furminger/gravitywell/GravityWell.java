@@ -2,11 +2,11 @@ package jonathan.furminger.gravitywell;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import jonathan.furminger.mycomponents.ScorePanel;
@@ -26,7 +26,7 @@ public class GravityWell extends JFrame {
 		}
 		catch (Exception e) {}
 		
-		EventQueue.invokeLater(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new GravityWell();
 			}

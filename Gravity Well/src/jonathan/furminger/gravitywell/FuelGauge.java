@@ -19,4 +19,17 @@ public class FuelGauge {
 		g.setColor(Color.BLACK);
 		g.drawRect(X, Y, WIDTH, HEIGHT);
 	}
+	
+	public void burn(int burnAmount) {
+		currentAmount -= burnAmount;
+		if(currentAmount < 0) {
+			currentAmount = 0;
+		}
+		calculateWidth();
+	}
+	
+	private void calculateWidth() {
+		double percent = currentAmount / FULL_TANK;
+		currentWidth = (int) (percent * WIDTH);
+	}
 }

@@ -1,6 +1,7 @@
 package jonathan.furminger.gravitywell;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import jonathan.furminger.mycommonmethods.FileIO;
@@ -29,6 +30,9 @@ public class Lander {
 	private Speedometer speedometer = new Speedometer(MAX_LANDING_SPEED);
 	private double moveX = 0;
 	private double moveY = 0;
+	private double accelerateX = 0;
+	private double accelerateY = 0;
+	private int landingPoints = 0;
 	
 	public Lander() {
 		image[MOVE_DRIFT] = FileIO.readImageFile(this, IMAGE_DRIFT);
@@ -56,11 +60,57 @@ public class Lander {
 	}
 	
 	public void move() {
+		if(accelerateX != 0) {
+			moveX += accelerateX;
+			fuelGauge.burn(1);
+		}
+		if(accelerateY != 0) {
+			moveY += accelerateY;
+			fuelGauge.burn(1);
+		}
+		
 		moveY += GRAVITY;
 		x += moveX;
 		y += moveY;
 		
 		speedometer.setSpeed(moveY);
+	}
+	
+	public void accelerateLeft() {
+		accelerateX = -ACCELERATION;
+		imageIndex = MOVE_LEFT;
+	}
+	
+	public void accelerateRight() {
+		accelerateX = ACCELERATION;
+		imageIndex = MOVE_RIGHT;
+	}
+	
+	public void accelerateUp() {
+		accelerateY = -ACCELERATION;
+		imageIndex = MOVE_UP;
+	}
+	
+	public void stopAcceleration() {
+		accelerateX = 0;
+		accelerateY = 0;
+		imageIndex = MOVE_DRIFT;
+	}
+	
+	public Rectangle getBounds() {
+		Rectangle bounds = new Rectangle((int) x, (int) y, SIZE, SIZE);
+		return bounds;
+	}
+	
+	public boolean landOn(LandingPad landingPad) {
+		boolean safeLanding = false;
+		if(moveY <= MAX_LANDING_SPEED) {
+			safeLanding = true;
+			double underLimit = MAX_LANDING_SPEED - moveY;
+			int multiplier = landingPad.getMultiplier();
+			landingPoints = (int) (underLimit * 1000 * multiplier);
+		}
+		return safeLanding;
 	}
 	
 }
