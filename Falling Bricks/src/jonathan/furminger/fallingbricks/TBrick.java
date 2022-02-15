@@ -5,20 +5,27 @@ import java.awt.image.BufferedImage;
 
 import jonathan.furminger.mycommonmethods.FileIO;
 
-public class SBrick extends Brick {
-	private static final String BRICK_FILE = "/redBrick.jpg";
-	private static final boolean[][][] TILES = {{{false, true, true},
-												 {true, true, false}},
+public class TBrick extends Brick {
+	private static final String BRICK_FILE = "/whiteBrick.jpg";
+	private static final boolean[][][] TILES = {{{true, true, true},
+												 {false, true, false}},
+			
+												{{false, true},
+												 {true, true},
+												{false, true}},
+			
+												{{false, true, false},
+												 {true, true, true}},
 			
 												{{true, false},
 												 {true, true},
-												 {false, true}}};
+												 {true, false}}};
 	
 	private static BufferedImage image;
 	
 	private int state = 0;
 	
-	public SBrick(int row, int col) {
+	public TBrick(int row, int col) {
 		super(row, col);
 		if(image == null) {
 			image = FileIO.readImageFile(this, BRICK_FILE);

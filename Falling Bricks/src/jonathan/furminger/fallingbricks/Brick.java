@@ -1,6 +1,9 @@
 package jonathan.furminger.fallingbricks;
 
-public class Brick {
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
+public abstract class Brick {
 	
 	public static final int TILE_SIZE = 30;
 	
@@ -8,7 +11,7 @@ public class Brick {
 	protected int y;
 	
 	public Brick(int row, int col) {
-		x = col * TILE_SIZE;
+		x = TILE_SIZE * (col - getNumberOfColumns() / 2);
 		y = row * TILE_SIZE;
 	}
 
@@ -31,4 +34,17 @@ public class Brick {
 		return row;
 	}
 	
+	public abstract void draw(Graphics g);
+	
+	public abstract int getNumberOfRows();
+	
+	public abstract int getNumberOfColumns();
+	
+	public abstract void rotateLeft();
+	
+	public abstract void rotateRight();
+	
+	public abstract boolean hasTileAt(int row, int col);
+	
+	public abstract BufferedImage getTileImage();
 }
