@@ -17,6 +17,7 @@ public class GravityWell extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private ScorePanel scorePanel = new ScorePanel(0, Color.CYAN);
+	private GamePanel gamePanel = new GamePanel(scorePanel);
 
 	public static void main(String[] args) {
 		try {
@@ -59,6 +60,7 @@ public class GravityWell extends JFrame {
 		mainPanel.add(scorePanel);
 		
 		// game panel
+		mainPanel.add(gamePanel);
 	}
 
 }
