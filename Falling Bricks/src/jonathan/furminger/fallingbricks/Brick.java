@@ -47,4 +47,12 @@ public abstract class Brick {
 	public abstract boolean hasTileAt(int row, int col);
 	
 	public abstract BufferedImage getTileImage();
+	
+	public void drop1Row() {
+		y += TILE_SIZE;
+	}
+	
+	public void rise1Row() {
+		y -= TILE_SIZE;
+	}
 }

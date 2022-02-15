@@ -5,9 +5,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import javax.swing.JPanel;
+
+import jonathan.furminger.mycommonmethods.FileIO;
 
 public class BricksPanel extends JPanel {
 
@@ -24,12 +27,15 @@ public class BricksPanel extends JPanel {
 	private static final int SHAPE_T = 5;
 	private static final int SHAPE_Z = 6;
 	private static final int NUMBER_OF_SHAPES = 7;
+	private static final String SNAP_SOUND = "/snap.wav";
 	
 	private Brick brick;
 	private Random rand = new Random();
+	private BufferedImage[][] board;
 	
 	public BricksPanel() {
 		initGUI();
+		
 		start();
 	}
 	
@@ -44,6 +50,15 @@ public class BricksPanel extends JPanel {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		// fallen bricks
+		for(int row = 0; row < ROWS; row++) {
+			for(int col = 0; col < COLS; col++) {
+				int x = col * Brick.TILE_SIZE;
+				int y = row * Brick.TILE_SIZE;
+				if(board[row][col] != null) {
+					g.drawImage(board[row][col], x, y, null);
+				}
+			}
+		}
 		
 		
 		// falling brick
@@ -53,6 +68,7 @@ public class BricksPanel extends JPanel {
 	}
 	
 	public void start() {
+		board = new BufferedImage[ROWS][COLS];
 		pickABrick();
 	}
 	
@@ -87,6 +103,7 @@ public class BricksPanel extends JPanel {
 	
 	private void initGUI() {
 		setFocusable(true);
+		
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				int code = e.getKeyCode();
@@ -100,8 +117,11 @@ public class BricksPanel extends JPanel {
 				case KeyEvent.VK_Z :
 					rotateLeft();
 					break;
-				case KeyEvent.VK_X:
+				case KeyEvent.VK_X :
 					rotateRight();
+					break;
+				case KeyEvent.VK_SPACE :
+					drop();
 					break;
 					
 				}
@@ -114,6 +134,9 @@ public class BricksPanel extends JPanel {
 		if(isLegal()) {
 			repaint();
 		}
+		else {
+			brick.moveRight();
+		}
 	}
 	
 	private void moveRight() {
@@ -121,10 +144,14 @@ public class BricksPanel extends JPanel {
 		if(isLegal()) {
 			repaint();
 		}
+		else {
+			brick.moveLeft();
+		}
 	}
 	
 	private boolean isLegal() {
 		boolean legal = true;
+		
 		int row = brick.getRow();
 		int col = brick.getColumn();
 		int brickRows = brick.getNumberOfRows();
@@ -139,6 +166,18 @@ public class BricksPanel extends JPanel {
 		else if(row < 0 || row + brickRows > ROWS) {
 			legal = false;
 		}
+		// check if required space is empty
+		else {
+			for(int r = 0; r < brickRows; r++) {
+				for(int c = 0; c < brickCols; c++) {
+					if(brick.hasTileAt(r, c) 
+							&& board[row + r][col + c] != null) {
+						legal = false;
+					}
+				}
+			}
+		}
+		
 		return legal;
 	}
 	
@@ -159,6 +198,60 @@ public class BricksPanel extends JPanel {
 		}
 		else {
 			brick.rotateLeft();
+		}
+	}
+	
+	private void drop() {
+		// drop the brick to its lowest position
+		boolean legal = true;
+		while(legal) {
+			brick.drop1Row();
+			if(!isLegal()) {
+				legal = false;
+				brick.rise1Row();
+			}
+		}
+		insertBrick();
+		
+		repaint();
+	}
+	
+	private void insertBrick() {
+		int brickRow = brick.getRow();
+		int brickCol = brick.getColumn();
+		int brickRows = brick.getNumberOfRows();
+		int brickCols = brick.getNumberOfColumns();
+		
+		for(int r = 0; r < brickRows; r++) {
+			for(int c = 0; c < brickCols; c++) {
+				if(brick.hasTileAt(r, c)) {
+					int row = r + brickRow;
+					int col = c + brickCol;
+					board[row][col] = brick.getTileImage();
+				}
+			}
+		}
+		FileIO.playClip(this, SNAP_SOUND);
+		removeFilledRows();
+		pickABrick();
+	}
+	
+	private void removeFilledRows() {
+		for(int row = ROWS - 1; row >= 0; row--) {
+			boolean filled = true;
+			for(int col = 0; col < COLS && filled; col++) {
+				if(board[row][col] == null) {
+					filled = false;
+				}
+			}
+			if(filled) {
+				for(int r = row; r >= 1; r--) {
+					for(int c = 0; c < COLS; c++) {
+						board[r][c] = board[r - 1][c];
+					}
+				}
+				row++;
+			}
 		}
 	}
 

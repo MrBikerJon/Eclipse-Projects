@@ -31,8 +31,8 @@ public class IBrick extends Brick {
 		for(int row = 0; row < rows; row++) {
 			for(int col = 0; col < cols; col++) {
 				if(TILES[state][row][col]) {
-					int tileX = x + (TILE_SIZE * col);
-					int tileY = y + (TILE_SIZE * row);
+					int tileX = x + TILE_SIZE * col;
+					int tileY = y + TILE_SIZE * row;
 					g.drawImage(image, tileX,  tileY, null);
 				}
 			}
