@@ -64,6 +64,13 @@ public class BricksPanel extends JPanel {
 				case KeyEvent.VK_RIGHT :
 					moveRight();
 					break;
+				case KeyEvent.VK_Z :
+					rotateLeft();
+					break;
+				case KeyEvent.VK_X:
+					rotateRight();
+					break;
+					
 				}
 			}
 		});
@@ -71,12 +78,55 @@ public class BricksPanel extends JPanel {
 	
 	private void moveLeft() {
 		brick.moveLeft();
-		repaint();
+		if(isLegal()) {
+			repaint();
+		}
 	}
 	
 	private void moveRight() {
 		brick.moveRight();
-		repaint();
+		if(isLegal()) {
+			repaint();
+		}
+	}
+	
+	private boolean isLegal() {
+		boolean legal = true;
+		int row = brick.getRow();
+		int col = brick.getColumn();
+		int brickRows = brick.getNumberOfRows();
+		int brickCols = brick.getNumberOfColumns();
+		
+		// if beyond right or left edge of panel
+		if(col < 0 || col + brickCols > COLS) {
+			legal = false;
+		}
+		
+		// if beyond top or bottom edge of panel
+		else if(row < 0 || row + brickRows > ROWS) {
+			legal = false;
+		}
+		return legal;
+	}
+	
+	private void rotateLeft() {
+		brick.rotateLeft();
+		if(isLegal()) {
+			repaint();
+		}
+		else {
+			brick.rotateRight();
+		}
+	}
+	
+	private void rotateRight() {
+		brick.rotateRight();
+		if(isLegal()) {
+			repaint();
+		}
+		else {
+			brick.rotateLeft();
+		}
 	}
 
 }
