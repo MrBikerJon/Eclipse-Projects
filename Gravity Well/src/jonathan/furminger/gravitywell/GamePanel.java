@@ -5,10 +5,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import jonathan.furminger.mycommonmethods.FileIO;
 import jonathan.furminger.mycomponents.ScorePanel;
@@ -27,6 +30,7 @@ public class GamePanel extends JPanel {
 	private Polygon landscape = new Polygon();
 	private LandingPad[] landingPads = new LandingPad[3];
 	private Lander lander = new Lander();
+	private Timer timer;
 
 	
 	public GamePanel(ScorePanel scorePanel) {
@@ -48,6 +52,7 @@ public class GamePanel extends JPanel {
 				landingPads[2] = new LandingPad(430, 509, 315, 4);
 				
 				initGUI();
+				timer.start();
 			}
 		}
 		catch (NumberFormatException e) {
@@ -87,9 +92,19 @@ public class GamePanel extends JPanel {
 		setFont(BIG_FONT);
 		
 		// timer
+		timer = new Timer(30, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				timedAction();
+			}
+		});
 		
 		
 		// listeners
+	}
+	
+	private void timedAction() {
+		lander.move();
+		repaint();
 	}
 	
 }

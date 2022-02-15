@@ -25,6 +25,10 @@ public class Lander {
 	private int imageIndex = MOVE_DRIFT;
 	private double x = START_X;
 	private double y = START_Y;
+	private FuelGauge fuelGauge = new FuelGauge();
+	private Speedometer speedometer = new Speedometer(MAX_LANDING_SPEED);
+	private double moveX = 0;
+	private double moveY = 0;
 	
 	public Lander() {
 		image[MOVE_DRIFT] = FileIO.readImageFile(this, IMAGE_DRIFT);
@@ -45,9 +49,18 @@ public class Lander {
 		g.drawImage(image[imageIndex], xPos, yPos, null);
 		
 		// fuel gauge
-		
+		fuelGauge.draw(g);
 		
 		// speedometer
+		speedometer.draw(g);
+	}
+	
+	public void move() {
+		moveY += GRAVITY;
+		x += moveX;
+		y += moveY;
+		
+		speedometer.setSpeed(moveY);
 	}
 	
 }
