@@ -3,12 +3,16 @@ package jonathan.furminger.fallingbricks;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import jonathan.furminger.mycommonmethods.FileIO;
 
@@ -32,8 +36,11 @@ public class BricksPanel extends JPanel {
 	private Brick brick;
 	private Random rand = new Random();
 	private BufferedImage[][] board;
+	private FallingBricks fallingBricks;
+	private Timer timer;
 	
-	public BricksPanel() {
+	public BricksPanel(FallingBricks fallingBricks) {
+		this.fallingBricks = fallingBricks;
 		initGUI();
 		
 		start();
@@ -70,6 +77,8 @@ public class BricksPanel extends JPanel {
 	public void start() {
 		board = new BufferedImage[ROWS][COLS];
 		pickABrick();
+		
+		timer.start();
 	}
 	
 	private void pickABrick() {
@@ -99,6 +108,19 @@ public class BricksPanel extends JPanel {
 			brick = new ZBrick(row, col);
 			break;
 		}
+		
+		if(!isLegal()) {
+			brick = null;
+			timer.stop();
+			String message = "Do you want to play again?";
+			int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
+			if(option == JOptionPane.YES_OPTION) {
+				fallingBricks.restart();
+			}
+			else {
+				System.exit(0);
+			}
+		}
 	}
 	
 	private void initGUI() {
@@ -127,6 +149,13 @@ public class BricksPanel extends JPanel {
 				}
 			}
 		});
+		
+		timer = new Timer(40, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				timedAction();
+			}
+		});
+		
 	}
 	
 	private void moveLeft() {
@@ -237,6 +266,7 @@ public class BricksPanel extends JPanel {
 	}
 	
 	private void removeFilledRows() {
+		int count = 0;
 		for(int row = ROWS - 1; row >= 0; row--) {
 			boolean filled = true;
 			for(int col = 0; col < COLS && filled; col++) {
@@ -251,7 +281,39 @@ public class BricksPanel extends JPanel {
 					}
 				}
 				row++;
+				count++;
 			}
+		}
+		calculateScore(count);
+	}
+	
+	private void calculateScore(int count) {
+		switch(count) {
+		case 1 :
+			fallingBricks.addToScore(1);
+			break;
+		case 2 :
+			fallingBricks.addToScore(3);
+			break;
+		case 3 :
+			fallingBricks.addToScore(5);
+			break;
+		case 4 :
+			fallingBricks.addToScore(8);
+			break;
+		}
+	}
+	
+	private void timedAction() {
+		brick.fall(2);
+		
+		//if it can't fall any further, set it into place
+		if(!isLegal()) {
+			brick.fall(-2);
+			drop();
+		}
+		else {
+			repaint();
 		}
 	}
 

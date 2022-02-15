@@ -55,4 +55,8 @@ public abstract class Brick {
 	public void rise1Row() {
 		y -= TILE_SIZE;
 	}
+	
+	public void fall(int changeY) {
+		y += changeY;
+	}
 }
