@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -90,6 +91,18 @@ public class GamePanel extends JPanel {
 					mouse.setState(mouse.STATE_RUN);
 				}
 			}
+			
+			public void keyReleased(KeyEvent e) {
+				int code = e.getKeyCode();
+				if(code == KeyEvent.VK_UP
+						|| code == KeyEvent.VK_DOWN
+						|| code == KeyEvent.VK_LEFT
+						|| code == KeyEvent.VK_RIGHT) {
+					mouse.setState(mouse.STATE_WAIT);
+					repaint();
+					
+				}
+			}
 		});
 		
 		// timer
@@ -103,6 +116,34 @@ public class GamePanel extends JPanel {
 	public void timedAction() {
 		mouse.move();
 		repaint();
+	}
+	
+	public void increaseScore() {
+		scorePanel.addToScore(1);
+		if(maze.getRemainingCheese() == 0) {
+			String message = "You got all the cheese!";
+			endGame(message);
+		}
+	}
+	
+	public void endGame(String message) {
+		timer.stop();
+		repaint();
+		message += " Do you want to play again?";
+		int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
+		if(option == JOptionPane.YES_OPTION) {
+			newGame();
+		}
+		else {
+			System.exit(0);;
+		}
+	}
+	
+	private void newGame() {
+		maze.reset();
+		scorePanel.reset();
+		mouse = new Mouse(this, maze);
+		timer.start();
 	}
 
 }

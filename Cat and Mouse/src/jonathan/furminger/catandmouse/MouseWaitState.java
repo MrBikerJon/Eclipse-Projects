@@ -11,6 +11,10 @@ public class MouseWaitState implements State {
 	@Override
 	public void enter() {
 		mouse.stop();
+		mouse.moveIntoCell();
+		if(mouse.foundCheese()) {
+			mouse.eatCheese();
+		}
 	}
 
 	@Override

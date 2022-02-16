@@ -154,4 +154,43 @@ public class Maze {
 		return mouseRow * CELL_SIZE;
 	}
 	
+	public boolean wallAt(int x, int y) {
+		boolean wall = false;
+		int row = y / CELL_SIZE;
+		int col = x / CELL_SIZE;
+		if(cell[row][col] == TYPE_WALL) {
+			wall = true;
+		}
+		return wall;
+	}
+	
+	public boolean hasCheeseAt(int x, int y) {
+		int row = y / CELL_SIZE;
+		int col = x / CELL_SIZE;
+		boolean cheeseAt = cell[row][col] == TYPE_CHEESE;
+		return cheeseAt;
+	}
+	
+	public void removeCheese(int x, int y) {
+		int row = y / CELL_SIZE;
+		int col = x / CELL_SIZE;
+		cell[row][col] = TYPE_PATH;
+		cheeseCount--;
+	}
+	
+	public int getRemainingCheese() {
+		return cheeseCount;
+	}
+	
+	public void reset() {
+		for(int row = 0; row < rows; row++) {
+			String line = mazeData.get(row);
+			for(int col = 0; col < columns; col++) {
+				char c = line.charAt(col);
+				if(c == '.' || c == 'C') {
+					cell[row][col] = TYPE_CHEESE;
+				}
+			}
+		}
+	}
 }

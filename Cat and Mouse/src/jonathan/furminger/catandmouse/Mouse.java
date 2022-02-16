@@ -103,8 +103,13 @@ public class Mouse {
 	}
 	
 	public void run() {
-		x += (changeX * speed);
-		y += (changeY * speed);
+		if(foundCheese()) {
+			eatCheese();
+		}
+		if(!wallInDirection(direction)) {
+			x += (changeX * speed);
+			y += (changeY * speed);
+		}
 	}
 	
 	public void move() {
@@ -122,6 +127,77 @@ public class Mouse {
 		state.exit();
 		state = newState;
 		state.enter();
+	}
+	
+	private boolean wallInDirection(int direction) {
+		boolean wall = false;
+		int checkX = x;
+		int checkY = y;
+		switch(direction) {
+		case DIRECTION_UP :
+			checkY = y - speed;
+			break;
+		case DIRECTION_DOWN :
+			int imageHeight = image[direction].getHeight();
+			checkY = y + speed + imageHeight + 1;
+			break;
+		case DIRECTION_LEFT :
+			checkX = x - speed;
+			break;
+		case DIRECTION_RIGHT :
+			int imageWidth = image[direction].getWidth();
+			checkX = x + speed + imageWidth + 1;
+			break;
+		}
+		if(maze.wallAt(checkX, checkY)) {
+			wall = true;
+		}
+		return wall;
+	}
+	
+	public void moveIntoCell() {
+		int intoX = x % Maze.CELL_SIZE;
+		int intoY = y % Maze.CELL_SIZE;
+		
+		switch(direction) {
+		case DIRECTION_UP :
+			if(intoY > offsetY[direction]) {
+				// center in this cell
+				y -= intoY;
+			}
+			break;
+		case DIRECTION_DOWN :
+			if(intoY > offsetY[direction]) {
+				// center in next cell
+				y = y - intoY + Maze.CELL_SIZE;
+			}
+			break;
+		case DIRECTION_LEFT :
+			if(intoX > offsetX[direction]) {
+				// center in this cell
+				x -= intoX;
+			}
+			break;
+		case DIRECTION_RIGHT :
+			if(intoX > offsetX[direction]) {
+				// center in next cell
+				x = x - intoX + Maze.CELL_SIZE;
+			}
+			break;
+		}
+	}
+	
+	public void eatCheese() {
+		maze.removeCheese(x, y);
+		gamePanel.increaseScore();
+	}
+	
+	public boolean foundCheese() {
+		boolean foundCheese = false;
+		if(maze.hasCheeseAt(x, y)) {
+			foundCheese = true;
+		}
+		return foundCheese;
 	}
 	
 }
