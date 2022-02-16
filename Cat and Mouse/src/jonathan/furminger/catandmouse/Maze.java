@@ -47,6 +47,7 @@ public class Maze {
 			while(line != null) {
 				mazeData.add(line);
 				line = in.readLine();
+				
 			}
 			in.close();
 			
@@ -57,6 +58,9 @@ public class Maze {
 			
 			for(int row = 0; row < rows; row++) {
 				line = mazeData.get(row);
+				if(line.length() != columns) {
+					throw new InvalidMazeRowLengthException(row, FILE_NAME);
+				}
 				for(int col = 0; col < columns; col++) {
 					char c = line.charAt(col);
 					switch(c) {
@@ -88,6 +92,8 @@ public class Maze {
 						extraMiceX.add(x);
 						extraMiceY.add(y);
 						break;
+					default :
+						throw new InvalidMazeCharacterException(c, FILE_NAME);
 					}
 				}
 			}
@@ -102,6 +108,16 @@ public class Maze {
 			String message = "The file " + FILE_NAME + " could not be opened.";
 			JOptionPane.showMessageDialog(null, message);
 			System.exit(2);
+		}
+		catch(InvalidMazeCharacterException e) {
+			String message = e.getMessage();
+			JOptionPane.showMessageDialog(null, message);
+			System.exit(3);
+		}
+		catch(InvalidMazeRowLengthException e) {
+			String message = e.getMessage();
+			JOptionPane.showMessageDialog(null, message);
+			System.exit(4);
 		}
 	}
 	
@@ -128,6 +144,14 @@ public class Maze {
 				}
 			}
 		}
+	}
+	
+	public int getMouseX() {
+		return mouseCol * CELL_SIZE;
+	}
+	
+	public int getMouseY() {
+		return mouseRow * CELL_SIZE;
 	}
 	
 }

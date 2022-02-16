@@ -16,6 +16,7 @@ public class GamePanel extends JPanel {
 	private int width = 640;
 	private int height = 400;
 	private Maze maze;
+	private Mouse mouse;
 	
 	public GamePanel(ScorePanel scorePanel) {
 		this.scorePanel = scorePanel;
@@ -23,6 +24,9 @@ public class GamePanel extends JPanel {
 		maze = new Maze();
 		width = maze.getWidth();
 		height = maze.getHeight();
+		
+		initGUI();
+		mouse = new Mouse(this, maze);
 	}
 	
 	public Dimension getPreferredSize() {
@@ -40,12 +44,23 @@ public class GamePanel extends JPanel {
 		maze.draw(g);
 		
 		// mouse
+		mouse.draw(g);
 		
 		
 		// extra mice
 		
 		
 		// cat
+	}
+	
+	private void initGUI() {
+		setFocusable(true);
+		requestFocusInWindow();
+		
+		// listeners
+		
+		
+		// timer
 	}
 
 }
