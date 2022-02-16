@@ -24,6 +24,7 @@ public class GamePanel extends JPanel {
 	private Maze maze;
 	private Mouse mouse;
 	private Timer timer;
+	private Cat cat;
 	
 	public GamePanel(ScorePanel scorePanel) {
 		this.scorePanel = scorePanel;
@@ -34,6 +35,7 @@ public class GamePanel extends JPanel {
 		
 		initGUI();
 		mouse = new Mouse(this, maze);
+		cat = new Cat(mouse, maze);
 		
 		timer.start();
 	}
@@ -60,6 +62,7 @@ public class GamePanel extends JPanel {
 		
 		
 		// cat
+		cat.draw(g);
 	}
 	
 	private void initGUI() {
@@ -87,8 +90,9 @@ public class GamePanel extends JPanel {
 				}
 				if(direction != Mouse.DIRECTION_NONE) {
 					mouse.turn(direction);
-					repaint();
 					mouse.setState(mouse.STATE_RUN);
+					cat.setState(cat.STATE_HUNT);
+					repaint();
 				}
 			}
 			
@@ -99,8 +103,8 @@ public class GamePanel extends JPanel {
 						|| code == KeyEvent.VK_LEFT
 						|| code == KeyEvent.VK_RIGHT) {
 					mouse.setState(mouse.STATE_WAIT);
+					cat.setState(cat.STATE_WANDER);
 					repaint();
-					
 				}
 			}
 		});
@@ -115,6 +119,7 @@ public class GamePanel extends JPanel {
 	
 	public void timedAction() {
 		mouse.move();
+		cat.move();
 		repaint();
 	}
 	

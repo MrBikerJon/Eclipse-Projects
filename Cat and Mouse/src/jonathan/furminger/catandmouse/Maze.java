@@ -193,4 +193,13 @@ public class Maze {
 			}
 		}
 	}
+	
+	public int getCatX() {
+		return catCol * CELL_SIZE;
+	}
+	
+	public int getCatY() {
+		return catRow * CELL_SIZE;
+	}
+	
 }
