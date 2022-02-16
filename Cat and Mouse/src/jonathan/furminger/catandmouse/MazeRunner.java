@@ -1,6 +1,7 @@
 package jonathan.furminger.catandmouse;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -139,6 +140,13 @@ public abstract class MazeRunner {
 			}
 			break;
 		}
+	}
+	
+	public Rectangle getBounds() {
+		int width = image[direction].getWidth();
+		int height = image[direction].getHeight();
+		Rectangle bounds = new Rectangle(x, y, width, height);
+		return bounds;
 	}
 	
 	

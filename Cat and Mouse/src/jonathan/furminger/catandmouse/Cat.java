@@ -1,5 +1,6 @@
 package jonathan.furminger.catandmouse;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.Random;
 
@@ -85,7 +86,46 @@ public class Cat extends MazeRunner {
 	}
 	
 	public void hunt() {
+		if(withinCell()) {
+			// in which direction is the mouse?
+			int nextDirection = direction;
+			int mouseX = mouse.getX();
+			int mouseY = mouse.getY();
+			int xDistance = mouseX - x;
+			int yDistance = mouseY - y;
+			int absXDistance = Math.abs(xDistance);
+			int absYDistance = Math.abs(yDistance);
+			
+			if(absXDistance > absYDistance) {
+				if(xDistance < 0) {
+					nextDirection = DIRECTION_LEFT;
+				}
+				else {
+					nextDirection = DIRECTION_RIGHT;
+				}
+			}
+			else {
+				if (yDistance < 0) {
+					nextDirection = DIRECTION_UP;
+				}
+				else {
+					nextDirection = DIRECTION_DOWN;
+				}
+			}
+			
+			if(!wallInDirection(nextDirection)) {
+				turn(nextDirection);
+			}
+		}
+		
 		followPath();
+	}
+	
+	private boolean withinCell() {
+		Rectangle mazeBounds = maze.getBounds(x, y);
+		Rectangle catBounds = getBounds();
+		boolean within = mazeBounds.contains(catBounds);
+		return within;
 	}
 	
 }

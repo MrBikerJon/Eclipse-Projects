@@ -2,6 +2,7 @@ package jonathan.furminger.catandmouse;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -200,6 +201,25 @@ public class Maze {
 	
 	public int getCatY() {
 		return catRow * CELL_SIZE;
+	}
+	
+	public Rectangle getBounds(int x, int y) {
+		x -= x % CELL_SIZE;
+		y -= y % CELL_SIZE;
+		Rectangle bounds = new Rectangle(CELL_SIZE, CELL_SIZE);
+		return bounds;
+	}
+	
+	public int getNumberOfExtraMice() {
+		return extraMiceX.size();
+	}
+	
+	public int getExtraMouseX(int index) {
+		return extraMiceX.get(index);
+	}
+	
+	public int getExtraMouseY(int index) {
+		return extraMiceY.get(index);
 	}
 	
 }

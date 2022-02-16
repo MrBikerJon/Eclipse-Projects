@@ -3,11 +3,20 @@ package jonathan.furminger.catandmouse;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -18,6 +27,8 @@ public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
+	private static final String MUSIC = "/threeBlindMice.wav";
+	
 	private ScorePanel scorePanel;
 	private int width = 640;
 	private int height = 400;
@@ -25,6 +36,11 @@ public class GamePanel extends JPanel {
 	private Mouse mouse;
 	private Timer timer;
 	private Cat cat;
+	private int numberOfExtraMice;
+	private BufferedImage mouseImage;
+	private int mouseOffsetX;
+	private int mouseOffsetY;
+	private Clip audioClip;
 	
 	public GamePanel(ScorePanel scorePanel) {
 		this.scorePanel = scorePanel;
@@ -36,8 +52,32 @@ public class GamePanel extends JPanel {
 		initGUI();
 		mouse = new Mouse(this, maze);
 		cat = new Cat(mouse, maze);
+		numberOfExtraMice = maze.getNumberOfExtraMice();
+		mouseImage = mouse.getFirstImage();
+		mouseOffsetX = mouse.getFirstOffsetX();
+		mouseOffsetY = mouse.getFirstOffsetY();
 		
+		try {
+			URL url = getClass().getResource(MUSIC);
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+			audioClip = AudioSystem.getClip();
+			audioClip.open(audioInputStream);
+		}
+		catch (IOException e) {
+			String message = "The file " + MUSIC + " cannot be opened.";
+			JOptionPane.showMessageDialog(this, message);
+		}
+		catch (UnsupportedAudioFileException e) {
+			String message = "The file " + MUSIC + " is not a valid audio file.";
+			JOptionPane.showMessageDialog(this, message);
+		}
+		catch (LineUnavailableException e) {
+			String message = "Resources are not available to open " + MUSIC; 
+			JOptionPane.showMessageDialog(this, message);
+		}
+
 		timer.start();
+		audioClip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 	
 	public Dimension getPreferredSize() {
@@ -57,9 +97,12 @@ public class GamePanel extends JPanel {
 		// mouse
 		mouse.draw(g);
 		
-		
 		// extra mice
-		
+		for(int i = 0; i < numberOfExtraMice; i++) {
+			int x = maze.getExtraMouseX(i) + mouseOffsetX;
+			int y = maze.getExtraMouseY(i) + mouseOffsetY;
+			g.drawImage(mouseImage, x, y, null);
+		}
 		
 		// cat
 		cat.draw(g);
@@ -121,6 +164,11 @@ public class GamePanel extends JPanel {
 		mouse.move();
 		cat.move();
 		repaint();
+		Rectangle catBounds = cat.getBounds();
+		Rectangle mouseBounds = mouse.getBounds();
+		if(catBounds.intersects(mouseBounds)) {
+			nextMouse();
+		}
 	}
 	
 	public void increaseScore() {
@@ -133,6 +181,7 @@ public class GamePanel extends JPanel {
 	
 	public void endGame(String message) {
 		timer.stop();
+		audioClip.stop();
 		repaint();
 		message += " Do you want to play again?";
 		int option = JOptionPane.showConfirmDialog(this, message, "Play again?", JOptionPane.YES_NO_OPTION);
@@ -148,7 +197,28 @@ public class GamePanel extends JPanel {
 		maze.reset();
 		scorePanel.reset();
 		mouse = new Mouse(this, maze);
+		cat = new Cat(mouse, maze);
+		numberOfExtraMice = maze.getNumberOfExtraMice();
 		timer.start();
+		audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+	}
+	
+	private void nextMouse() {
+		timer.stop();
+		audioClip.stop();
+		numberOfExtraMice--;
+		if(numberOfExtraMice >= 0) {
+			String message = "The mouse got caught!";
+			JOptionPane.showMessageDialog(this, message);
+			mouse = new Mouse(this, maze);
+			cat = new Cat(mouse, maze);
+			timer.start();
+			audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+		}
+		else {
+			String message = "Game Over!";
+			endGame(message);
+		}
 	}
 
 }

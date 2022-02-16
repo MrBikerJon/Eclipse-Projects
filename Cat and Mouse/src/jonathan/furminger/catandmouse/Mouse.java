@@ -1,5 +1,6 @@
 package jonathan.furminger.catandmouse;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
@@ -80,4 +81,15 @@ public class Mouse extends MazeRunner {
 		return y;
 	}
 	
+	public BufferedImage getFirstImage() {
+		return image[0];
+	}
+	
+	public int getFirstOffsetX() {
+		return offsetX[0];
+	}
+	
+	public int getFirstOffsetY() {
+		return offsetY[0];
+	}
 }
