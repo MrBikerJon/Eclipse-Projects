@@ -15,10 +15,14 @@ public class GamePanel extends JPanel {
 	private ScorePanel scorePanel;
 	private int width = 640;
 	private int height = 400;
+	private Maze maze;
 	
 	public GamePanel(ScorePanel scorePanel) {
 		this.scorePanel = scorePanel;
 		
+		maze = new Maze();
+		width = maze.getWidth();
+		height = maze.getHeight();
 	}
 	
 	public Dimension getPreferredSize() {
@@ -33,7 +37,7 @@ public class GamePanel extends JPanel {
 		g.fillRect(0, 0, width, height);
 		
 		// maze
-		
+		maze.draw(g);
 		
 		// mouse
 		
