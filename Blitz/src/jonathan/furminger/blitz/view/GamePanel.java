@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -76,6 +77,11 @@ public class GamePanel extends JPanel {
 	public void setPlayer(int index, String name, int tokens) {
 		PlayerView playerView = new PlayerView(name, tokens, PLAYER_X[index], PLAYER_Y[index]);
 		players[index] = playerView;
+		repaint();
+	}
+	
+	public void updateCardsForPlayer(int playerIndex, ArrayList<BufferedImage> newCards) {
+		players[playerIndex].updateCards(newCards);
 		repaint();
 	}
 	

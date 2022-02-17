@@ -1,6 +1,7 @@
 package jonathan.furminger.blitz.controller;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.SwingUtilities;
@@ -40,6 +41,16 @@ public class BlitzController {
 		gamePanel.setPlayer(0, "Tom", 3);
 		gamePanel.setPlayer(1, "Dick", 0);
 		gamePanel.setPlayer(2,  "Harry", -1);
+		
+		// pick 3 random cards for each player
+		for(int p = 0; p < NUMBER_OF_PLAYERS; p++) {
+			ArrayList<BufferedImage> newCards = new ArrayList<BufferedImage>();
+			for(int c = 0; c < 3; c++) {
+				pick = rand.nextInt(numberOfCards);
+				newCards.add(cardImages[pick]);
+			}
+			gamePanel.updateCardsForPlayer(p, newCards);
+		}
 	}
 	
 	public static void main(String[] args) {
