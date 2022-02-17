@@ -1,6 +1,7 @@
 package jonathan.furminger.blitz.view;
 
 import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -14,9 +15,9 @@ public class BlitzViewWindow extends JFrame {
 	private BlitzController controller;
 	private GamePanel gamePanel;
 
-	public BlitzViewWindow(BlitzController controller) {
+	public BlitzViewWindow(BlitzController controller, BufferedImage cardBackImage) {
 		this.controller = controller;
-		gamePanel = new GamePanel(controller);
+		gamePanel = new GamePanel(controller, cardBackImage);
 		
 		initGUI();
 		setTitle("Blitz");
@@ -41,5 +42,8 @@ public class BlitzViewWindow extends JFrame {
 		
 	}
 	
+	public GamePanel getGamePanel() {
+		return gamePanel;
+	}
 	
 }

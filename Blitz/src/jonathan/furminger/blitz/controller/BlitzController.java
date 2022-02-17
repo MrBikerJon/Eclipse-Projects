@@ -1,11 +1,13 @@
 package jonathan.furminger.blitz.controller;
 
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import jonathan.furminger.blitz.view.BlitzViewWindow;
+import jonathan.furminger.blitz.view.GamePanel;
 import jonathan.furminger.mycommonmethods.FileIO;
 
 public class BlitzController {
@@ -22,10 +24,22 @@ public class BlitzController {
 	private BufferedImage[] cardImages = new BufferedImage[NUMBER_OF_IMAGES];
 	
 	private BlitzViewWindow window;
+	private GamePanel gamePanel;
 	
 	public BlitzController() {
 		readCardImages();
-		window = new BlitzViewWindow(this);
+		window = new BlitzViewWindow(this, cardImages[CARD_BACK_INDEX]);
+		gamePanel = window.getGamePanel();
+		
+		// test code
+		Random rand = new Random();
+		int numberOfCards = SUITS * RANKS;
+		int pick = rand.nextInt(numberOfCards);
+		gamePanel.setDiscard(cardImages[pick]);
+		
+		gamePanel.setPlayer(0, "Tom", 3);
+		gamePanel.setPlayer(1, "Dick", 0);
+		gamePanel.setPlayer(2,  "Harry", -1);
 	}
 	
 	public static void main(String[] args) {
