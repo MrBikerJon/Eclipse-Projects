@@ -85,4 +85,9 @@ public class GamePanel extends JPanel {
 		repaint();
 	}
 	
+	public void addInfoForPlayer(int playerIndex, String additionalInfo) {
+		players[playerIndex].addInfo(additionalInfo);;
+		repaint();
+	}
+	
 }

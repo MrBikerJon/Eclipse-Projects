@@ -22,6 +22,7 @@ public class PlayerView {
 	private int x;
 	private int y;
 	private ArrayList<BufferedImage> cards = new ArrayList<BufferedImage>();
+	private String info = "";
 	
 	public PlayerView (String name, int tokens, int x, int y) {
 		this.name = name;
@@ -63,10 +64,17 @@ public class PlayerView {
 		
 		
 		// info
+		int infoY = y + INFO_Y_OFFSET;
+		g.drawString(info, x, infoY);
 	}
 	
 	public void updateCards(ArrayList<BufferedImage> newCards) {
 		cards = newCards;
+	}
+	
+	public void addInfo(String additionalInfo) {
+		info += " " + additionalInfo;
+		
 	}
 	
 }

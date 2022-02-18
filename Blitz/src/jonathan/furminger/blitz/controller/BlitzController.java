@@ -50,7 +50,9 @@ public class BlitzController {
 				newCards.add(cardImages[pick]);
 			}
 			gamePanel.updateCardsForPlayer(p, newCards);
+
 		}
+		gamePanel.addInfoForPlayer(0, "Rapped");
 	}
 	
 	public static void main(String[] args) {
