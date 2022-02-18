@@ -186,4 +186,9 @@ public class GamePanel extends JPanel {
 		moveCard(DECK_X, DECK_Y, DISCARD_X, DISCARD_Y);
 	}
 	
+	public void updateTokensForPlayer(int playerIndex, int count) {
+		players[playerIndex].updateTokens(count);
+		repaint();
+	}
+	
 }
