@@ -53,6 +53,8 @@ public class BlitzController {
 
 		}
 		gamePanel.addInfoForPlayer(0, "Rapped");
+		BufferedImage movingCardImage = cardImages[12];
+		gamePanel.moveDeckToPlayer(movingCardImage, 1, 3);
 	}
 	
 	public static void main(String[] args) {

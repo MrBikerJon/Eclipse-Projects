@@ -34,6 +34,10 @@ public class GamePanel extends JPanel {
 	private BufferedImage deck;
 	private BufferedImage discard;
 	private PlayerView[] players = new PlayerView[3];
+	private BufferedImage movingCard;
+	private int cardX = 0;
+	private int cardY = 0;
+	private boolean cardIsMoving = false;
 	
 	public GamePanel(BlitzController controller, BufferedImage cardBackImage) {
 		Font font = new Font(Font.DIALOG, Font.BOLD, FONT_SIZE);
@@ -66,6 +70,10 @@ public class GamePanel extends JPanel {
 		g.drawImage(discard, DISCARD_X, DISCARD_Y, null);
 		
 		// moving card
+		if(cardIsMoving) {
+			g.drawImage(movingCard, cardX, cardY, null);
+			
+		}
 		
 	}
 	
@@ -88,6 +96,41 @@ public class GamePanel extends JPanel {
 	public void addInfoForPlayer(int playerIndex, String additionalInfo) {
 		players[playerIndex].addInfo(additionalInfo);;
 		repaint();
+	}
+	
+	public void moveDeckToPlayer(BufferedImage movingCardImage, int playerIndex, int cardIndex) {
+		int beginX = DECK_X;
+		int beginY = DECK_Y;
+		int offsetX = cardIndex * (CARD_WIDTH * SPACING);
+		int endX = PLAYER_X[playerIndex] + offsetX;
+		int endY = PLAYER_Y[playerIndex] + SPACING;
+		movingCard = movingCardImage;
+		moveCard(beginX, beginY, endX, endY);
+	}
+	
+	private void moveCard(int beginX, int beginY, int endX, int endY) {
+		//determine speed and direction
+		int incrementX = 8;
+		int incrementY = 8;
+		if(beginX > endX) {
+			incrementX = -8;
+		}
+		if(beginY > endY) {
+			incrementY = -8;
+		}
+		
+		// set initial location of moving card
+		cardIsMoving = true;
+		cardX = beginX;
+		cardY = beginY;
+		
+		// move the card
+		
+		
+		// stop X movement if went too far
+		
+		
+		// stop Y movement if went too far
 	}
 	
 }
