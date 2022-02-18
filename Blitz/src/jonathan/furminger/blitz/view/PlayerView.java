@@ -74,7 +74,10 @@ public class PlayerView {
 	
 	public void addInfo(String additionalInfo) {
 		info += " " + additionalInfo;
-		
+	}
+	
+	public void updateTokens(int newTokens) {
+		tokens = newTokens;
 	}
 	
 }

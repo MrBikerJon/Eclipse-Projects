@@ -101,10 +101,12 @@ public class GamePanel extends JPanel {
 	public void moveDeckToPlayer(BufferedImage movingCardImage, int playerIndex, int cardIndex) {
 		int beginX = DECK_X;
 		int beginY = DECK_Y;
-		int offsetX = cardIndex * (CARD_WIDTH * SPACING);
+		int offsetX = cardIndex * (CARD_WIDTH + SPACING);
 		int endX = PLAYER_X[playerIndex] + offsetX;
 		int endY = PLAYER_Y[playerIndex] + SPACING;
+		
 		movingCard = movingCardImage;
+		
 		moveCard(beginX, beginY, endX, endY);
 	}
 	
@@ -125,12 +127,63 @@ public class GamePanel extends JPanel {
 		cardY = beginY;
 		
 		// move the card
-		
-		
-		// stop X movement if went too far
-		
-		
-		// stop Y movement if went too far
+		while(cardIsMoving) {
+			paintImmediately(0, 0, WIDTH, HEIGHT);
+
+			try {
+				Thread.sleep(60);
+			}
+			catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			cardIsMoving = false;
+			cardX += incrementX;
+			cardY += incrementY;
+			
+			// stop X movement if went too far
+			if(incrementX > 0 && cardX > endX 
+					|| incrementX < 0 && cardX < endX) {
+				cardX = endX;
+			}
+			else {
+				cardIsMoving = true;
+			}
+			
+			// stop Y movement if went too far
+			if(incrementY > 0 && cardY > endY 
+					|| incrementY < 0 && cardY < endY) {
+				cardY = endY;
+			}
+			else {
+				cardIsMoving = true;
+			}
+		}
+	}
+	
+	public void moveDiscardToPlayer(BufferedImage movingCardImage, int playerIndex, int cardIndex) {
+		int beginX = DISCARD_X;
+		int beginY = DISCARD_Y;
+		int offsetX = cardIndex * (CARD_WIDTH + SPACING);
+		int endX = PLAYER_X[playerIndex] + offsetX;
+		int endY = PLAYER_Y[playerIndex] + SPACING;
+		movingCard = movingCardImage;
+		moveCard(beginX, beginY, endX, endY);
+	}
+	
+	public void movePlayerToDiscard(BufferedImage movingCardImage, int playerIndex, int cardIndex) {
+		int offsetX = cardIndex * (CARD_WIDTH + SPACING);
+		int beginX = PLAYER_X[playerIndex] + offsetX;
+		int beginY = PLAYER_Y[playerIndex] + SPACING;
+		int endX = DISCARD_X;
+		int endY = DISCARD_Y;
+		movingCard = movingCardImage;
+		moveCard(beginX, beginY, endX, endY);
+	}
+	
+	public void moveDeckToDiscard(BufferedImage movingCardImage) {
+		movingCard = movingCardImage;
+		moveCard(DECK_X, DECK_Y, DISCARD_X, DISCARD_Y);
 	}
 	
 }
