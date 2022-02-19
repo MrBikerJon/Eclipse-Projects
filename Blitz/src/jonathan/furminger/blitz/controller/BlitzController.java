@@ -173,5 +173,21 @@ public class BlitzController {
 			window.enableRapButton(true);
 		}
 	}
+	
+	public void showTakeDiscard(Player player, Card discard, Card nextDiscard) {
+		BufferedImage nextDiscardImage = null;
+		if(nextDiscard != null) {
+			int nextDiscardId = nextDiscard.getId();
+			nextDiscardImage = cardImages[nextDiscardId];	
+		}
+		int discardId = discard.getId();
+		BufferedImage discardImage = cardImages[discardId];
+		int playerId = player.getId();
+		int position = player.getCardPosition(discard);
+		ArrayList<BufferedImage> playerCards = createCardImagesForPlayer(player);
+		gamePanel.setDiscard(nextDiscardImage);
+		gamePanel.moveDiscardToPlayer(discardImage, playerId, position);
+		gamePanel.updateCardsForPlayer(playerId, playerCards);
+	}
 
 }

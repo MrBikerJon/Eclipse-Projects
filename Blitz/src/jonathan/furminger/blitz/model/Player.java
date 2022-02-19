@@ -104,4 +104,81 @@ public class Player {
 		return position;
 	}
 	
+	public int[] getPointsInSuits() {
+		int[] pointsInSuits = new int[4];
+		
+		// add the points in each suit
+		for(int i = 0; i < cards.size(); i++) {
+			Card card = cards.get(i);
+			int suit = card.getSuit();
+			pointsInSuits[suit] += card.getValue();
+		} 
+		return pointsInSuits;
+	}
+	
+	public int getPointsInHand() {
+		
+		// get the points in each suit
+		int[] pointsInSuits = getPointsInSuits();
+		
+		// get the points for the suit that has the most points
+		int highestPoints = pointsInSuits[0];
+		for(int i = 1; i < pointsInSuits.length; i++) {
+			if(pointsInSuits[i] > highestPoints) {
+				highestPoints = pointsInSuits[i];
+			}
+		}
+		return highestPoints;
+	}
+	
+	public int getLowestCardIndex() {
+		// get the points in each suit
+		int[] pointsInSuits = getPointsInSuits();
+		
+		// get the suit with the least points
+		int worstSuit = 0;
+		// worst points should start with a number
+		// higher than the maximum possible value.
+		// A hand may hold up to 4 cards, so worst
+		// points must be less than 42.
+		int worstPoints = 42;
+		for(int i = 0; i < pointsInSuits.length; i++) {
+			if(pointsInSuits[i] > 0 
+					&& pointsInSuits[i] < worstPoints) {
+				worstPoints = pointsInSuits[i];
+				worstSuit = i;
+			}
+		}
+		// since the cards are arranged by suit and
+		// value, the lowest card in the worst suit
+		// should be the first card in the worst suit
+		int i = 0;
+		Card checkCard = cards.get(0);
+		int checkSuit = checkCard.getSuit();
+		while(checkSuit != worstSuit) {
+			i++;
+			checkCard = cards.get(i);
+			checkSuit = checkCard.getSuit();
+		}
+		return i;
+	}
+	
+	public Card removeCardAt(int index) {
+		Card card = cards.remove(index);
+		return card;
+	}
+	
+	public void removeCard(Card removeCard) {
+		boolean removed = false;
+		int compareId = removeCard.getId();
+		for(int i = 0; i < cards.size() && removed; i++) {
+			Card card = cards.get(i);
+			int id = card.getId();
+			if(id == compareId) {
+				cards.remove(i);
+				removed = true;
+			}
+		}
+	}
+	
 }

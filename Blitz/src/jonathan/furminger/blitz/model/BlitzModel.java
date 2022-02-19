@@ -144,7 +144,35 @@ public class BlitzModel {
 	}
 	
 	private void computerDraw() {
-		
+		boolean shouldTakeDiscard = false;
+		// if the discard stack is not empty
+		if(!discardStack.isEmpty()) {
+			// check the points in the hand without the discard
+			int priorPoints = player.getPointsInHand();
+			// add the discard to the hand
+			Card discard = discardStack.getTopCard();
+			player.addCard(discard);
+			// remove the lowest card in the hand
+			int lowestCardIndex = player.getLowestCardIndex();
+			Card removedCard = player.removeCardAt(lowestCardIndex);
+			// check the points in the hand again
+			int afterPoints = player.getPointsInHand();
+			// if there are now more points, it improved the hand
+			if(priorPoints < afterPoints) {
+				shouldTakeDiscard = true;
+			}
+			// put the cards back as they were
+			player.addCard(removedCard);
+			player.removeCard(discard);
+		}
+		System.out.println("Should take discard == " + shouldTakeDiscard);  // TODO remove later
+		if(shouldTakeDiscard) {
+			Card discard = discardStack.removeTopCard();
+			player.addCard(discard);
+			Card nextDiscard = discardStack.getTopCard();
+			controller.showTakeDiscard(player, discard, nextDiscard);
+			state = STATE_COMPUTER_DISCARD;
+		}
 	}
 	
 	private void computerDiscard() {
