@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -43,6 +46,8 @@ public class GamePanel extends JPanel {
 		Font font = new Font(Font.DIALOG, Font.BOLD, FONT_SIZE);
 		setFont(font);
 		deck = cardBackImage;
+		MouseAdapter mouseAdapter = controller.getMouseAdapter();
+		addMouseListener(mouseAdapter);
 	}
 	
 	public Dimension getPreferredSize() {
@@ -189,6 +194,22 @@ public class GamePanel extends JPanel {
 	public void updateTokensForPlayer(int playerIndex, int count) {
 		players[playerIndex].updateTokens(count);
 		repaint();
+	}
+	
+	public boolean hasDeckAt(int x, int y) {
+		Rectangle deckBounds = new Rectangle(DECK_X, DECK_Y, CARD_WIDTH, CARD_HEIGHT);
+		boolean contains = deckBounds.contains(x, y);
+		return contains;
+	}
+	
+	public boolean hasDiscardAt(int x, int y) {
+		boolean contains = false;
+		if(discard != null) {
+			Rectangle discardBounds = new Rectangle(DISCARD_X, DISCARD_Y, CARD_WIDTH, CARD_HEIGHT);
+			Point point = new Point(x, y);
+			contains = discardBounds.contains(x, y);
+		}
+		return contains;
 	}
 	
 }

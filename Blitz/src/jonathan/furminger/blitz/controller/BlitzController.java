@@ -2,6 +2,8 @@ package jonathan.furminger.blitz.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
@@ -112,6 +114,26 @@ public class BlitzController {
 		};
 		
 		return rapListener;
+	}
+	
+	public MouseAdapter getMouseAdapter() {
+		MouseAdapter adapter = new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				int x = e.getX();
+				int y = e.getY();
+				clicked(x, y);
+			}
+		};
+		return adapter;
+	}
+	
+	private void clicked(int x, int y) {
+		if(gamePanel.hasDeckAt(x,  y) ) {
+			System.out.println("The deck was clicked");
+		}
+		if(gamePanel.hasDiscardAt(x, y)) {
+			System.out.println("The discard was clicked");
+		}
 	}
 
 }
