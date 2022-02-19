@@ -23,10 +23,10 @@ public class GamePanel extends JPanel {
 	public static final int FONT_SIZE = 20;
 	private static final int CARD_WIDTH = BlitzController.CARD_WIDTH;
 	private static final int CARD_HEIGHT = BlitzController.CARD_HEIGHT;
-	private static final int PLAYER_WIDTH =(CARD_WIDTH * 4) + (SPACING * 3);
-	private static final int PLAYER_HEIGHT = CARD_HEIGHT + FONT_SIZE + (SPACING * 3);
-	private static final int WIDTH = (2 * PLAYER_WIDTH) + GAP + (MARGIN * 2);
-	private static final int HEIGHT = (2 * PLAYER_HEIGHT) + CARD_HEIGHT + (GAP * 2) + (MARGIN * 2);
+	private static final int PLAYER_WIDTH =CARD_WIDTH * 4 + SPACING * 3;
+	private static final int PLAYER_HEIGHT = CARD_HEIGHT + FONT_SIZE * 3 + SPACING * 2;
+	private static final int WIDTH = PLAYER_WIDTH * 2 + GAP + MARGIN * 2;
+	private static final int HEIGHT = PLAYER_HEIGHT * 2 + CARD_HEIGHT + GAP * 2 + MARGIN * 2;
 	private static final int DECK_X = (WIDTH / 2) - (CARD_WIDTH / 2) - (SPACING / 2);
 	private static final int DECK_Y = MARGIN + PLAYER_HEIGHT + GAP;
 	private static final int DISCARD_X = DECK_X + CARD_WIDTH + SPACING;
