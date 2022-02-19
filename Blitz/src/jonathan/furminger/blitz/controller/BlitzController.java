@@ -100,6 +100,7 @@ public class BlitzController {
 				gamePanel.moveDeckToDiscard(movingCardImage);
 				gamePanel.updateTokensForPlayer(0, 1);
 				gamePanel.addInfoForPlayer(0, "Lost 2");
+				gamePanel.clearCardsAndInfo();
 			}
 		};
 		
@@ -133,6 +134,10 @@ public class BlitzController {
 		}
 		if(gamePanel.hasDiscardAt(x, y)) {
 			System.out.println("The discard was clicked");
+		}
+		int clickedCard = gamePanel.getCardIndexForPlayerAt(2, x, y);
+		if(clickedCard > -1) {
+			System.out.println("Card: " + clickedCard);
 		}
 	}
 

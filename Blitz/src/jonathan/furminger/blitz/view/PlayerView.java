@@ -1,6 +1,7 @@
 package jonathan.furminger.blitz.view;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -80,4 +81,21 @@ public class PlayerView {
 		tokens = newTokens;
 	}
 	
+	public int getCardIndexAt(int pointX, int pointY) {
+		int index = -1;
+		for(int i = 0; i <cards.size() && index == -1; i++) {
+			int cardX = x + i * (CARD_WIDTH + SPACING);
+			int cardY = y + SPACING;
+			Rectangle cardBounds = new Rectangle(cardX, cardY, CARD_WIDTH, CARD_HEIGHT);
+			if(cardBounds.contains(pointX, pointY)) {
+				index = i;
+			}
+		}
+		return index;
+	}
+	
+	public void clearCardsAndInfo() {
+		cards.clear();
+		info = "";
+	}
 }

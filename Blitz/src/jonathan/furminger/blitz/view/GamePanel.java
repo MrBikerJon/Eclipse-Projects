@@ -212,4 +212,19 @@ public class GamePanel extends JPanel {
 		return contains;
 	}
 	
+	public int getCardIndexForPlayerAt(int playerIndex, int x, int y) {
+		int index = -1;
+		if(players[playerIndex] != null) {
+			index = players[playerIndex].getCardIndexAt(x, y);
+		}
+		return index;
+	}
+	
+	public void clearCardsAndInfo() {
+		for(int i = 0; i < players.length; i++) {
+			players[i].clearCardsAndInfo();
+		}
+		discard = null;
+	}
+	
 }
