@@ -23,16 +23,31 @@ public class HitCounterServer {
 		System.out.println("The server is running");
 		try {
 			serverSocket = new ServerSocket(PORT_NUMBER);
-			socket = serverSocket.accept();
-			System.out.println("Starting new connection.");
-			PrintWriter toClient = new PrintWriter(socket.getOutputStream(), true);
-			count++;
-			toClient.println("" + count);
+			
+			while(true) {
+				socket = serverSocket.accept();
+				System.out.println("Starting new connection.");
+				PrintWriter toClient = new PrintWriter(socket.getOutputStream(), true);
+				count++;
+				toClient.println("" + count);
+			}
+
 		}
 		catch(IOException e) {
 			System.out.println("An exception was caught when trying to listen on port " + PORT_NUMBER + " or when listening for a connection.");
 		}
-		
+		finally {
+			System.out.println("The server stopped.");
+			try {
+				if(serverSocket != null && serverSocket.isClosed()) {
+					serverSocket.close();
+				}
+				if(serverSocket != null) {
+					socket.close();
+				}
+			}
+			catch (Exception e) {}
+		}
 	}
 
 }
