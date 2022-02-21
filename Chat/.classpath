@@ -7,5 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/My Components"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Networking"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

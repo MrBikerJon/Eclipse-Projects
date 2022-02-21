@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -24,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import jonathan.furminger.mycomponents.TitleLabel;
+import jonathan.furminger.networking.LogInDialog;
 
 public class Chat extends JFrame implements Runnable {
 
@@ -38,6 +41,7 @@ public class Chat extends JFrame implements Runnable {
 	private PrintWriter out;
 	private JTextArea chatArea = new JTextArea(20, 20);
 	private JTextArea inputArea = new JTextArea(3, 20);
+	private LogInDialog logInDialog = new LogInDialog("Chat");
 
 	public static void main(String[] args) {
 		try {
@@ -61,6 +65,8 @@ public class Chat extends JFrame implements Runnable {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		logIn();
 		
 		new Thread(this).start();
 		
@@ -96,6 +102,14 @@ public class Chat extends JFrame implements Runnable {
 		inputArea.setLineWrap(true);
 		inputArea.setWrapStyleWord(true);
 		inputArea.setMargin(marginInsets);
+		inputArea.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				int key = e.getKeyCode();
+				if(key == KeyEvent.VK_ENTER) {
+					send();
+				}
+			}
+		});
 		JScrollPane inputScrollPane = new JScrollPane(inputArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		mainPanel.add(inputScrollPane);
 		
@@ -146,6 +160,10 @@ public class Chat extends JFrame implements Runnable {
 			System.out.println(message);
 			inputArea.setText("");
 		}
+	}
+	
+	private void logIn() {
+		logInDialog.setVisible(true);
 	}
 
 }
