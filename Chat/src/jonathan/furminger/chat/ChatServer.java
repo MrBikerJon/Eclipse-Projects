@@ -175,5 +175,14 @@ public class ChatServer extends JFrame implements Runnable {
 			}
 		}
 	}
+	
+	public void broadcast(String s) {
+		synchronized(connections) {
+			for(int i = 0; i < connections.size(); i++) {
+				Connection connection = connections.get(i);
+				connection.sendToClient(s);
+			}
+		}
+	}
 
 }

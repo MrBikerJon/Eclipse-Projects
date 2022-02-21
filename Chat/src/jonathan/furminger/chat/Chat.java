@@ -2,6 +2,7 @@ package jonathan.furminger.chat;
 
 import java.awt.BorderLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -145,6 +146,22 @@ public class Chat extends JFrame implements Runnable {
 					case ActionCode.SUBMIT :
 						out.println(ActionCode.NAME + name);
 						break;
+					case ActionCode.ACCEPTED :
+						setTitle(name);
+						inputArea.requestFocus();
+						break;
+					case ActionCode.REJECTED :
+						JOptionPane.showMessageDialog(this, "User name " + name + " is not available");
+						logIn();
+						out.println(ActionCode.NAME + name);
+						break;
+					case ActionCode.CHAT :
+						Toolkit.getDefaultToolkit().beep();
+						chatArea.append(parameters + "\n\n");
+						// scroll the chat area
+						String text = chatArea.getText();
+						int endOfText = text.length();
+						chatArea.setCaretPosition(endOfText);
 					}
 				}
 			}
@@ -162,6 +179,9 @@ public class Chat extends JFrame implements Runnable {
 	
 	private void close() {
 		try {
+			if(out != null) {
+				out.println(ActionCode.QUIT);
+			}
 			if(socket != null) {
 				socket.close();
 			}
@@ -173,8 +193,9 @@ public class Chat extends JFrame implements Runnable {
 	private void send() {
 		String message = inputArea.getText().trim();
 		if(message.length() > 0) {
-			System.out.println(message);
 			inputArea.setText("");
+			String s = ActionCode.BROADCAST + name + ": " + message;
+			out.println(s);
 		}
 	}
 	

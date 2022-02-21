@@ -48,11 +48,21 @@ public class Connection implements Runnable {
 							validName = true;
 							name = submittedName;
 							sendToClient(ActionCode.ACCEPTED);
+							String message = ActionCode.CHAT + name + " joined the conversation";
+							server.broadcast(message);
 						}
 						else {
 							sendToClient(ActionCode.REJECTED);
 						}
 						break;
+					case ActionCode.QUIT :
+						keepRunning = false;
+						break;
+					case ActionCode.BROADCAST :
+						if(validName) {
+							String message = ActionCode.CHAT + parameters;
+							server.broadcast(message);
+						}
 					}
 				}
 			}
@@ -68,6 +78,15 @@ public class Connection implements Runnable {
 	
 	private void quit() {
 		server.log("The connection ended for " + name);
+		if(!name.equals(DEFAULT_NAME)) {
+			server.removeConnection(name);
+			
+			if(out != null) {
+				String s = ActionCode.CHAT + name + " left the conversation";
+				server.broadcast(s);
+				out = null;
+			}
+		}
 		try {
 			socket.close();
 		}
