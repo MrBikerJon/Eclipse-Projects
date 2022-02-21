@@ -102,7 +102,7 @@ public class ChatServer extends JFrame implements Runnable {
 		Date time = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy, HH:mm:ss");
 		String timeStamp = dateFormat.format(time);
-		logArea.append(timeStamp + message + "\n");
+		logArea.append(timeStamp + " " + message + "\n");
 	}
 	
 	public void run() {
@@ -112,6 +112,7 @@ public class ChatServer extends JFrame implements Runnable {
 			while(true) {
 				Socket socket = serverSocket.accept();
 				log("The server is starting a new connection");
+				new Connection(this, socket);
 			}
 		}
 		catch (IOException e) {
