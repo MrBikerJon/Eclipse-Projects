@@ -131,7 +131,23 @@ public class Chat extends JFrame implements Runnable {
 			socket = new Socket(host, PORT_NUMBER);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
-			String input = in.readLine();
+			
+			boolean keepRunning = true;
+			while(keepRunning) {
+				String input = in.readLine();
+				if(input == null) {
+					keepRunning = false;
+				}
+				else if(input.length() > 0) {
+					String actionCode = input.substring(0, 1);
+					String parameters = input.substring(1);
+					switch(actionCode) {
+					case ActionCode.SUBMIT :
+						out.println(ActionCode.NAME + name);
+						break;
+					}
+				}
+			}
 		}
 		catch (ConnectException e) {
 			JOptionPane.showMessageDialog(this, "The server is not running");

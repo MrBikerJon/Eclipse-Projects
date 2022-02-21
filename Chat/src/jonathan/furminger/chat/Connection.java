@@ -37,6 +37,24 @@ public class Connection implements Runnable {
 				if(input == null) {
 					keepRunning = false;
 				}
+				else if(input.length() > 0) {
+					String actionCode = input.substring(0, 1);
+					String parameters = input.substring(1);
+					switch(actionCode) {
+					case ActionCode.NAME :
+						String submittedName = parameters;
+						boolean added = server.addConnection(this, submittedName);
+						if(added) {
+							validName = true;
+							name = submittedName;
+							sendToClient(ActionCode.ACCEPTED);
+						}
+						else {
+							sendToClient(ActionCode.REJECTED);
+						}
+						break;
+					}
+				}
 			}
 		}
 		catch(IOException e) {
@@ -57,8 +75,12 @@ public class Connection implements Runnable {
 	}
 	
 	public void sendToClient(String s) {
-		out.print(s);
-		server.log(s + " was sent to " + name);
+		out.println(s);
+		server.log("Sent to " + name + ": " + s);
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 }

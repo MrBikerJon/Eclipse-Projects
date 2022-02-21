@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BoxLayout;
@@ -31,6 +32,7 @@ public class ChatServer extends JFrame implements Runnable {
 	private JTextArea logArea = new JTextArea(10, 30);
 	private JButton startButton = new JButton("Start");
 	private ServerSocket serverSocket;
+	private ArrayList<Connection> connections = new ArrayList<Connection>();
 
 	public static void main(String[] args) {
 		try {
@@ -137,6 +139,39 @@ public class ChatServer extends JFrame implements Runnable {
 			catch (Exception e) {
 				log("Unable to close the server connection.");
 				log(e.getMessage());
+			}
+		}
+	}
+	
+	public boolean addConnection(Connection newConnection, String newName) {
+		boolean added = false;
+		boolean found = false;
+		synchronized(connections) {
+			for(int i = 0; i < connections.size() && !found; i++) {
+				Connection connection = connections.get(i);
+				String name = connection.getName();
+				if(newName.equals(name)) {
+					found = true;
+				}
+			}
+			if(!found) {
+				connections.add(newConnection);
+				added = true;
+			}
+		}
+		return added;
+	}
+	
+	public void removeConnection(String removeName) {
+		boolean found = false;
+		synchronized(connections) {
+			for(int i = 0; i < connections.size() && !found; i++) {
+				Connection connection = connections.get(i);
+				String name = connection.getName();
+				if(removeName.equals(name)) {
+					found = true;
+					connections.remove(i);
+				}
 			}
 		}
 	}
