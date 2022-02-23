@@ -18,7 +18,7 @@ import jonathan.furminger.networking.LogInDialog;
 public class DotsAndBoxes extends JFrame implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	private static final int PORT_NUMBER = 49632;
+	private static final int PORT_NUMBER = 51623;
 	
 	private LogInDialog logInDialog = new LogInDialog("Dots and Boxes");
 	private String host = "";
@@ -26,11 +26,12 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
+	
 	private boolean keepRunning = true;
 			
 	public DotsAndBoxes() {
 		logIn();
-		new Thread(this);
+		new Thread(this).start();
 	}
 	
 	public static void main(String[] args) {
@@ -52,7 +53,7 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 		logInDialog.setVisible(true);
 		if(!logInDialog.isCanceled()) {
 			host = logInDialog.getIpAddress();
-			name = logInDialog.getName();
+			name = logInDialog.getUserName();
 		}
 		else {
 			close();
@@ -70,6 +71,14 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 				String input = in.readLine();
 				if(input == null) {
 					keepRunning = false;
+				}
+				else if (input.length() > 1) {
+					String actionCode = input.substring(0, 2);
+					String parameters = input.substring(2);
+					switch (actionCode) {
+					case ActionCode.SUBMIT :
+						out.println(ActionCode.NAME + name);
+					}
 				}
 			}
 		}

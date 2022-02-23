@@ -36,8 +36,9 @@ import jonathan.furminger.mycomponents.TitleLabel;
 public class DotsAndBoxesServer extends JFrame implements Runnable {
 
 	private static final long serialVersionUID = 1L;
+	
 	private static final String FILE_NAME = "Settings.txt";
-	private static final int PORT_NUMBER = 49632;
+	private static final int PORT_NUMBER = 51623;
 	
 	private JTextField gridSizeField = new JTextField("8", 2);
 	private JTextArea logArea = new JTextArea(10, 30);
@@ -62,6 +63,7 @@ public class DotsAndBoxesServer extends JFrame implements Runnable {
 	
 	public DotsAndBoxesServer() {
 		initGUI();
+		
 		setTitle("Dots and Boxes Server");
 		pack();
 		setLocationRelativeTo(null);
@@ -147,6 +149,8 @@ public class DotsAndBoxesServer extends JFrame implements Runnable {
 					game = new Game(gridSize);
 					log("New game created");
 				}
+				
+				new Connection(this, socket);
 			}
 		}
 		catch (IOException e) {
@@ -170,6 +174,7 @@ public class DotsAndBoxesServer extends JFrame implements Runnable {
 			if(checkGridSize >= 3 && checkGridSize <= 20) {
 				gridSize = checkGridSize;
 				game = new Game(gridSize);
+				
 				new Thread(this).start();
 				startButton.setEnabled(false);
 				
@@ -179,7 +184,7 @@ public class DotsAndBoxesServer extends JFrame implements Runnable {
 					out.close();
 				}
 				catch (IOException e) {
-					JOptionPane.showMessageDialog(this, "And error was encountered wheb writing to " + FILE_NAME);
+					JOptionPane.showMessageDialog(this, "An error was encountered when writing to " + FILE_NAME);
 				}
 			}
 			else {
@@ -187,13 +192,13 @@ public class DotsAndBoxesServer extends JFrame implements Runnable {
 			}
 		}
 		catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(this, "The grid sizeis not a valid number");
+			JOptionPane.showMessageDialog(this, "The grid size is not a valid number");
 		}
 	}
 	
 	public void log(String message) {
 		Date time = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/DD/yyyy, HH:mm:ss ");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy, HH:mm:ss ");
 		String timeStamp = dateFormat.format(time);
 		logArea.append(timeStamp + message + "\n");
 	}
@@ -201,6 +206,7 @@ public class DotsAndBoxesServer extends JFrame implements Runnable {
 	private void stop() {
 		if(serverSocket != null && !serverSocket.isClosed()) {
 			try {
+				log("closing the server"); // remove later
 				serverSocket.close();
 			}
 			catch (Exception e) {
