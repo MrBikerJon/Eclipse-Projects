@@ -43,6 +43,7 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 	private ScorePanel myScorePanel;
 	private ScorePanel opponentsScorePanel;
 	private JLabel messageLabel = new JLabel("Waiting for another player");
+	private GamePanel gamePanel;
 			
 	public DotsAndBoxes() {
 		logIn();
@@ -187,6 +188,13 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 		messageLabel.setBorder(border);
 		mainPanel.add(messageLabel);
 		
+		// game
+		JPanel gPanel = new JPanel();
+		gPanel.setBackground(Color.CYAN);
+		mainPanel.add(gPanel);
+		gamePanel = new GamePanel(this, rows, columns);
+		gamePanel.setBackground(Color.CYAN);
+		gPanel.add(gamePanel);
 		
 	}
 	
