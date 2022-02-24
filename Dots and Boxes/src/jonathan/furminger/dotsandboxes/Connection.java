@@ -33,14 +33,31 @@ public class Connection implements Runnable {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			
 			sendToClient(ActionCode.SUBMIT);
+			boolean validName = false;
 			
 			boolean keepRunning = true;
-			
 			while(keepRunning) {
 				String input = in.readLine();
-				server.log(input + " was received from " + name);
+				server.log("Received from " + name + ": " + input);
 				if(input == null) {
 					keepRunning = false;
+				}
+				else if (input.length() > 1) {
+					String actionCode = input.substring(0, 2);
+					String parameters = input.substring(2);
+					switch(actionCode) {
+					case ActionCode.NAME :
+						game = server.addPlayerToGame(this, parameters);
+						if(game != null) {
+							validName = true;
+							name = parameters;
+							id = game.getId(name);
+						}
+						else {
+							sendToClient(ActionCode.REJECTED);
+						}
+						break;
+					}
 				}
 			}
 		}
@@ -63,7 +80,7 @@ public class Connection implements Runnable {
 	
 	public void sendToClient(String s) {
 		out.println(s);
-		server.log(s + " was sent to " + name);
+		server.log("Sent to " + name + ": " + s);
 	}
 	
 	public String getName() {

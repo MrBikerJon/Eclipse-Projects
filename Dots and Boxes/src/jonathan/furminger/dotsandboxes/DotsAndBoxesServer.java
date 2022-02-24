@@ -145,9 +145,9 @@ public class DotsAndBoxesServer extends JFrame implements Runnable {
 				Socket socket = serverSocket.accept();
 				
 				// start a new game for every two players
-				if(game.getPlayersReady() > 1) {
+				if (game.getPlayersReady() > 1) {
 					game = new Game(gridSize);
-					log("New game created");
+					log("Created a new game.");
 				}
 				
 				new Connection(this, socket);
@@ -213,6 +213,21 @@ public class DotsAndBoxesServer extends JFrame implements Runnable {
 				log("The server was unable to close the server connection");
 				log(e.getMessage());
 			}
+		}
+	}
+	
+	public synchronized Game addPlayerToGame (Connection connection, String name) {
+		if(game.getPlayersReady() > 1) {
+			game = new Game(gridSize);
+			System.out.println("Created new game...");
+			log("Created a new game");
+		}
+		
+		if(!game.addPlayer(connection, name)) {
+			return null;
+		}
+		else {
+			return game;
 		}
 	}
 	
