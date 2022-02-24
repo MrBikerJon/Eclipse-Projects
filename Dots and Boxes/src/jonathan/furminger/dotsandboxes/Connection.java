@@ -57,6 +57,10 @@ public class Connection implements Runnable {
 							sendToClient(ActionCode.REJECTED);
 						}
 						break;
+					case ActionCode.QUIT :
+						keepRunning = false;
+						game.removePlayer(id);
+						break;
 					}
 				}
 			}
@@ -71,6 +75,10 @@ public class Connection implements Runnable {
 	
 	public void quit() {
 		server.log("The connection ended for " + name);
+		
+		if(!name.equals(DEFAULT_NAME)) {
+			game.sendToOpponent(id, ActionCode.QUIT);
+		}
 		
 		try {
 			socket.close();

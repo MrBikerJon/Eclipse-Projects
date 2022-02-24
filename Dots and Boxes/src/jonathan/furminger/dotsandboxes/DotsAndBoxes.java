@@ -1,6 +1,7 @@
 package jonathan.furminger.dotsandboxes;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -10,10 +11,14 @@ import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 import jonathan.furminger.mycomponents.TitleLabel;
 import jonathan.furminger.networking.LogInDialog;
@@ -33,6 +38,11 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 	private boolean keepRunning = true;
 	private int rows;
 	private int columns;
+	private String opponentsName = "The other player";
+	
+	private ScorePanel myScorePanel;
+	private ScorePanel opponentsScorePanel;
+	private JLabel messageLabel = new JLabel("Waiting for another player");
 			
 	public DotsAndBoxes() {
 		logIn();
@@ -93,6 +103,11 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 						rows = Integer.parseInt(parameters);
 						columns = rows;
 						openWindow();
+						break;
+					case ActionCode.QUIT :
+						JOptionPane.showMessageDialog(this, opponentsName + " quit the game.");
+						close();
+						break;
 					}
 				}
 			}
@@ -109,6 +124,17 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 	}
 	
 	public void close() {
+		keepRunning = false;
+		try {
+			if(out != null) {
+				out.println(ActionCode.QUIT);
+			}
+			if(socket != null) {
+				socket.close();
+			}
+		}
+		catch (Exception e) {}
+		
 		System.exit(0);
 	}
 	
@@ -133,6 +159,35 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 				close();
 			}
 		});
+		
+		// main panel
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		mainPanel.setBackground(Color.CYAN);
+		add(mainPanel, BorderLayout.CENTER);
+		
+		// score panel
+		JPanel scorePanel = new JPanel();
+		scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.X_AXIS));
+		scorePanel.setBackground(Color.CYAN);
+		mainPanel.add(scorePanel);
+		
+		myScorePanel = new ScorePanel(0, Color.CYAN, "My Score: ");
+		scorePanel.add(myScorePanel);
+		
+		opponentsScorePanel = new ScorePanel(0, Color.CYAN, "Opponent's Score: ");
+		scorePanel.add(opponentsScorePanel);
+		
+		// message
+		messageLabel.setAlignmentX(CENTER_ALIGNMENT);
+		messageLabel.setAlignmentY(CENTER_ALIGNMENT);
+		messageLabel.setOpaque(true);
+		messageLabel.setBackground(Color.WHITE);
+		EmptyBorder border = new EmptyBorder(5, 10, 5, 10);
+		messageLabel.setBorder(border);
+		mainPanel.add(messageLabel);
+		
+		
 	}
 	
 

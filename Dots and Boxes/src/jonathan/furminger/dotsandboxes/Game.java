@@ -49,4 +49,17 @@ public class Game {
 		}
 		return id;
 	}
+	
+	public void sendToOpponent(int playerId, String s) {
+		if(playerId == 0) {
+			if(connections[1] != null) {
+				connections[1].sendToClient(s);
+			}
+		}
+		else {
+			if(connections[0] != null) {
+				connections[0].sendToClient(s);
+			}
+		}
+	}
 }
