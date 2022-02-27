@@ -22,6 +22,8 @@ public class GamePanel extends JPanel {
 	private Box[][] boxes;
 	private boolean myTurn = false;
 	private Rectangle cursor;
+	private boolean extraTurn = false;
+	private Rectangle lastLine;
 	
 	public GamePanel(DotsAndBoxes dotsAndBoxes, int rows, int columns) {
 		this.dotsAndBoxes = dotsAndBoxes;
@@ -87,10 +89,22 @@ public class GamePanel extends JPanel {
 			g.setColor(Color.LIGHT_GRAY);
 			g.drawRect(cursor.x, cursor.y, cursor.width, cursor.height);
 		}
+		
+		// last line
+		if(lastLine != null) {
+			g.setColor(Color.BLACK);
+			int x = lastLine.x - 1;
+			int y = lastLine.y - 1;
+			int width = lastLine.width + 2;
+			int height = lastLine.height + 2;
+			g.fillRect(x, y, width, height);
+		}
 	}
 	
 	public void setMyTurn(boolean myTurn) {
 		this.myTurn = myTurn;
+		cursor = null;
+		extraTurn = false;
 	}
 	
 	public void mouseMovedTo(int x, int y) {
@@ -110,6 +124,13 @@ public class GamePanel extends JPanel {
 	
 	private boolean drawLine(int row, int col, int side) {
 		boolean added = boxes[row][col].addLine(side, myTurn);
+		if(added) {
+			if(boxes[row][col].isCompleted()) {
+				dotsAndBoxes.increaseScore(myTurn);
+				extraTurn = true;
+				dotsAndBoxes.showExtraTurn(myTurn);
+			}
+		}
 		return added;
 	}
 	
@@ -118,7 +139,22 @@ public class GamePanel extends JPanel {
 		int col = x / Box.SIZE - 1;
 		if(row >= 0 && row < rows && col >= 0 && col < columns) {
 			int side = boxes[row][col].getClosestSide(x, y);
-			connectDots(row, col, side);
+			boolean validLine = connectDots(row, col, side);
+			if(validLine) {
+				dotsAndBoxes.opponentDrawLine(row, col, side);
+				
+				if(isGameOver()) {
+					dotsAndBoxes.showWinner();
+				}
+				
+				if(extraTurn) {
+					extraTurn = false;
+				}
+				else {
+					setMyTurn(false);
+					dotsAndBoxes.opponentsTurn();	
+				}
+			}	
 		}
 	}
 	
@@ -148,9 +184,22 @@ public class GamePanel extends JPanel {
 				}
 				break;
 			}
+			lastLine = boxes[row][col].getLine(side);
 		}
 		repaint();
 		return validLine;
+	}
+	
+	private boolean isGameOver() {
+		boolean over = true;
+		for(int row = 0; row < rows && over; row++) {
+			for(int col = 0; col < columns && over; col++) {
+				if(!boxes[row][col].isCompleted()) {
+					over = false;
+				}
+			}
+		}
+		return over;
 	}
 	
 }

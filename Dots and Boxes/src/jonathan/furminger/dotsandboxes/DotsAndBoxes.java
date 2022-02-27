@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.StringTokenizer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -119,6 +120,19 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 						gamePanel.setMyTurn(true);
 						messageLabel.setText("My turn");
 						break;
+					case ActionCode.LINE :
+						StringTokenizer tokenizer = new StringTokenizer(parameters, ",");
+						String token = tokenizer.nextToken();
+						int row = Integer.parseInt(token);
+						token = tokenizer.nextToken();
+						int col = Integer.parseInt(token);
+						token = tokenizer.nextToken();
+						int side = Integer.parseInt(token);
+						gamePanel.connectDots(row, col, side);
+						break;
+					case ActionCode.MESSAGE :
+						messageLabel.setText(parameters);
+						break;
 					}
 				}
 			}
@@ -208,5 +222,49 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 		
 	}
 	
+	public void increaseScore(boolean myScore) {
+		if(myScore) {
+			myScorePanel.addToScore(1);
+		}
+		else {
+			opponentsScorePanel.addToScore(1);
+		}
+	}
+
+	public void opponentsTurn() {
+		messageLabel.setText(opponentsName + "'s turn");
+		out.println(ActionCode.MY_TURN);
+	}
+	
+	public void opponentDrawLine(int row, int col, int side) {
+		String message = ActionCode.LINE + row + "," + col + "," + side;
+		out.println(message);
+	}
+	
+	public void showExtraTurn(boolean myTurn) {
+		if(myTurn) {
+			messageLabel.setText("Take another turn");
+		}
+		else {
+			messageLabel.setText(opponentsName + " gets another turn");
+		}
+	}
+	
+	public void showWinner() {
+		int myScore = myScorePanel.getScore();
+		int opponentsScore = opponentsScorePanel.getScore();
+		if(myScore > opponentsScore) {
+			messageLabel.setText("You won!");
+			out.println(ActionCode.MESSAGE + "You lost.");
+		}
+		else if(myScore == opponentsScore) {
+			messageLabel.setText("You tied!");
+			out.println(ActionCode.MESSAGE + "You tied!");
+		}
+		else {
+			messageLabel.setText("You lost.");
+			out.println(ActionCode.MESSAGE + "You won!");
+		}
+	}
 
 }

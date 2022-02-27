@@ -61,6 +61,10 @@ public class Connection implements Runnable {
 						keepRunning = false;
 						game.removePlayer(id);
 						break;
+					default :
+						if(validName) {
+							game.sendToOpponent(id, input);
+						}
 					}
 				}
 			}
