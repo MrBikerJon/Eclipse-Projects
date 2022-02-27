@@ -109,6 +109,16 @@ public class DotsAndBoxes extends JFrame implements Runnable {
 						JOptionPane.showMessageDialog(this, opponentsName + " quit the game.");
 						close();
 						break;
+					case ActionCode.OPPONENT :
+						opponentsName = parameters;
+						
+						opponentsScorePanel.setTitleLabel(opponentsName + "'s score: ");
+						messageLabel.setText(opponentsName + "'s turn.");
+						break;
+					case ActionCode.MY_TURN :
+						gamePanel.setMyTurn(true);
+						messageLabel.setText("My turn");
+						break;
 					}
 				}
 			}

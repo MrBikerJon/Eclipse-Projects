@@ -1,5 +1,7 @@
 package jonathan.furminger.dotsandboxes;
 
+import java.util.Random;
+
 public class Game {
 
 	private int gridSize;
@@ -25,6 +27,17 @@ public class Game {
 				playersReady++;
 				connection.sendToClient(ActionCode.ACCEPTED + gridSize);
 				added = true;
+				
+				if(playersReady == 2) {
+					String message = ActionCode.OPPONENT + names[0];
+					connections[1].sendToClient(message);
+					message = ActionCode.OPPONENT + names[1];
+					connections[0].sendToClient(message);
+					
+					Random rand = new Random();
+					int whoStarts = rand.nextInt(2);
+					connections[whoStarts].sendToClient(ActionCode.MY_TURN);
+				}
 			}
 		}
 		
