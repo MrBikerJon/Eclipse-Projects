@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -13,6 +14,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import jonathan.furminger.networking.LogInDialog;
+import jonathan.furminger.networking.Packet;
 
 public class WordHunt extends JFrame implements Runnable {
 
@@ -52,7 +54,7 @@ public class WordHunt extends JFrame implements Runnable {
 		logInDialog.setVisible(true);
 		if(!logInDialog.isCanceled()) {
 			host = logInDialog.getIpAddress();
-			name = logInDialog.getName();
+			name = logInDialog.getUserName();
 		}
 		else {
 			close();
@@ -69,6 +71,19 @@ public class WordHunt extends JFrame implements Runnable {
 				String input = in.readLine();
 				if(input == null) {
 					keepRunning = false;
+				}
+				else if (input.length() > 0) {
+					Packet packet = new Packet(input);
+					String actionCode = packet.getActionCode();
+					ArrayList<String> parameters = packet.getParameters();
+					
+					switch (actionCode) {
+					case ActionCode.SUBMIT :
+						packet = new Packet(ActionCode.NAME);
+						packet.add(name);
+						out.println(packet);
+						break;
+					}
 				}
 			}
 		}

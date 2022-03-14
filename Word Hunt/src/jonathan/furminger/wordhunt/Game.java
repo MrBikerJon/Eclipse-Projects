@@ -15,4 +15,13 @@ public class Game {
 	public int getMaxNumberOfPlayers() {
 		return maxNumberOfPlayers;
 	}
+	
+	public boolean isValidName(String name) {
+		boolean validName = false;
+		if(availableNames.contains(name)) {
+			validName = true;
+			availableNames.remove(name);
+		}
+		return validName;
+	}
 }

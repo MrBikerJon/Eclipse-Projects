@@ -67,7 +67,7 @@ public class Packet {
 	public boolean equals(Packet packet) {
 		String thisPacketString = toString();
 		String comparePacketString = packet.toString();
-		return(thisPacketString.equals(comparePacketString));
+		return thisPacketString.equals(comparePacketString);
 	}
 
 }
