@@ -99,6 +99,7 @@ public class WordHuntServer extends JFrame implements Runnable {
 		// listeners
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				stopServer();
 				System.exit(0);
 			}
 		});
@@ -147,6 +148,7 @@ public class WordHuntServer extends JFrame implements Runnable {
 			serverSocket = new ServerSocket(PORT_NUMBER);
 			while(listening) {
 				Socket socket = serverSocket.accept();
+				new Connection(this, socket, game);
 			}
 		}
 		catch (IOException e) {
