@@ -1,5 +1,8 @@
 package jonathan.furminger.wordhunt;
 
+import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import jonathan.furminger.mycomponents.TitleLabel;
 import jonathan.furminger.networking.LogInDialog;
 import jonathan.furminger.networking.Packet;
 
@@ -83,6 +87,16 @@ public class WordHunt extends JFrame implements Runnable {
 						packet.add(name);
 						out.println(packet);
 						break;
+					case ActionCode.REJECTED :
+						JOptionPane.showMessageDialog(this, "User name " + name + " was not invited to the game or is already being used by another player");
+						logIn();
+						packet = new Packet(ActionCode.NAME);
+						packet.add(name);
+						out.println(packet);
+						break;
+					case ActionCode.ACCEPTED :
+						openWindow();
+						break;
 					}
 				}
 			}
@@ -101,6 +115,29 @@ public class WordHunt extends JFrame implements Runnable {
 	
 	public void close() {
 		System.exit(0);
+	}
+	
+	private void openWindow() {
+		initGUI();
+		setTitle(name);
+		setResizable(false);
+		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	}
+	
+	private void initGUI() {
+		TitleLabel titleLabel = new TitleLabel("Word Hunt");
+		add(titleLabel, BorderLayout.PAGE_START);
+		
+		// listeners
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				close();
+			}
+		});
+		
 	}
 
 }
