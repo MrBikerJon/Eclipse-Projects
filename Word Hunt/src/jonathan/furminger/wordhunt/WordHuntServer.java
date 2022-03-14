@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +46,9 @@ public class WordHuntServer extends JFrame implements Runnable {
 	private ArrayList<String> names;
 	private boolean listening = false;
 	private static final String FILE_NAME = "PlayerNames.txt";
+	private static final int PORT_NUMBER = 51593;
+	private ServerSocket serverSocket;
+	private Game game;
 	
 
 	public static void main(String[] args) {
@@ -138,6 +143,20 @@ public class WordHuntServer extends JFrame implements Runnable {
 	
 	public void run() {
 		log("The server is running");
+		try {
+			serverSocket = new ServerSocket(PORT_NUMBER);
+			while(listening) {
+				Socket socket = serverSocket.accept();
+			}
+		}
+		catch (IOException e) {
+			// ignore the expected IOException thrown when the Stop button is clicked-when listening is true
+			if(listening) {
+				log("An exception was caught while trying to listen on port " + PORT_NUMBER);
+				log(e.getMessage());
+				stopServer();
+			}
+		}
 	}
 	
 	private void startServer() {
@@ -151,6 +170,10 @@ public class WordHuntServer extends JFrame implements Runnable {
 			}
 			if(names.size() > 0) {
 				listening = true;
+				
+				game = new Game(names);
+				log("A new game was created");
+				
 				new Thread(this).start();
 				startStopButton.setText("Stop");
 				
@@ -181,6 +204,16 @@ public class WordHuntServer extends JFrame implements Runnable {
 		listening = false;
 		startStopButton.setText("Start");
 		log("The server was stopped");
+		
+		// stop listening for new clients
+		if(serverSocket != null && !serverSocket.isClosed()) {
+			try {
+				serverSocket.close();
+			} catch (Exception e) {
+				log("An exception was caught when trying to stop the server connection");
+				log(e.getMessage());
+			}
+		}
 	}
 	
 	public void log(String message) {
