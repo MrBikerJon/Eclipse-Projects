@@ -66,6 +66,9 @@ public class Connection implements Runnable {
 								sendToClient(packet);
 							}
 							break;
+						case ActionCode.QUIT :
+							keepRunning = false;
+							break;
 					}
 				}
 			}
@@ -92,6 +95,10 @@ public class Connection implements Runnable {
 		String packetString = packet.toString();
 		out.println(packetString);
 		server.log("Sent to " + name + " : " + packetString);
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 }

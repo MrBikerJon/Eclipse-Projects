@@ -1,6 +1,7 @@
 package jonathan.furminger.wordhunt;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -11,8 +12,10 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -32,6 +35,10 @@ public class WordHunt extends JFrame implements Runnable {
 	private BufferedReader in;
 	private PrintWriter out;
 	private boolean keepRunning = true;
+	
+	private int numberOfPlayers = 0;
+	private JPanel scoresPanel = new JPanel();
+	private ScorePanel[] scorePanels;
 	
 	public WordHunt() {
 		logIn();
@@ -95,6 +102,14 @@ public class WordHunt extends JFrame implements Runnable {
 						out.println(packet);
 						break;
 					case ActionCode.ACCEPTED :
+						numberOfPlayers = Integer.parseInt(parameters.get(0));
+						scorePanels = new ScorePanel[numberOfPlayers];
+						for(int i = 0; i < numberOfPlayers; i++) {
+							int playerNumber = i + 1;
+							String playerName = "Player " + playerNumber;
+							scorePanels[i] = new ScorePanel(0, Color.MAGENTA, playerName);
+							scoresPanel.add(scorePanels[i]);
+						}
 						openWindow();
 						break;
 					}
@@ -114,6 +129,17 @@ public class WordHunt extends JFrame implements Runnable {
 	}
 	
 	public void close() {
+		keepRunning = false;
+		try {
+			if(out != null) {
+				Packet packet = new Packet(ActionCode.QUIT);
+				out.println(packet);
+			}
+			if(socket != null) {
+				socket.close();
+			}
+		}
+		catch (Exception e) {};
 		System.exit(0);
 	}
 	
@@ -138,6 +164,16 @@ public class WordHunt extends JFrame implements Runnable {
 			}
 		});
 		
+		// main panel
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		mainPanel.setBackground(Color.MAGENTA);
+		add(mainPanel, BorderLayout.CENTER);
+		
+		// scores panel
+		scoresPanel.setLayout(new BoxLayout(scoresPanel, BoxLayout.X_AXIS));
+		scoresPanel.setBackground(Color.MAGENTA);
+		mainPanel.add(scoresPanel);
 	}
 
 }
