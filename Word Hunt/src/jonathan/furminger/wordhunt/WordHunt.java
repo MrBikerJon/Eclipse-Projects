@@ -14,10 +14,13 @@ import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 import jonathan.furminger.mycomponents.TitleLabel;
 import jonathan.furminger.networking.LogInDialog;
@@ -39,6 +42,11 @@ public class WordHunt extends JFrame implements Runnable {
 	private int numberOfPlayers = 0;
 	private JPanel scoresPanel = new JPanel();
 	private ScorePanel[] scorePanels;
+	
+	private JLabel messageLabel = new JLabel("Waiting for other players");
+	
+	private GamePanel gamePanel = new GamePanel(this);
+	private JTextArea wordListArea = new JTextArea(); 
 	
 	public WordHunt() {
 		logIn();
@@ -112,6 +120,23 @@ public class WordHunt extends JFrame implements Runnable {
 						}
 						openWindow();
 						break;
+					case ActionCode.PLAYERS :
+						for(int i = 0; i < parameters.size(); i++) {
+							String name = parameters.get(i);
+							scorePanels[i].setTitleLabel(name);
+						}
+						pack();
+						break;
+						
+					case ActionCode.QUIT :
+						String message = parameters.get(0) + " left the game";
+						JOptionPane.showMessageDialog(this, message);
+						close();
+						break;
+					case ActionCode.SHUT_DOWN :
+						JOptionPane.showMessageDialog(this, "The server was shut down");
+						close();
+						break;
 					}
 				}
 			}
@@ -174,6 +199,26 @@ public class WordHunt extends JFrame implements Runnable {
 		scoresPanel.setLayout(new BoxLayout(scoresPanel, BoxLayout.X_AXIS));
 		scoresPanel.setBackground(Color.MAGENTA);
 		mainPanel.add(scoresPanel);
+		
+		// message
+		messageLabel.setAlignmentX(CENTER_ALIGNMENT);
+		messageLabel.setAlignmentY(CENTER_ALIGNMENT);
+		messageLabel.setOpaque(true);
+		messageLabel.setBackground(Color.WHITE);
+		EmptyBorder messageBorder = new EmptyBorder(5, 10, 5, 10);
+		messageLabel.setBorder(messageBorder);
+		mainPanel.add(messageLabel);
+		
+		// horizontal panel
+		JPanel horizontalPanel = new JPanel();
+		horizontalPanel.setBackground(Color.MAGENTA);
+		horizontalPanel.setLayout(new BoxLayout(horizontalPanel, BoxLayout.X_AXIS));
+		EmptyBorder gameBorder = new EmptyBorder(10, 10, 10, 10);
+		horizontalPanel.setBorder(gameBorder);
+		mainPanel.add(horizontalPanel);
+		
+		// game panel
+		horizontalPanel.add(gamePanel);
 	}
 
 }

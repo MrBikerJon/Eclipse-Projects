@@ -60,6 +60,9 @@ public class Connection implements Runnable {
 								int numberOfPlayers = game.getMaxNumberOfPlayers();
 								packet.add(numberOfPlayers);
 								sendToClient(packet);
+								
+								id = game.addPlayer(this);
+								server.log(name + " joined the game");
 							}
 							else {
 								packet = new Packet(ActionCode.REJECTED);
@@ -85,6 +88,11 @@ public class Connection implements Runnable {
 	
 	public void quit() {
 		server.log("The connection ended for " + name);
+		if(name != DEFAULT_NAME) {
+			Packet packet = new Packet(ActionCode.QUIT);
+			packet.add(name);
+			game.sendToOpponents(id, packet);
+		}
 		try {
 			socket.close();
 		}

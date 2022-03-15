@@ -46,11 +46,29 @@ public class Game {
 		for(int p = 0; p <players.length; p++) {
 			String name = "Player " + p;
 			if(players[p] != null) {
-				name = players[p];
+				name = players[p].getName();
 			}
 			packet.add(name);
 		}
 		broadcast(packet);
 		return playerId;
+	}
+	
+	public void sendToOpponents(int playerId, Packet packet) {
+		for(int i = 0; i < players.length; i++) {
+			if(i != playerId && players[i] != null) {
+				players[i].sendToClient(packet);
+			}
+		}
+	}
+	
+	public void shutDown() {
+		Packet packet = new Packet(ActionCode.SHUT_DOWN);
+		broadcast(packet);
+		for(int i = 0; i < players.length; i++) {
+			if(players[i] != null) {
+				players[i].quit();
+			}
+		}
 	}
 }
