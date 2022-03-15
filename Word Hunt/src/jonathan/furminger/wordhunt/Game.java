@@ -1,6 +1,7 @@
 package jonathan.furminger.wordhunt;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import jonathan.furminger.networking.Packet;
 
@@ -9,6 +10,10 @@ public class Game {
 	private int playersReady = 0;
 	private int maxNumberOfPlayers;
 	private Player[] players;
+	private static final String LETTERS = "AAAAAAAAABBCCCCCDDDEEEEEEEEEEEEEEEFGGGHHHIIIIIIIIIIII" +
+	"JKLLLLLLLMMMMMNNNNNNNNNOOOOOOOOPPPPQRRRRRRRRRSSSSSSSSSSSSTTTTTTTTUUUUVWXYYZ";
+	private String[][] board = new String[5][5];
+			
 	
 	public Game(ArrayList<String> availableNames) {
 		this.availableNames = availableNames;
@@ -51,6 +56,7 @@ public class Game {
 			packet.add(name);
 		}
 		broadcast(packet);
+		waitForOtherPlayers();
 		return playerId;
 	}
 	
@@ -70,5 +76,45 @@ public class Game {
 				players[i].quit();
 			}
 		}
+	}
+	
+	private String generateNewBoard() {
+		String letters = "";
+		Random rand = new Random();
+		String chooseFrom = LETTERS;
+		for(int row = 0; row < 5; row++) {
+			for(int col = 0; col < 5; col++) {
+				int chooseFromLength = chooseFrom.length();
+				int pick = rand.nextInt(chooseFromLength);
+				char letter = chooseFrom.charAt(pick);
+				letters += letter;
+				if(letter == 'Q') {
+					board[row][col] = "QU";
+				}
+				else {
+					board[row][col] = "" + letter;
+				}
+				
+				// remove the picked letter
+				String beforePick = chooseFrom.substring(0, pick);
+				String afterPick = chooseFrom.substring(pick + 1);
+				chooseFrom = beforePick + afterPick;
+			}
+		}
+		return letters;
+	}
+	
+	public void waitForOtherPlayers() {
+		if (playersReady == players.length) {
+			playersReady = 0;
+			playGame();
+		}
+	}
+	
+	private void playGame() {
+		String letters = generateNewBoard();
+		Packet packet = new Packet(ActionCode.NEW_BOARD);
+		packet.add(letters);
+		broadcast(packet);
 	}
 }

@@ -137,6 +137,12 @@ public class WordHunt extends JFrame implements Runnable {
 						JOptionPane.showMessageDialog(this, "The server was shut down");
 						close();
 						break;
+					case ActionCode.NEW_BOARD :
+						gamePanel.setLetterTiles(parameters.get(0));
+						messageLabel.setText("Start!");
+						messageLabel.setBackground(Color.WHITE);
+						gamePanel.allowInput(true);
+						break;
 					}
 				}
 			}
